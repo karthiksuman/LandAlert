@@ -14,7 +14,7 @@ const AdminPortal = () => {
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   return (
-    <div className="admin-layout">
+    <div className="admin-layout" style={{ paddingBottom: 'calc(var(--bottom-nav-height) + 14px)' }}>
       {/* Admin Sidebar */}
       <aside className={`portal-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
         <div style={{ padding: '16px 14px', display: 'flex', justifyContent: isSidebarCollapsed ? 'center' : 'space-between', alignItems: 'center', borderBottom: '1px solid var(--color-border)' }}>
@@ -58,10 +58,10 @@ const AdminPortal = () => {
             <button
               className={`sidebar-nav-btn ${activeTab === 'ai' ? 'active' : ''}`}
               onClick={() => setActiveTab('ai')}
-              title="AI Prediction Ensemble Weights"
+              title="Landslide Probability AI Model Configuration"
             >
               <Cpu size={18} />
-              {!isSidebarCollapsed && <span>AI Model Weights</span>}
+              {!isSidebarCollapsed && <span>Landslide Probability</span>}
             </button>
           </li>
 
@@ -97,6 +97,49 @@ const AdminPortal = () => {
         {activeTab === 'users' && <UserManagement />}
         {activeTab === 'helplines' && <EmergencyHelplines />}
       </main>
+
+      {/* Fixed Bottom Dashboard Navigation Bar with Equal Spacing */}
+      <nav className="citizen-bottom-nav">
+        <button
+          className={`bottom-nav-item ${activeTab === 'sensors' ? 'active' : ''}`}
+          onClick={() => setActiveTab('sensors')}
+        >
+          <Radio size={19} />
+          <span>Sensors</span>
+        </button>
+
+        <button
+          className={`bottom-nav-item ${activeTab === 'health' ? 'active' : ''}`}
+          onClick={() => setActiveTab('health')}
+        >
+          <Activity size={19} />
+          <span>Telemetry</span>
+        </button>
+
+        <button
+          className={`bottom-nav-item ${activeTab === 'ai' ? 'active' : ''}`}
+          onClick={() => setActiveTab('ai')}
+        >
+          <Cpu size={19} />
+          <span>Landslide Probability</span>
+        </button>
+
+        <button
+          className={`bottom-nav-item ${activeTab === 'users' ? 'active' : ''}`}
+          onClick={() => setActiveTab('users')}
+        >
+          <Users size={19} />
+          <span>Users</span>
+        </button>
+
+        <button
+          className={`bottom-nav-item ${activeTab === 'helplines' ? 'active' : ''}`}
+          onClick={() => setActiveTab('helplines')}
+        >
+          <PhoneCall size={19} />
+          <span>Helplines</span>
+        </button>
+      </nav>
     </div>
   );
 };

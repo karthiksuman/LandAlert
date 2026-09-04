@@ -48,7 +48,9 @@ const IntroAnimation = () => {
         <div className="intro-emblem">
           <Mountain size={38} strokeWidth={2.2} />
         </div>
-        <h1 className="intro-title">TerraAlert India</h1>
+        <h1 className="intro-title">
+          <span className="brand-logo-large-l">L</span>andAlert India
+        </h1>
         <div className="intro-subtitle">
           Landslide Early Warning & Disaster Management System
         </div>

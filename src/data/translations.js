@@ -1,14 +1,13 @@
-// Multi-language translation dictionary for Landslide Early Warning & Disaster Management System
 export const translations = {
   en: {
     systemTitle: "Landslide Early Warning & Disaster Management System",
-    shortTitle: "TerraAlert India",
+    shortTitle: "LandAlert India",
     amISafe: "Am I Safe?",
     safeStatus: "Current Area Risk: LOW",
     unsafeStatus: "Current Area Risk: ELEVATED",
     criticalStatus: "CRITICAL DANGER: HIGH LANDSLIDE RISK",
     portals: {
-      citizen: "Citizen Portal",
+      citizen: "Resident Portal",
       authority: "Authorities Portal",
       fieldOfficer: "Field Officer Portal",
       admin: "Admin Portal"
@@ -16,8 +15,10 @@ export const translations = {
     nav: {
       home: "Home",
       alerts: "Alerts",
-      report: "Report Hazard",
-      more: "More Info",
+      monitoring: "Risk Monitoring",
+      safetyInsights: "Safety & Insights",
+      report: "Report",
+      more: "More",
       sos: "SOS EMERGENCY",
       fullScreen: "Expand Map",
       exitFullScreen: "Exit Full-Screen",
@@ -25,14 +26,33 @@ export const translations = {
       legend: "Risk Legend",
       recenter: "My Location"
     },
+    moreSection: {
+      title: "Safety Information & Settings",
+      subtitle: "Disaster preparedness guides, emergency directory, and language configuration",
+      tabGuide: "Survival Guide",
+      tabHelplines: "Helpline Numbers",
+      tabSettings: "Language & Settings",
+      tabAbout: "About System",
+      helplineSub: "Verified 24x7 National & State Emergency Hotlines",
+      openSos: "Open Quick SOS",
+      interfaceLanguage: "Interface Language",
+      systemPermissions: "System Permissions",
+      locationAccess: "Location Access",
+      sirenNotify: "Siren Emergency Notifications",
+      relaunchOnboarding: "Re-launch Resident Onboarding Setup",
+      active: "ACTIVE",
+      simulated: "SIMULATED REGIONAL",
+      aboutTitle: "About LandAlert System",
+      aboutDesc: "LandAlert is a government-grade disaster management and predictive early warning platform integrating IoT sensors, AI models, and real-time GIS spatial intelligence for North-Eastern India."
+    },
     onboarding: {
-      title: "Welcome to TerraAlert",
+      title: "Welcome to LandAlert",
       subtitle: "Government-Grade Landslide Early Warning & Disaster Management Platform",
       step1Title: "Select Your Language",
       step1Desc: "Choose your preferred language for safety alerts and instructions",
       step2Title: "Terms & Safety Agreement",
-      step2Desc: "Please review official disaster data usage and citizen guidelines",
-      step2Terms: "By continuing, you agree that TerraAlert provides AI-assisted predictive landslide risk assessments and emergency advisories. Always adhere to official NDRF, SDRF, and district administration evacuation directives.",
+      step2Desc: "Please review official disaster data usage and resident guidelines",
+      step2Terms: "By continuing, you agree that LandAlert provides AI-assisted predictive landslide risk assessments and emergency advisories. Always adhere to official NDRF, SDRF, and district administration evacuation directives.",
       step2Checkbox: "I accept the Terms and Conditions and Emergency Guidelines",
       step3Title: "Permissions Required",
       step3Desc: "Location and notification permissions are essential for localized life-saving warnings.",
@@ -83,13 +103,13 @@ export const translations = {
   },
   hi: {
     systemTitle: "भूस्खलन पूर्व चेतावनी एवं आपदा प्रबंधन प्रणाली",
-    shortTitle: "टेरा-अलर्ट इंडिया",
+    shortTitle: "लैंड-अलर्ट इंडिया",
     amISafe: "क्या मैं सुरक्षित हूँ?",
     safeStatus: "वर्तमान क्षेत्र जोखिम: कम",
     unsafeStatus: "वर्तमान क्षेत्र जोखिम: बढ़ा हुआ",
     criticalStatus: "गंभीर चेतावनी: अत्यधिक भूस्खलन जोखिम",
     portals: {
-      citizen: "नागरिक पोर्टल",
+      citizen: "निवासी पोर्टल",
       authority: "प्राधिकरण पोर्टल",
       fieldOfficer: "फील्ड अधिकारी पोर्टल",
       admin: "प्रशासक पोर्टल"
@@ -97,8 +117,10 @@ export const translations = {
     nav: {
       home: "होम",
       alerts: "चेतावनी",
-      report: "खतरे की रिपोर्ट",
-      more: "अधिक जानकारी",
+      monitoring: "जोखिम निगरानी",
+      safetyInsights: "सुरक्षा एवं अंतर्दृष्टि",
+      report: "रिपोर्ट",
+      more: "अधिक",
       sos: "आपातकालीन SOS",
       fullScreen: "नक्शा बड़ा करें",
       exitFullScreen: "सामान्य दृश्य",
@@ -106,14 +128,33 @@ export const translations = {
       legend: "जोखिम संकेत",
       recenter: "मेरा स्थान"
     },
+    moreSection: {
+      title: "सुरक्षा जानकारी एवं सेटिंग्स",
+      subtitle: "आपदा तैयारी गाइड, आपातकालीन निर्देशिका और भाषा विन्यास",
+      tabGuide: "सुरक्षा गाइड",
+      tabHelplines: "हेल्पलाइन नंबर",
+      tabSettings: "भाषा एवं सेटिंग्स",
+      tabAbout: "प्रणाली के बारे में",
+      helplineSub: "सत्यापित 24x7 राष्ट्रीय एवं राज्य आपातकालीन हॉटलाइन",
+      openSos: "त्वरित SOS खोलें",
+      interfaceLanguage: "इंटरफ़ेस भाषा",
+      systemPermissions: "सिस्टम अनुमतियाँ",
+      locationAccess: "स्थान पहुँच (Location Access)",
+      sirenNotify: "सायरन आपातकालीन सूचनाएं",
+      relaunchOnboarding: "निवासी ऑनबोर्डिंग सेटअप पुनः शुरू करें",
+      active: "सक्रिय",
+      simulated: "सिम्युलेटेड क्षेत्रीय",
+      aboutTitle: "लैंड-अलर्ट प्रणाली के बारे में",
+      aboutDesc: "लैंड-अलर्ट पूर्वोत्तर भारत के लिए अत्याधुनिक सेंसर, एआई मॉडल और जीआईएस स्थानिक बुद्धिमत्ता को एकीकृत करने वाला सरकारी स्तर का आपदा प्रबंधन मंच है।"
+    },
     onboarding: {
-      title: "टेरा-अलर्ट में आपका स्वागत है",
+      title: "लैंड-अलर्ट में आपका स्वागत है",
       subtitle: "पूर्वोत्तर भारत के लिए एकीकृत एआई और सेंसर आधारित भूस्खलन पूर्व चेतावनी प्रणाली",
       step1Title: "अपनी भाषा चुनें",
       step1Desc: "सुरक्षा अलर्ट और निर्देशों के लिए अपनी पसंदीदा भाषा चुनें",
       step2Title: "नियम एवं सुरक्षा समझौता",
-      step2Desc: "कृपया आधिकारिक आपदा डेटा उपयोग और नागरिक दिशानिर्देशों की समीक्षा करें",
-      step2Terms: "आगे बढ़कर, आप सहमत होते हैं कि टेरा-अलर्ट एआई-सहायता प्राप्त भूस्खलन जोखिम मूल्यांकन और सलाह प्रदान करता है। आधिकारिक एनडीआरएफ और एसडीआरएफ निर्देशों का पालन करें।",
+      step2Desc: "कृपया आधिकारिक आपदा डेटा उपयोग और निवासी दिशानिर्देशों की समीक्षा करें",
+      step2Terms: "आगे बढ़कर, आप सहमत होते हैं कि लैंड-अलर्ट एआई-सहायता प्राप्त भूस्खलन जोखिम मूल्यांकन और सलाह प्रदान करता है। आधिकारिक एनडीआरएफ और एसडीआरएफ निर्देशों का पालन करें।",
       step2Checkbox: "मैं नियम, शर्तें और आपातकालीन दिशानिर्देश स्वीकार करता हूँ",
       step3Title: "आवश्यक अनुमतियाँ",
       step3Desc: "स्थान-विशिष्ट जीवन रक्षक चेतावनियों के लिए स्थान और अधिसूचना अनुमतियाँ आवश्यक हैं।",
@@ -164,13 +205,13 @@ export const translations = {
   },
   as: {
     systemTitle: "ভূমিস্খলন আগতীয়া সতৰ্কবাণী আৰু দুৰ্যোগ ব্যৱস্থাপনা প্ৰণালী",
-    shortTitle: "টেৰা-এলাৰ্ট অসম",
+    shortTitle: "লেণ্ড-এলাৰ্ট অসম",
     amISafe: "মই সুৰক্ষিতনে?",
     safeStatus: "বৰ্তমান অঞ্চলৰ আশংকা: নিম্ন",
     unsafeStatus: "বৰ্তমান অঞ্চলৰ আশংকা: মধ্যম",
     criticalStatus: "গুৰুতৰ বিপদ: উচ্চ ভূমিস্খলনৰ আশংকা",
     portals: {
-      citizen: "নাগৰিক পৰ্টেল",
+      citizen: "বাসিন্দা পৰ্টেল",
       authority: "কৰ্তৃপক্ষ পৰ্টেল",
       fieldOfficer: "ক্ষেত্ৰ বিষয়া পৰ্টেল",
       admin: "প্ৰশাসক পৰ্টেল"
@@ -178,14 +219,35 @@ export const translations = {
     nav: {
       home: "গৃহ",
       alerts: "সতৰ্কবাণী",
+      monitoring: "আশংকা নিৰীক্ষণ",
+      safetyInsights: "সুৰক্ষা আৰু তথ্য",
       report: "বিপদৰ প্ৰতিবেদন",
-      more: "অধিক তথ্য",
+      more: "অধিক",
       sos: "জৰুৰীকালীন SOS",
       fullScreen: "মানচিত্ৰ বহলাওক",
       exitFullScreen: "সাধাৰণ দৃশ্য",
       layers: "জিআইএছ স্তৰসমূহ",
       legend: "বিপদৰ চিন",
       recenter: "মোৰ স্থান"
+    },
+    moreSection: {
+      title: "সুৰক্ষা তথ্য আৰু ছেটিংছ",
+      subtitle: "দুৰ্যোগ প্ৰস্তুতি নিৰ্দেশনা, জৰুৰীকালীন নম্বৰ আৰু ভাষা ব্যৱস্থা",
+      tabGuide: "সুৰক্ষা সহায়িকা",
+      tabHelplines: "হেল্পলাইন নম্বৰ",
+      tabSettings: "ভাষা আৰু ছেটিংছ",
+      tabAbout: "প্ৰণালীৰ বিষয়ে",
+      helplineSub: "২৪x৭ ৰাষ্ট্ৰীয় আৰু ৰাজ্যিক জৰুৰীকালীন নম্বৰ",
+      openSos: "জৰুৰী SOS খোলক",
+      interfaceLanguage: "ইণ্টাৰফেচ ভাষা",
+      systemPermissions: "ছিষ্টেমৰ অনুমতিসমূহ",
+      locationAccess: "স্থানৰ অনুমতি",
+      sirenNotify: "ছাইৰেন জৰুৰী সতৰ্কবাণী",
+      relaunchOnboarding: "অনবৰ্ডিং পুনৰ আৰম্ভ কৰক",
+      active: "সক্ৰিয়",
+      simulated: "আঞ্চলিক মানচিত্ৰ",
+      aboutTitle: "লেণ্ড-এলাৰ্ট প্ৰণালীৰ বিষয়ে",
+      aboutDesc: "লেণ্ড-এলাৰ্ট হৈছে উত্তৰ-পূব ভাৰতৰ বাবে চেন্সৰ আৰু কৃত্ৰিম বুদ্ধিমত্তা আধাৰিত দুৰ্যোগ ব্যৱস্থাপনা ব্যৱস্থা।"
     },
     onboarding: {
       step1Title: "ভাষা বাছক",
@@ -214,13 +276,13 @@ export const translations = {
   },
   bn: {
     systemTitle: "ভূমিধস পূর্ব সতর্কবার্তা ও দুর্যোগ ব্যবস্থাপনা সিস্টেম",
-    shortTitle: "টেরা-অ্যালার্ট ইন্ডিয়া",
+    shortTitle: "ল্যান্ড-অ্যালার্ট ইন্ডিয়া",
     amISafe: "আমি কি নিরাপদ?",
     safeStatus: "বর্তমান এলাকা ঝুঁকি: কম",
     unsafeStatus: "বর্তমান এলাকা ঝুঁকি: বৃদ্ধিপ্রাপ্ত",
     criticalStatus: "মারাত্মক ঝুঁকি: ভূমিধসের সম্ভাবনা",
     portals: {
-      citizen: "নাগরিক পোর্টাল",
+      citizen: "বাসিন্দা পোর্টাল",
       authority: "কর্তৃপক্ষ পোর্টাল",
       fieldOfficer: "মাঠ কর্মকর্তা পোর্টাল",
       admin: "অ্যাডমিন পোর্টাল"
@@ -228,9 +290,30 @@ export const translations = {
     nav: {
       home: "হোম",
       alerts: "সতর্কবার্তা",
-      report: "বিপদ রিপোর্ট",
-      more: "আরও জানুন",
+      monitoring: "ঝুঁকি পর্যবেক্ষণ",
+      safetyInsights: "নিরাপত্তা ও অন্তর্দৃষ্টি",
+      report: "রিপোর্ট",
+      more: "আরও",
       sos: "জরুরি এসওএস"
+    },
+    moreSection: {
+      title: "নিরাপত্তা তথ্য ও সেটিংস",
+      subtitle: "দুর্যোগ প্রস্তুতি গাইড, জরুরি ডিরেক্টরি এবং ভাষা কনফিগারেশন",
+      tabGuide: "সারভাইভাল গাইড",
+      tabHelplines: "হেল্পলাইন নম্বর",
+      tabSettings: "ভাষা ও সেটিংস",
+      tabAbout: "সিস্টেম সম্পর্কে",
+      helplineSub: "যাচাইকৃত ২৪x৭ জাতীয় ও রাজ্য জরুরি হটলাইন",
+      openSos: "জরুরি SOS খুলুন",
+      interfaceLanguage: "ইন্টারফেসের ভাষা",
+      systemPermissions: "সিস্টেম অনুমতিসমূহ",
+      locationAccess: "অবস্থান অ্যাক্সেস",
+      sirenNotify: "সাইরেন জরুরি বিজ্ঞপ্তি",
+      relaunchOnboarding: "অনবোর্ডিং পুনরায় শুরু করুন",
+      active: "সক্রিয়",
+      simulated: "আঞ্চলিক অবস্থান",
+      aboutTitle: "ল্যান্ড-অ্যালার্ট সিস্টেম সম্পর্কে",
+      aboutDesc: "ল্যান্ড-অ্যালার্ট উত্তর-পূর্ব ভারতের জন্য সেন্সর এবং এআই সমন্বিত অত্যাধুনিক দুর্যোগ পূর্বাভাস প্ল্যাটফর্ম।"
     },
     onboarding: {
       step1Title: "ভাষা নির্বাচন করুন",
@@ -249,10 +332,10 @@ export const translations = {
   },
   mn: {
     systemTitle: "লৈচিং তারকপগী অঙনবা ৱার্নিং অমসুং অৱা-অনা য়েংশিনবা সিস্তেম",
-    shortTitle: "টেরা-অলর্ট মনিপুর",
+    shortTitle: "লেন্দ-অলর্ট মনিপুর",
     amISafe: "ঐহাক শেফ ওইব্রা?",
     portals: {
-      citizen: "মীয়ামগী পোর্তেল",
+      citizen: "বাসিন্দা পোর্তেল",
       authority: "অথোরিতিগী পোর্তেল",
       fieldOfficer: "ফিল্ড ওফিসার পোর্তেল",
       admin: "এদমিন পোর্তেল"
@@ -260,9 +343,30 @@ export const translations = {
     nav: {
       home: "য়ুম",
       alerts: "ৱার্নিং",
+      monitoring: "Risk Monitoring",
+      safetyInsights: "Safety & Insights",
       report: "রিপোর্ত তৌবা",
       more: "অতোপ্পা",
       sos: "জরুরি SOS"
+    },
+    moreSection: {
+      title: "Safety Information & Settings",
+      subtitle: "Disaster preparedness guides, emergency directory, and language configuration",
+      tabGuide: "Survival Guide",
+      tabHelplines: "Helpline Numbers",
+      tabSettings: "Language & Settings",
+      tabAbout: "About System",
+      helplineSub: "Verified 24x7 Emergency Hotlines",
+      openSos: "Open SOS",
+      interfaceLanguage: "Interface Language",
+      systemPermissions: "System Permissions",
+      locationAccess: "Location Access",
+      sirenNotify: "Siren Notifications",
+      relaunchOnboarding: "Re-launch Onboarding Setup",
+      active: "ACTIVE",
+      simulated: "SIMULATED",
+      aboutTitle: "About LandAlert System",
+      aboutDesc: "LandAlert is a predictive early warning disaster management system for North-East India."
     },
     risk: {
       low: "চিংনবা লৈতে",
@@ -273,10 +377,10 @@ export const translations = {
   },
   ne: {
     systemTitle: "पहिरो पूर्व चेतावनी तथा विपद् व्यवस्थापन प्रणाली",
-    shortTitle: "टेरा-अलर्ट सिक्किम/दार्जिलिङ",
+    shortTitle: "ल्याण्ड-अलर्ट",
     amISafe: "के म सुरक्षित छु?",
     portals: {
-      citizen: "नागरिक पोर्टल",
+      citizen: "निवासी पोर्टल",
       authority: "प्राधिकरण पोर्टल",
       fieldOfficer: "फिल्ड अफिसर पोर्टल",
       admin: "एडमिन पोर्टल"
@@ -284,9 +388,30 @@ export const translations = {
     nav: {
       home: "गृह",
       alerts: "चेतावनी",
+      monitoring: "जोखिम अनुगमन",
+      safetyInsights: "सुरक्षा र अन्तर्दृष्टि",
       report: "जोखिम रिपोर्ट",
       more: "थप जानकारी",
       sos: "आपतकालीन SOS"
+    },
+    moreSection: {
+      title: "सुरक्षा जानकारी र सेटिङहरू",
+      subtitle: "विपद् पूर्वतयारी मार्गनिर्देशन, आपतकालीन निर्देशिका र भाषा सेटिङ",
+      tabGuide: "सुरक्षा गाइड",
+      tabHelplines: "हेल्पलाइन नम्बरहरू",
+      tabSettings: "भाषा र सेटिङहरू",
+      tabAbout: "प्रणालीको बारेमा",
+      helplineSub: "प्रमाणित २४x७ आपतकालीन हटलाइनहरू",
+      openSos: "द्रुत SOS खोल्नुहोस्",
+      interfaceLanguage: "इन्टरफेस भाषा",
+      systemPermissions: "प्रणाली अनुमतिहरू",
+      locationAccess: "स्थान पहुँच",
+      sirenNotify: "साइरन आपतकालीन सूचनाहरू",
+      relaunchOnboarding: "अनबोर्डिङ पुनः सुरु गर्नुहोस्",
+      active: "सक्रिय",
+      simulated: "सिमुलेटेड क्षेत्रीय",
+      aboutTitle: "ल्याण्ड-अलर्ट प्रणालीको बारेमा",
+      aboutDesc: "ल्याण्ड-अलर्ट उत्तर-पूर्वी भारतका लागि अत्याधुनिक सेन्सर, एआई मोडेल र जीआईएस प्रविधिमा आधारित विपद् व्यवस्थापन प्रणाली हो।"
     },
     risk: {
       low: "सुरक्षित",

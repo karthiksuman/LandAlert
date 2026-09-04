@@ -289,7 +289,95 @@
   background: rgba(211, 47, 47, 0.1);
 }
 
+/* Stylized Large L for LandAlert Rebranding */
+.brand-logo-title {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--font-heading);
+  letter-spacing: -0.5px;
+}
+
+.brand-logo-large-l {
+  font-size: 1.38em;
+  font-weight: 900;
+  color: var(--color-blue-600);
+  line-height: 0.85;
+  display: inline-block;
+  vertical-align: baseline;
+}
+
+/* Voice Assistant Control */
+.voice-assistant-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.voice-assistant-btn {
+  background: var(--color-blue-50);
+  border: 1px solid var(--color-blue-200);
+  color: var(--color-blue-600);
+  font-size: 0.78rem;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: var(--radius-pill);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  min-height: 32px;
+}
+
+.voice-assistant-btn:hover {
+  background: var(--color-blue-100);
+  border-color: var(--color-blue-400);
+  color: var(--color-navy);
+}
+
+.voice-assistant-btn.speaking {
+  background: #E8F5E9;
+  border-color: #81C784;
+  color: #2E7D32;
+  box-shadow: 0 0 10px rgba(46, 125, 50, 0.2);
+}
+
+.voice-wave-icon {
+  animation: audioPulse 1.2s ease-in-out infinite;
+}
+
+@keyframes audioPulse {
+  0%, 100% { transform: scale(1); opacity: 0.8; }
+  50% { transform: scale(1.25); opacity: 1; color: var(--color-blue-500); }
+}
+
+.voice-stop-btn {
+  background: #FFEBEE;
+  border: 1px solid #FFCDD2;
+  color: #D32F2F;
+  border-radius: 50%;
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 0;
+  transition: all var(--transition-fast);
+}
+
+.voice-stop-btn:hover {
+  background: #D32F2F;
+  color: #FFFFFF;
+}
+
 /* Responsive Adjustments */
+@media (max-width: 800px) {
+  .voice-btn-text {
+    display: none;
+  }
+}
+
 @media (max-width: 640px) {
   .header-subtitle {
     display: none;

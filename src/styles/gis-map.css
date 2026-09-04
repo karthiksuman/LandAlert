@@ -465,22 +465,35 @@
 /* Location Information Slide-In Panel */
 .location-info-panel {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
-  width: 380px;
-  max-width: calc(100% - 40px);
-  background: rgba(255, 255, 255, 0.96);
+  top: 60px !important;
+  right: 14px !important;
+  bottom: 14px !important;
+  width: 360px;
+  max-width: calc(100% - 28px);
+  max-height: calc(100% - 74px) !important;
+  overflow-y: auto !important;
+  background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg);
-  padding: 20px;
-  z-index: var(--z-map-controls) !important; /* Kept strictly below header/dropdown */
-  animation: slideUp 250ms cubic-bezier(0.16, 1, 0.3, 1);
-  max-height: calc(100% - 40px);
-  overflow-y: auto;
+  box-shadow: 0 12px 32px rgba(11, 31, 51, 0.16);
+  padding: 18px;
+  z-index: 600 !important; /* Stays clean below top controls (700) */
+  animation: slideUp 200ms cubic-bezier(0.16, 1, 0.3, 1);
   color: var(--color-text-primary);
+}
+
+.location-info-panel::-webkit-scrollbar {
+  width: 5px;
+}
+.location-info-panel::-webkit-scrollbar-track {
+  background: var(--color-blue-50);
+  border-radius: 4px;
+}
+.location-info-panel::-webkit-scrollbar-thumb {
+  background: var(--color-blue-300);
+  border-radius: 4px;
 }
 
 /* Mobile Bottom Sheet Override */

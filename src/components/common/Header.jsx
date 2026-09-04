@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import PortalSwitcher from './PortalSwitcher';
+import VoiceAssistant from './VoiceAssistant';
 import { Mountain, AlertTriangle, PhoneCall, ShieldCheck } from 'lucide-react';
 
 const Header = () => {
@@ -14,7 +15,9 @@ const Header = () => {
         </div>
         <div className="header-brand">
           <div className="header-title">
-            <span>TerraAlert</span>
+            <span className="brand-logo-title">
+              <span className="brand-logo-large-l">L</span>andAlert
+            </span>
             <span className="header-tag">NE-INDIA</span>
           </div>
           <div className="header-subtitle">
@@ -30,6 +33,9 @@ const Header = () => {
       </div>
 
       <div className="header-right">
+        {/* Voice Assistant Readout Button */}
+        <VoiceAssistant />
+
         {/* Visible SOS trigger */}
         <button 
           className="sos-header-btn" 

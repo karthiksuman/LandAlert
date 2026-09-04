@@ -111,7 +111,7 @@ const FieldOfficerPortal = () => {
       )}
 
       {/* Grid: Task Queue on Left, Active Action on Right */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px', paddingBottom: 'calc(var(--bottom-nav-height) + 16px)' }}>
         {/* Task List */}
         <div>
           <TaskQueue 
@@ -137,6 +137,48 @@ const FieldOfficerPortal = () => {
           </div>
         )}
       </div>
+
+      {/* Fixed Bottom Dashboard Navigation Bar with Equal Spacing */}
+      <nav className="citizen-bottom-nav">
+        <button
+          className="bottom-nav-item active"
+          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        >
+          <Clock size={19} />
+          <span>Active Tasks</span>
+        </button>
+
+        <button
+          className="bottom-nav-item"
+          onClick={() => {
+            const el = document.querySelector('.live-nav-panel');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
+          <Car size={19} />
+          <span>Live GPS Nav</span>
+        </button>
+
+        <button
+          className="bottom-nav-item"
+          onClick={() => {
+            const el = document.querySelector('.inspection-form-container');
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+          }}
+        >
+          <ClipboardCheck size={19} />
+          <span>Inspection Form</span>
+        </button>
+
+        <button
+          className="bottom-nav-item"
+          onClick={() => setIsSosOpen(true)}
+          style={{ color: '#D32F2F' }}
+        >
+          <ShieldAlert size={19} />
+          <span>Distress SOS</span>
+        </button>
+      </nav>
     </div>
   );
 };

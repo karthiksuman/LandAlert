@@ -8,7 +8,7 @@ const PortalSwitcher = () => {
   const dropdownRef = useRef(null);
 
   const portals = [
-    { id: 'citizen', label: 'Citizen', icon: User, requiresAuth: false },
+    { id: 'citizen', label: 'Resident', icon: User, requiresAuth: false },
     { id: 'authority', label: 'Authorities', icon: ShieldAlert, requiresAuth: true },
     { id: 'fieldOfficer', label: 'Field Officer', icon: HardHat, requiresAuth: true },
     { id: 'admin', label: 'Admin', icon: Settings, requiresAuth: true }

@@ -57,8 +57,52 @@ const CitizenOnboarding = () => {
           <div className={`onboarding-dot ${step === 3 ? 'active' : ''}`} />
         </div>
 
-        {/* STEP 1: LANGUAGE SELECTION */}
+        {/* STEP 1: TERMS AND CONDITIONS */}
         {step === 1 && (
+          <div>
+            <div className="onboarding-header">
+              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'var(--color-risk-low-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ShieldCheck size={26} color="var(--color-risk-low)" />
+              </div>
+              <h2>{t.onboarding?.step2Title || "Terms & Safety Agreement"}</h2>
+              <p>{t.onboarding?.step2Desc || "Please review disaster data usage and resident safety guidelines"}</p>
+            </div>
+
+            <div className="terms-scroll-box">
+              <p>
+                <strong>1. Purpose of System:</strong> LandAlert provides AI-assisted predictive landslide risk assessments, real-time IoT geotechnical sensor telemetry, and official emergency alerts for North-Eastern India.
+              </p>
+              <p style={{ marginTop: '8px' }}>
+                <strong>2. Advisory Nature:</strong> Landslide hazard models are scientific estimates based on rainfall volume, soil moisture saturation, ground displacement, and topographical slope. Always adhere to official National & State Disaster Management Authority (NDRF/SDMA) evacuation notices.
+              </p>
+              <p style={{ marginTop: '8px' }}>
+                <strong>3. Geolocation & Privacy:</strong> Your GPS position is used on-device to calculate proximity to active hazard zones and provide localized evacuation advice.
+              </p>
+            </div>
+
+            <label className="terms-checkbox-label">
+              <input
+                type="checkbox"
+                checked={termsAccepted}
+                onChange={e => setTermsAccepted(e.target.checked)}
+              />
+              <span>{t.onboarding?.step2Checkbox || "I accept the Terms and Conditions and Emergency Guidelines"}</span>
+            </label>
+
+            <button
+              className="btn-primary"
+              style={{ width: '100%', padding: '12px', fontSize: '1.0rem', opacity: termsAccepted ? 1 : 0.4 }}
+              disabled={!termsAccepted}
+              onClick={() => setStep(2)}
+            >
+              {t.onboarding?.proceed || "ACCEPT & CONTINUE"}
+              <ArrowRight size={16} />
+            </button>
+          </div>
+        )}
+
+        {/* STEP 2: LANGUAGE SELECTION */}
+        {step === 2 && (
           <div>
             <div className="onboarding-header">
               <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'var(--color-blue-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -84,53 +128,9 @@ const CitizenOnboarding = () => {
             <button 
               className="btn-primary" 
               style={{ width: '100%', padding: '12px', fontSize: '1.0rem' }}
-              onClick={() => setStep(2)}
-            >
-              Continue
-              <ArrowRight size={16} />
-            </button>
-          </div>
-        )}
-
-        {/* STEP 2: TERMS AND CONDITIONS */}
-        {step === 2 && (
-          <div>
-            <div className="onboarding-header">
-              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'var(--color-risk-low-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShieldCheck size={26} color="var(--color-risk-low)" />
-              </div>
-              <h2>{t.onboarding?.step2Title || "Terms & Safety Agreement"}</h2>
-              <p>{t.onboarding?.step2Desc || "Please review disaster data usage and citizen guidelines"}</p>
-            </div>
-
-            <div className="terms-scroll-box">
-              <p>
-                <strong>1. Purpose of System:</strong> TerraAlert provides AI-assisted predictive landslide risk assessments, real-time IoT geotechnical sensor data, and official emergency alerts for North-Eastern India.
-              </p>
-              <p style={{ marginTop: '8px' }}>
-                <strong>2. Advisory Nature:</strong> Landslide hazard models are scientific estimates based on rainfall volume, soil moisture saturation, ground displacement, and topographical slope. Always follow official National & State Disaster Management Authority (NDRF/SDMA) evacuation notices.
-              </p>
-              <p style={{ marginTop: '8px' }}>
-                <strong>3. Geolocation & Privacy:</strong> Your GPS position is used exclusively on-device to pinpoint your proximity to active hazard zones and provide localized evacuation advice.
-              </p>
-            </div>
-
-            <label className="terms-checkbox-label">
-              <input
-                type="checkbox"
-                checked={termsAccepted}
-                onChange={e => setTermsAccepted(e.target.checked)}
-              />
-              <span>{t.onboarding?.step2Checkbox || "I accept the Terms and Conditions and Emergency Guidelines"}</span>
-            </label>
-
-            <button
-              className="btn-primary"
-              style={{ width: '100%', padding: '12px', fontSize: '1.0rem', opacity: termsAccepted ? 1 : 0.4 }}
-              disabled={!termsAccepted}
               onClick={() => setStep(3)}
             >
-              {t.onboarding?.proceed || "ACCEPT & CONTINUE"}
+              Continue
               <ArrowRight size={16} />
             </button>
           </div>
@@ -201,7 +201,7 @@ const CitizenOnboarding = () => {
                 style={{ width: '100%', padding: '12px', fontSize: '1.0rem' }}
                 onClick={completeOnboarding}
               >
-                Enter Citizen Safety Portal
+                Enter Resident Safety Portal
                 <ArrowRight size={16} />
               </button>
 

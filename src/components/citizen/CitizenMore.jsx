@@ -14,7 +14,8 @@ const CitizenMore = () => {
     setOnboardingCompleted, 
     setIsSosOpen,
     notificationsGranted,
-    locationGranted
+    locationGranted,
+    t
   } = useApp();
 
   const [activeSection, setActiveSection] = useState('guide'); // guide, helplines, settings, about
@@ -28,14 +29,16 @@ const CitizenMore = () => {
     { code: 'ne', label: 'नेपाली (Nepali)' }
   ];
 
+  const m = t.moreSection || {};
+
   return (
     <div className="citizen-feed-container">
       <div style={{ marginBottom: '16px' }}>
         <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
-          Safety Information & Settings
+          {m.title || "Safety Information & Settings"}
         </h2>
         <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
-          Disaster preparedness guides, emergency directory, and language configuration
+          {m.subtitle || "Disaster preparedness guides, emergency directory, and language configuration"}
         </p>
       </div>
 
@@ -47,7 +50,7 @@ const CitizenMore = () => {
           onClick={() => setActiveSection('guide')}
         >
           <BookOpen size={15} />
-          Survival Guide
+          {m.tabGuide || "Survival Guide"}
         </button>
 
         <button
@@ -56,7 +59,7 @@ const CitizenMore = () => {
           onClick={() => setActiveSection('helplines')}
         >
           <PhoneCall size={15} />
-          Helpline Numbers
+          {m.tabHelplines || "Helpline Numbers"}
         </button>
 
         <button
@@ -65,7 +68,7 @@ const CitizenMore = () => {
           onClick={() => setActiveSection('settings')}
         >
           <Globe size={15} />
-          Language & Settings
+          {m.tabSettings || "Language & Settings"}
         </button>
 
         <button
@@ -74,7 +77,7 @@ const CitizenMore = () => {
           onClick={() => setActiveSection('about')}
         >
           <Info size={15} />
-          About System
+          {m.tabAbout || "About System"}
         </button>
       </div>
 
@@ -86,11 +89,11 @@ const CitizenMore = () => {
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
-              Verified 24x7 National & State Emergency Hotlines
+              {m.helplineSub || "Verified 24x7 National & State Emergency Hotlines"}
             </span>
             <button className="btn-critical" style={{ fontSize: '0.78rem', padding: '6px 12px' }} onClick={() => setIsSosOpen(true)}>
               <PhoneCall size={14} />
-              Open Quick SOS
+              {m.openSos || "Open Quick SOS"}
             </button>
           </div>
 
@@ -117,7 +120,9 @@ const CitizenMore = () => {
         <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Language Selector */}
           <div>
-            <h4 style={{ color: 'var(--color-navy)', fontSize: '1.0rem', fontWeight: 700, marginBottom: '8px' }}>Interface Language</h4>
+            <h4 style={{ color: 'var(--color-navy)', fontSize: '1.0rem', fontWeight: 700, marginBottom: '8px' }}>
+              {m.interfaceLanguage || "Interface Language"}
+            </h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
               {languages.map(lang => (
                 <button
@@ -134,22 +139,24 @@ const CitizenMore = () => {
 
           {/* Permissions Status */}
           <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '16px' }}>
-            <h4 style={{ color: 'var(--color-navy)', fontSize: '1.0rem', fontWeight: 700, marginBottom: '8px' }}>System Permissions</h4>
+            <h4 style={{ color: 'var(--color-navy)', fontSize: '1.0rem', fontWeight: 700, marginBottom: '8px' }}>
+              {m.systemPermissions || "System Permissions"}
+            </h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem' }}>
                   <MapPin size={16} color="var(--color-blue-500)" />
-                  <span>Location Access</span>
+                  <span>{m.locationAccess || "Location Access"}</span>
                 </div>
-                <span className="badge badge-low">{locationGranted ? "Active" : "Simulated Regional"}</span>
+                <span className="badge badge-low">{locationGranted ? (m.active || "Active") : (m.simulated || "Simulated Regional")}</span>
               </div>
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem' }}>
                   <Bell size={16} color="var(--color-blue-500)" />
-                  <span>Siren Emergency Notifications</span>
+                  <span>{m.sirenNotify || "Siren Emergency Notifications"}</span>
                 </div>
-                <span className="badge badge-low">{notificationsGranted ? "Enabled" : "Active"}</span>
+                <span className="badge badge-low">{notificationsGranted ? (m.active || "Active") : (m.active || "Active")}</span>
               </div>
             </div>
           </div>
@@ -165,7 +172,7 @@ const CitizenMore = () => {
               }}
             >
               <RotateCcw size={14} />
-              Re-launch Citizen Onboarding Setup
+              {m.relaunchOnboarding || "Re-launch Resident Onboarding Setup"}
             </button>
           </div>
         </div>
@@ -175,16 +182,16 @@ const CitizenMore = () => {
       {activeSection === 'about' && (
         <div className="card" style={{ padding: '24px' }}>
           <h3 style={{ color: 'var(--color-navy)', fontSize: '1.2rem', fontWeight: 700, marginBottom: '8px' }}>
-            About TerraAlert India (LEWDMS)
+            {m.aboutTitle || "About LandAlert India (LEWDMS)"}
           </h3>
           <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
-            TerraAlert is an advanced Landslide Early Warning and Disaster Management System engineered for high-altitude landslide corridors across North-Eastern India (Sikkim, Assam, Meghalaya, Nagaland, Mizoram, Arunachal Pradesh, and Manipur).
+            {m.aboutDesc || "LandAlert is an advanced Landslide Early Warning and Disaster Management System engineered for high-altitude landslide corridors across North-Eastern India."}
           </p>
           <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginTop: '10px' }}>
             The platform synthesizes telemetry from real-time geotechnical IoT ground sensors (geophones, borehole extensometers, biaxial inclinometers, TDR soil-moisture probes) with satellite precipitation data and machine-learning stability models to generate geo-fenced early warnings up to 6 hours before catastrophic failure.
           </p>
           <div style={{ marginTop: '18px', padding: '12px', background: 'var(--color-blue-50)', border: '1px solid var(--color-border)', borderRadius: '8px', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
-            System Version: <strong>4.2.8-prod (SIH Certified Edition)</strong> • AI Engine: <strong>GeoEnsemble-V4.2</strong>
+            System Version: <strong>4.3.0-prod (LandAlert Official)</strong> • AI Engine: <strong>GeoEnsemble-V4.3</strong>
           </div>
         </div>
       )}

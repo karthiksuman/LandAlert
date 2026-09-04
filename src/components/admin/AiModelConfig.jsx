@@ -13,10 +13,10 @@ const AiModelConfig = () => {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
           <h2 style={{ fontSize: '1.3rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '2px' }}>
-            AI Landslide Prediction Model Configuration
+            Landslide Probability Prediction Model Configuration
           </h2>
           <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
-            Adjust multi-factor weighted ensemble algorithms and categorical alert thresholds
+            Adjust multi-factor weighted ensemble algorithms and categorical landslide probability thresholds
           </p>
         </div>
         <span className="badge badge-info">
@@ -29,7 +29,7 @@ const AiModelConfig = () => {
         <div className="card" style={{ padding: '22px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '16px' }}>
             <Sliders size={20} color="var(--color-blue-500)" />
-            <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700 }}>Environmental Factor Weights</h3>
+            <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700 }}>Landslide Probability Factor Weights</h3>
           </div>
 
           {/* Rainfall Weight */}
