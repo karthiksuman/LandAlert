@@ -22,6 +22,7 @@ const CitizenOnboarding = () => {
   const languages = [
     { code: 'en', native: 'English', en: 'English' },
     { code: 'hi', native: 'हिन्दी', en: 'Hindi' },
+    { code: 'te', native: 'తెలుగు', en: 'Telugu' },
     { code: 'as', native: 'অসমীয়া', en: 'Assamese' },
     { code: 'bn', native: 'বাংলা', en: 'Bengali' },
     { code: 'mn', native: 'মৈতৈলোন্', en: 'Meitei' },

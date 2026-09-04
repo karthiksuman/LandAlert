@@ -23,6 +23,7 @@ const CitizenMore = () => {
   const languages = [
     { code: 'en', label: 'English' },
     { code: 'hi', label: 'हिन्दी (Hindi)' },
+    { code: 'te', label: 'తెలుగు (Telugu)' },
     { code: 'as', label: 'অসমীয়া (Assamese)' },
     { code: 'bn', label: 'বাংলা (Bengali)' },
     { code: 'mn', label: 'মৈতৈলোন্ (Meitei)' },

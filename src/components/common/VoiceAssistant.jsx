@@ -34,6 +34,7 @@ const VoiceAssistant = () => {
   const getLocaleForLang = (code) => {
     switch (code) {
       case 'hi': return 'hi-IN';
+      case 'te': return 'te-IN';
       case 'bn': return 'bn-IN';
       case 'as': return 'as-IN';
       case 'ne': return 'ne-NP';
@@ -52,6 +53,8 @@ const VoiceAssistant = () => {
 
     if (selectedLanguage === 'hi') {
       return `लैंड-अलर्ट पूर्व चेतावनी प्रणाली में आपका स्वागत है। वर्तमान क्षेत्र ${zoneName} का भूस्खलन जोखिम स्तर ${riskLevel}, अर्थात ${riskPercent} प्रतिशत है। ढलान कोण 42 डिग्री और 24 घंटे की वर्षा 112 मिलीमीटर दर्ज की गई है। सतर्क रहें और आधिकारिक आपदा सलाह का पालन करें।`;
+    } else if (selectedLanguage === 'te') {
+      return `ల్యాండ్‌అలర్ట్ విపత్తు నిర్వహణ మరియు ముందస్తు హెచ్చరిక వ్యవస్థకు స్వాగతం. ప్రస్తుతం పర్యవేక్షిస్తున్న ప్రాంతం ${zoneName}. ఇక్కడ కొండచరియలు విరిగిపడే ప్రమాద స్థాయి ${riskPercent} శాతం ఉంది. గత 24 గంటల్లో వర్షపాతం 112 మిల్లీమీటర్లు, నేల తేమ 91 శాతంగా నమోదైంది. దయచేసి అప్రమత్తంగా ఉండండి, సురక్షిత ప్రత్యామ్నాయ మార్గాలను మరియు సహాయక శిబిరాల మార్గదర్శకాలను పాటించండి.`;
     } else if (selectedLanguage === 'bn') {
       return `ল্যান্ড-অ্যালার্ট দুর্যোগ ব্যবস্থাপনা ব্যবস্থায় স্বাগতম। বর্তমান অঞ্চল ${zoneName}-এর ভূমিধসের ঝুঁকি ${riskLevel}, প্রায় ${riskPercent} শতাংশ। ২৪ ঘণ্টার বৃষ্টিপাত ১১২ মিলিমিটার। নিরাপদ স্থানে থাকুন।`;
     } else if (selectedLanguage === 'as') {
@@ -130,6 +133,7 @@ const VoiceAssistant = () => {
   const getLanguageLabel = () => {
     switch(selectedLanguage) {
       case 'hi': return 'हिन्दी';
+      case 'te': return 'తెలుగు';
       case 'as': return 'অসমীয়া';
       case 'bn': return 'বাংলা';
       case 'ne': return 'नेपाली';
