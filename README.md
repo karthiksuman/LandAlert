@@ -1,9 +1,10 @@
-# Landslide Early Warning & Disaster Management System (TerraAlert India)
-
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Active_on_GitHub_Pages-2ea44f?style=for-the-badge&logo=github)](https://bharathsirasapalli63-gif.github.io/SIH/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646CFF?logo=vite&logoColor=white)](https://vitejs.dev/)
 [![React](https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black)](https://reactjs.org/)
 [![Leaflet](https://img.shields.io/badge/Leaflet-1.9-199900?logo=leaflet&logoColor=white)](https://leafletjs.com/)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+
+**🌐 Live Public URL**: [https://bharathsirasapalli63-gif.github.io/SIH/](https://bharathsirasapalli63-gif.github.io/SIH/)
 
 An integrated, government-grade **AI + IoT + GIS Disaster Management Platform** engineered specifically for the landslide-prone mountain corridors of **North-Eastern India** (Sikkim, Assam, Meghalaya, Nagaland, Mizoram, and Arunachal Pradesh).
 
