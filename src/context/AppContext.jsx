@@ -146,149 +146,6 @@ export const AppProvider = ({ children }) => {
     setToasts(prev => prev.filter(item => item.id !== id));
   };
 
-  // 10. Network Status & Offline Queue Management (Disaster-Resilient Offline Reporting)
-  const [networkStatus, setNetworkStatus] = useState(() => {
-    return typeof navigator !== 'undefined' && !navigator.onLine ? 'offline' : 'online';
-  });
-  const [offlineReportsQueue, setOfflineReportsQueue] = useState(() => {
-    try {
-      const stored = localStorage.getItem('landalert_offline_reports_queue');
-      return stored ? JSON.parse(stored) : [];
-    } catch (e) {
-      return [];
-    }
-  });
-
-  // Sync pending offline reports to authorities when network becomes available
-  const syncOfflineReports = (customQueue = null) => {
-    let queueToSync = customQueue;
-    if (!queueToSync) {
-      try {
-        const stored = localStorage.getItem('landalert_offline_reports_queue');
-        queueToSync = stored ? JSON.parse(stored) : offlineReportsQueue;
-      } catch (e) {
-        queueToSync = offlineReportsQueue;
-      }
-    }
-
-    if (!queueToSync || queueToSync.length === 0) return;
-
-    const count = queueToSync.length;
-    const now = new Date();
-    const syncedAt = now.toLocaleDateString() + " " + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    // Transform queued reports into synced citizen reports
-    const syncedReports = queueToSync.map(item => ({
-      ...item,
-      status: 'PENDING',
-      syncStatus: 'SYNCED',
-      syncedAt: syncedAt,
-      isSyncedFromOffline: true,
-      description: item.description + (item.offlineRecordedAt ? ` [Captured during field connectivity outage at ${item.offlineRecordedAt}]` : '')
-    }));
-
-    // Add to main citizen reports state so Authority Portal receives them immediately
-    setCitizenReports(prev => [...syncedReports, ...prev]);
-
-    // Clear local storage queue
-    try {
-      localStorage.removeItem('landalert_offline_reports_queue');
-    } catch (e) {}
-    setOfflineReportsQueue([]);
-
-    // Play chime sound
-    playEmergencyTone('warning');
-
-    // Notify user with high-visibility alerts
-    addToast(
-      "🌐 Internet Restored: Auto-Syncing", 
-      `Transmitting ${count} queued disaster report(s) from local device vault to Authority Operations Center...`, 
-      "info"
-    );
-    setTimeout(() => {
-      addToast(
-        "✅ Auto-Sync Completed",
-        `${count} resident hazard complaint(s) successfully received by Disaster Authorities!`,
-        "success"
-      );
-    }, 750);
-  };
-
-  // Listen to browser network events
-  useEffect(() => {
-    const handleOnline = () => {
-      setNetworkStatus('online');
-      addToast("Network Online", "Active internet connection detected. Checking offline queue...", "info");
-      try {
-        const stored = localStorage.getItem('landalert_offline_reports_queue');
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (parsed && parsed.length > 0) {
-            syncOfflineReports(parsed);
-          }
-        }
-      } catch (e) {}
-    };
-
-    const handleOffline = () => {
-      setNetworkStatus('offline');
-      addToast("No Internet Connection", "Switched to Offline Mode. Field hazard reports will be saved locally on device.", "warning");
-    };
-
-    window.addEventListener('online', handleOnline);
-    window.addEventListener('offline', handleOffline);
-
-    // Initial check on load if online and items exist in localStorage
-    if (typeof navigator !== 'undefined' && navigator.onLine) {
-      try {
-        const stored = localStorage.getItem('landalert_offline_reports_queue');
-        if (stored) {
-          const parsed = JSON.parse(stored);
-          if (parsed && parsed.length > 0) {
-            setTimeout(() => syncOfflineReports(parsed), 1200);
-          }
-        }
-      } catch (e) {}
-    }
-
-    return () => {
-      window.removeEventListener('online', handleOnline);
-      window.removeEventListener('offline', handleOffline);
-    };
-  }, []);
-
-  // Function to change network status manually (for testing/simulation in mountain conditions)
-  const setNetworkMode = (mode) => {
-    const prevMode = networkStatus;
-    setNetworkStatus(mode);
-
-    if (mode === 'online') {
-      try {
-        const stored = localStorage.getItem('landalert_offline_reports_queue');
-        const parsed = stored ? JSON.parse(stored) : offlineReportsQueue;
-        if (parsed && parsed.length > 0) {
-          syncOfflineReports(parsed);
-          return;
-        }
-      } catch (e) {}
-      if (prevMode !== 'online') {
-        addToast("Switched to High-Speed Online", "Connected to Cloud Early Warning Network.", "success");
-      }
-    } else if (mode === 'poor') {
-      addToast(
-        "Poor Network Simulated (2G / Weak Signal)", 
-        "Himalayan valley conditions active. Reports will be saved locally and queued for auto-sync.", 
-        "warning"
-      );
-    } else if (mode === 'offline') {
-      addToast(
-        "Offline Mode Simulated (No Internet)", 
-        "Telecom blackout active. Reports will be safely stored in local device storage.", 
-        "warning"
-      );
-    }
-  };
-
   // Portal Switching with Authentication Protection
   const switchPortal = (targetPortal) => {
     if (targetPortal === 'citizen') {
@@ -386,46 +243,12 @@ export const AppProvider = ({ children }) => {
     return { percentage: Math.min(99, Math.max(10, weightedScore)), level };
   };
 
-  // WORKFLOW 2: Citizen Hazard Report Submission (with Offline Storage & Auto-Sync)
+  // WORKFLOW 2: Citizen Hazard Report Submission
   const submitCitizenReport = (reportData) => {
-    const isOfflineMode = networkStatus === 'offline' || networkStatus === 'poor';
+    const newId = "CR-" + Math.floor(10000 + Math.random() * 90000);
     const now = new Date();
     const timestamp = now.toLocaleDateString() + " " + now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 
-    if (isOfflineMode) {
-      const offlineId = "CR-OFFLINE-" + Math.floor(10000 + Math.random() * 90000);
-      const offlineReport = {
-        id: offlineId,
-        hazardType: reportData.hazardType || "Landslide",
-        description: reportData.description,
-        locationName: reportData.locationName || "Reported Geo-Location",
-        coordinates: reportData.coordinates || userCoordinates,
-        timestamp,
-        offlineRecordedAt: now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' }),
-        status: "PENDING",
-        syncStatus: "QUEUED_OFFLINE",
-        assignedOfficer: null,
-        photoUrl: reportData.photoUrl || "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
-        reporterName: reportData.reporterName || "Resident (Field Offline)",
-        isSyncedFromOffline: true
-      };
-
-      const newQueue = [offlineReport, ...offlineReportsQueue];
-      setOfflineReportsQueue(newQueue);
-      try {
-        localStorage.setItem('landalert_offline_reports_queue', JSON.stringify(newQueue));
-      } catch (e) {}
-
-      addToast(
-        "Saved Locally in Offline Storage",
-        `Incident ${offlineId} stored on device. Will auto-sync to authorities when internet returns.`,
-        "warning"
-      );
-
-      return { id: offlineId, isOffline: true, queueLength: newQueue.length };
-    }
-
-    const newId = "CR-" + Math.floor(10000 + Math.random() * 90000);
     const newReport = {
       id: newId,
       hazardType: reportData.hazardType || "Landslide",
@@ -434,11 +257,9 @@ export const AppProvider = ({ children }) => {
       coordinates: reportData.coordinates || userCoordinates,
       timestamp,
       status: "PENDING",
-      syncStatus: "ONLINE",
       assignedOfficer: null,
       photoUrl: reportData.photoUrl || "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=600&q=80",
-      reporterName: reportData.reporterName || "Local Resident",
-      isSyncedFromOffline: false
+      reporterName: reportData.reporterName || "Local Citizen"
     };
 
     setCitizenReports(prev => [newReport, ...prev]);
@@ -449,7 +270,7 @@ export const AppProvider = ({ children }) => {
       "success"
     );
 
-    return { id: newId, isOffline: false, queueLength: 0 };
+    return newId;
   };
 
   // Authority verifies citizen report
@@ -720,14 +541,7 @@ export const AppProvider = ({ children }) => {
         isSosOpen,
         setIsSosOpen,
         citizenActiveTab,
-        setCitizenActiveTab,
-
-        // Network Status & Offline Queue
-        networkStatus,
-        setNetworkStatus,
-        setNetworkMode,
-        offlineReportsQueue,
-        syncOfflineReports
+        setCitizenActiveTab
       }}
     >
       {children}

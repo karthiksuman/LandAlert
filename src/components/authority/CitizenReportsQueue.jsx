@@ -56,27 +56,6 @@ const CitizenReportsQueue = () => {
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
                     Reported by: <strong>{report.reporterName}</strong> • {report.timestamp}
                   </div>
-
-                  {report.isSyncedFromOffline && (
-                    <div style={{
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '6px',
-                      background: '#FFF3E0',
-                      color: '#E65100',
-                      border: '1px solid #FFE082',
-                      borderRadius: '6px',
-                      padding: '3px 9px',
-                      fontSize: '0.73rem',
-                      fontWeight: 700,
-                      marginTop: '5px'
-                    }}>
-                      <span>⚡ AUTO-SYNCED FROM RESIDENT</span>
-                      <span style={{ fontWeight: 500, color: '#BF360C' }}>
-                        (Captured during telecom outage • Auto-synced {report.syncedAt || 'on signal recovery'})
-                      </span>
-                    </div>
-                  )}
                 </div>
 
                 <div style={{ fontSize: '0.78rem', color: 'var(--text-secondary)' }}>
