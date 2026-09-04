@@ -28,8 +28,8 @@ const RouteSafetyCard = () => {
         {/* Unsafe / Blocked Primary Highway */}
         <div className="route-option-box blocked">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#FF5252', textTransform: 'uppercase' }}>
-              ❌ NOT RECOMMENDED
+            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#FF5252', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+              HIGH RISK / NOT RECOMMENDED
             </span>
             <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#FF8A80' }}>
               Risk: {highRiskRoad.riskPercentage}%
@@ -47,8 +47,8 @@ const RouteSafetyCard = () => {
         {alt && (
           <div className="route-option-box recommended">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#00E676', textTransform: 'uppercase' }}>
-                ✓ RECOMMENDED SAFE DETOUR
+              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#00E676', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                RECOMMENDED SAFE DETOUR
               </span>
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#B9F6CA' }}>
                 Risk: {alt.riskPercentage}% (Safe)

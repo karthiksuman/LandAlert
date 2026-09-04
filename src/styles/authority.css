@@ -80,36 +80,40 @@
 }
 
 .authority-triage-panel {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 16px;
+  background: rgba(8, 28, 43, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-xl);
+  padding: 18px;
   display: flex;
   flex-direction: column;
   gap: 14px;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
+  box-shadow: var(--shadow-md);
 }
 
 .triage-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 10px;
 }
 
 .report-triage-card {
-  background: rgba(7, 21, 34, 0.6);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  padding: 14px;
+  background: rgba(6, 19, 31, 0.7);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 16px;
   transition: all var(--transition-fast);
 }
 
 .report-triage-card:hover {
-  border-color: var(--brand-cyan);
-  box-shadow: 0 0 12px var(--brand-cyan-glow);
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px var(--cyan-glow);
+  transform: translateY(-2px);
 }
 
 .report-triage-header {

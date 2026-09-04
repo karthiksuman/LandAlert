@@ -23,6 +23,12 @@ const Header = () => {
         </div>
       </div>
 
+      {/* Center Live Operational Beacon */}
+      <div className="header-status-beacon">
+        <span className="header-status-dot" />
+        <span>SYSTEM OPERATIONAL • 99.96% IoT TELEMETRY</span>
+      </div>
+
       <div className="header-right">
         {/* Visible SOS trigger */}
         <button 
