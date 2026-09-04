@@ -75,6 +75,14 @@ export const AppProvider = ({ children }) => {
 
   // 6. Roads & Detours
   const [roads, setRoads] = useState(initialRoads);
+  const [routeAdvisoryActive, setRouteAdvisoryActive] = useState(false);
+
+  const viewBothRoutesOnMap = () => {
+    setRouteAdvisoryActive(true);
+    setMapLayers(prev => ({ ...prev, roads: true, blockages: true }));
+    setSelectedZoneId('loc-mangan');
+    setCitizenActiveTab('home');
+  };
 
   // 7. Active Alerts & Helplines
   const [alerts, setAlerts] = useState(initialAlerts);
@@ -507,6 +515,9 @@ export const AppProvider = ({ children }) => {
         // Roads & Detours
         roads,
         toggleRoadBlockage,
+        routeAdvisoryActive,
+        setRouteAdvisoryActive,
+        viewBothRoutesOnMap,
 
         // Alerts & Helplines
         alerts,

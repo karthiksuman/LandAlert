@@ -316,9 +316,9 @@ const RiskMonitoring = () => {
 
         {/* SVG Line Graph Container */}
         <div style={{ width: '100%', overflowX: 'auto' }}>
-          <div style={{ minWidth: '550px', height: '180px', position: 'relative', display: 'flex' }}>
+          <div style={{ minWidth: '550px', height: '190px', position: 'relative', display: 'flex' }}>
             {/* Y-Axis Column */}
-            <div style={{ width: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '8px', fontSize: '0.68rem', color: 'var(--color-text-muted)', fontWeight: 600, borderRight: '1px solid var(--color-border)' }}>
+            <div style={{ width: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '8px', paddingBottom: '26px', fontSize: '0.68rem', color: 'var(--color-text-muted)', fontWeight: 600, borderRight: '1px solid var(--color-border)' }}>
               <span>6.0 mm/h</span>
               <span>4.0 mm/h</span>
               <span>2.0 mm/h</span>
@@ -326,54 +326,78 @@ const RiskMonitoring = () => {
             </div>
 
             {/* Line Plot Area */}
-            <div style={{ flex: 1, position: 'relative', paddingLeft: '10px', paddingBottom: '24px', borderBottom: '1px solid var(--color-border)' }}>
-              {/* Critical Alert Line at 3.0 mm/h */}
-              <div style={{ position: 'absolute', left: 0, right: 0, bottom: `${(3.0 / maxDisplacement) * 156}px`, borderTop: '1.5px dashed #D32F2F', opacity: 0.7 }} />
+            <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ flex: 1, position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                <svg viewBox="0 0 1000 140" preserveAspectRatio="none" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                  <defs>
+                    <linearGradient id="displacementGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#D32F2F" stopOpacity="0.28" />
+                      <stop offset="100%" stopColor="#D32F2F" stopOpacity="0.02" />
+                    </linearGradient>
+                  </defs>
 
-              {/* Connecting SVG Path */}
-              <svg style={{ position: 'absolute', inset: 0, width: '100%', height: 'calc(100% - 24px)', overflow: 'visible' }}>
-                <polyline
-                  fill="none"
-                  stroke="#D32F2F"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  points={currentData.map((d, i) => {
-                    const xPercent = (i / (currentData.length - 1)) * 100;
-                    const yVal = (1 - (d.displacement / maxDisplacement)) * 140;
-                    return `${xPercent}%,${yVal}`;
-                  }).join(' ')}
-                />
-              </svg>
+                  {/* Critical Alert Dashed Guideline at 3.0 mm/h */}
+                  <line x1="20" y1={130 - (3.0 / 6.0) * 115} x2="980" y2={130 - (3.0 / 6.0) * 115} stroke="#D32F2F" strokeWidth="1.5" strokeDasharray="6,6" opacity="0.65" />
 
-              {/* Data Points */}
-              <div style={{ position: 'absolute', inset: 0, bottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                {currentData.map((d, idx) => {
-                  const bottomPos = (d.displacement / maxDisplacement) * 135;
-                  const isHigh = d.displacement >= 3.0;
+                  {/* Shaded Area Under Curve */}
+                  <polygon
+                    points={`20,130 ${currentData.map((d, i) => {
+                      const x = 20 + (i / (currentData.length - 1)) * 960;
+                      const y = 130 - (d.displacement / maxDisplacement) * 115;
+                      return `${x},${y}`;
+                    }).join(' ')} 980,130`}
+                    fill="url(#displacementGrad)"
+                  />
 
-                  return (
-                    <div key={idx} style={{ position: 'relative', width: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <div 
-                        style={{ 
-                          position: 'absolute', 
-                          bottom: `${bottomPos}px`, 
-                          width: '10px', 
-                          height: '10px', 
-                          borderRadius: '50%', 
-                          background: isHigh ? '#D32F2F' : '#F57C00', 
-                          border: '2px solid #FFFFFF',
-                          boxShadow: '0 0 6px rgba(0,0,0,0.25)',
-                          cursor: 'pointer'
-                        }}
-                        title={`${d.time}: ${d.displacement} mm/h`}
-                      />
-                      <span style={{ position: 'absolute', bottom: '-22px', fontSize: '0.68rem', color: 'var(--color-text-secondary)', whiteSpace: 'nowrap' }}>
-                        {d.time}
-                      </span>
-                    </div>
-                  );
-                })}
+                  {/* Solid Connected Line Connecting All Dots */}
+                  <polyline
+                    fill="none"
+                    stroke="#D32F2F"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    points={currentData.map((d, i) => {
+                      const x = 20 + (i / (currentData.length - 1)) * 960;
+                      const y = 130 - (d.displacement / maxDisplacement) * 115;
+                      return `${x},${y}`;
+                    }).join(' ')}
+                  />
+
+                  {/* Data Point Dots Connected On The Line */}
+                  {currentData.map((d, i) => {
+                    const x = 20 + (i / (currentData.length - 1)) * 960;
+                    const y = 130 - (d.displacement / maxDisplacement) * 115;
+                    const isHigh = d.displacement >= 3.0;
+
+                    return (
+                      <g key={i}>
+                        {isHigh && (
+                          <circle cx={x} cy={y} r="10" fill="#D32F2F" opacity="0.25" />
+                        )}
+                        <circle
+                          cx={x}
+                          cy={y}
+                          r={isHigh ? 6 : 5}
+                          fill={isHigh ? '#D32F2F' : '#F57C00'}
+                          stroke="#FFFFFF"
+                          strokeWidth="2"
+                          style={{ cursor: 'pointer' }}
+                        >
+                          <title>{`${d.time}: ${d.displacement} mm/h (Displacement Rate)`}</title>
+                        </circle>
+                      </g>
+                    );
+                  })}
+                </svg>
+              </div>
+
+              {/* X-Axis Time Labels Directly Below Dots */}
+              <div style={{ height: '26px', display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px', alignItems: 'center' }}>
+                {currentData.map((d, i) => (
+                  <span key={i} style={{ fontSize: '0.68rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
+                    {d.time}
+                  </span>
+                ))}
               </div>
             </div>
           </div>
@@ -412,56 +436,117 @@ const RiskMonitoring = () => {
 
         {/* SVG Area Curve */}
         <div style={{ width: '100%', overflowX: 'auto' }}>
-          <div style={{ minWidth: '550px', height: '170px', position: 'relative', display: 'flex' }}>
-            <div style={{ width: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '8px', fontSize: '0.68rem', color: 'var(--color-text-muted)', fontWeight: 600, borderRight: '1px solid var(--color-border)' }}>
+          <div style={{ minWidth: '550px', height: '190px', position: 'relative', display: 'flex' }}>
+            <div style={{ width: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '8px', paddingBottom: '26px', fontSize: '0.68rem', color: 'var(--color-text-muted)', fontWeight: 600, borderRight: '1px solid var(--color-border)' }}>
               <span>100%</span>
               <span>75%</span>
               <span>50%</span>
               <span>25%</span>
             </div>
 
-            <div style={{ flex: 1, position: 'relative', paddingLeft: '10px', paddingBottom: '24px', borderBottom: '1px solid var(--color-border)' }}>
-              {/* Critical Saturation Level 85% */}
-              <div style={{ position: 'absolute', left: 0, right: 0, bottom: `${(85 / maxMoisture) * 146}px`, borderTop: '1px dashed #2E7D32', opacity: 0.6 }} />
+            <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ flex: 1, position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                <svg viewBox="0 0 1000 140" preserveAspectRatio="none" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
+                  <defs>
+                    <linearGradient id="moistureGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#2E7D32" stopOpacity="0.25" />
+                      <stop offset="100%" stopColor="#2E7D32" stopOpacity="0.02" />
+                    </linearGradient>
+                  </defs>
 
-              <svg style={{ position: 'absolute', inset: 0, width: '100%', height: 'calc(100% - 24px)', overflow: 'visible' }}>
-                <polyline
-                  fill="none"
-                  stroke="#2E7D32"
-                  strokeWidth="3"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  points={currentData.map((d, i) => {
-                    const xPercent = (i / (currentData.length - 1)) * 100;
-                    const yVal = (1 - (d.moisture / maxMoisture)) * 135;
-                    return `${xPercent}%,${yVal}`;
-                  }).join(' ')}
-                />
-              </svg>
+                  {/* Critical Saturation Level 85% Dashed Line */}
+                  <line x1="20" y1={130 - (85 / 100) * 115} x2="980" y2={130 - (85 / 100) * 115} stroke="#2E7D32" strokeWidth="1.5" strokeDasharray="6,6" opacity="0.65" />
 
-              <div style={{ position: 'absolute', inset: 0, bottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end' }}>
-                {currentData.map((d, idx) => {
-                  const bottomPos = (d.moisture / maxMoisture) * 130;
-                  return (
-                    <div key={idx} style={{ position: 'relative', width: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-                      <div 
-                        style={{ 
-                          position: 'absolute', 
-                          bottom: `${bottomPos}px`, 
-                          width: '8px', 
-                          height: '8px', 
-                          borderRadius: '50%', 
-                          background: '#2E7D32', 
-                          border: '2px solid #FFFFFF'
-                        }}
-                        title={`${d.time}: ${d.moisture}% Saturation (${d.porePressure} kPa)`}
-                      />
-                      <span style={{ position: 'absolute', bottom: '-22px', fontSize: '0.68rem', color: 'var(--color-text-secondary)', whiteSpace: 'nowrap' }}>
-                        {d.time}
-                      </span>
-                    </div>
-                  );
-                })}
+                  {/* Shaded Area Under Soil Saturation Curve */}
+                  <polygon
+                    points={`20,130 ${currentData.map((d, i) => {
+                      const x = 20 + (i / (currentData.length - 1)) * 960;
+                      const y = 130 - (d.moisture / maxMoisture) * 115;
+                      return `${x},${y}`;
+                    }).join(' ')} 980,130`}
+                    fill="url(#moistureGrad)"
+                  />
+
+                  {/* 1. Connected Line For Soil Moisture Saturation (Green) */}
+                  <polyline
+                    fill="none"
+                    stroke="#2E7D32"
+                    strokeWidth="3.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    points={currentData.map((d, i) => {
+                      const x = 20 + (i / (currentData.length - 1)) * 960;
+                      const y = 130 - (d.moisture / maxMoisture) * 115;
+                      return `${x},${y}`;
+                    }).join(' ')}
+                  />
+
+                  {/* 2. Connected Line For Pore Pressure (Blue) */}
+                  <polyline
+                    fill="none"
+                    stroke="#0288D1"
+                    strokeWidth="2.5"
+                    strokeDasharray="5,5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    points={currentData.map((d, i) => {
+                      const x = 20 + (i / (currentData.length - 1)) * 960;
+                      const y = 130 - (d.porePressure / 70) * 115;
+                      return `${x},${y}`;
+                    }).join(' ')}
+                  />
+
+                  {/* Green Dots for Soil Saturation */}
+                  {currentData.map((d, i) => {
+                    const x = 20 + (i / (currentData.length - 1)) * 960;
+                    const y = 130 - (d.moisture / maxMoisture) * 115;
+
+                    return (
+                      <circle
+                        key={`m-${i}`}
+                        cx={x}
+                        cy={y}
+                        r="5"
+                        fill="#2E7D32"
+                        stroke="#FFFFFF"
+                        strokeWidth="2"
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <title>{`${d.time}: Soil Saturation ${d.moisture}%`}</title>
+                      </circle>
+                    );
+                  })}
+
+                  {/* Blue Dots for Pore Pressure */}
+                  {currentData.map((d, i) => {
+                    const x = 20 + (i / (currentData.length - 1)) * 960;
+                    const y = 130 - (d.porePressure / 70) * 115;
+
+                    return (
+                      <circle
+                        key={`p-${i}`}
+                        cx={x}
+                        cy={y}
+                        r="4"
+                        fill="#0288D1"
+                        stroke="#FFFFFF"
+                        strokeWidth="1.5"
+                        style={{ cursor: 'pointer' }}
+                      >
+                        <title>{`${d.time}: Pore Water Pressure ${d.porePressure} kPa`}</title>
+                      </circle>
+                    );
+                  })}
+                </svg>
+              </div>
+
+              {/* X-Axis Time Labels */}
+              <div style={{ height: '26px', display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px', alignItems: 'center' }}>
+                {currentData.map((d, i) => (
+                  <span key={i} style={{ fontSize: '0.68rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
+                    {d.time}
+                  </span>
+                ))}
               </div>
             </div>
           </div>

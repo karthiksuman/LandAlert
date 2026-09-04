@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 
 const SafetyInsights = () => {
-  const { locations, setSelectedZoneId, setCitizenActiveTab } = useApp();
+  const { locations, setSelectedZoneId, setCitizenActiveTab, viewBothRoutesOnMap } = useApp();
   const [activeSubTab, setActiveSubTab] = useState('detour'); // detour, history, weather
 
   // Historical Major Landslide Disasters in North-East India
@@ -74,8 +74,7 @@ const SafetyInsights = () => {
   ];
 
   const handleViewOnMap = () => {
-    setSelectedZoneId('mangan');
-    setCitizenActiveTab('home');
+    viewBothRoutesOnMap();
   };
 
   return (

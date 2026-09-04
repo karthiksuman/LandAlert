@@ -4,7 +4,7 @@ import { useApp } from '../../context/AppContext';
 import MapLegend from './MapLegend';
 import MapLayerControls from './MapLayerControls';
 import LocationInfoPanel from './LocationInfoPanel';
-import { Maximize2, Minimize2, Layers, Crosshair, PhoneCall, ArrowLeft, Map, Mountain, Satellite } from 'lucide-react';
+import { Maximize2, Minimize2, Layers, Crosshair, PhoneCall, ArrowLeft, Map, Mountain, Satellite, X, ShieldAlert, CheckCircle2 } from 'lucide-react';
 
 const GisMap = ({ mode = 'hero' }) => {
   const {
@@ -17,7 +17,9 @@ const GisMap = ({ mode = 'hero' }) => {
     mapLayers,
     isFullScreenMap,
     setIsFullScreenMap,
-    setIsSosOpen
+    setIsSosOpen,
+    routeAdvisoryActive,
+    setRouteAdvisoryActive
   } = useApp();
 
   const mapRef = useRef(null);
@@ -26,33 +28,38 @@ const GisMap = ({ mode = 'hero' }) => {
   const layerGroupRef = useRef(null);
   const telemetryGroupRef = useRef(null);
 
-  const [baseMapType, setBaseMapType] = useState('topo'); // 'topo' | 'light' | 'satellite' | 'dark'
+  const [baseMapType, setBaseMapType] = useState('osm'); // 'osm' | 'topo' | 'satellite'
   const [showLayerControls, setShowLayerControls] = useState(false);
 
   // Selected Zone Object
   const selectedZone = locations.find(l => l.id === selectedZoneId) || locations[0];
 
-  // Tile Layer Definitions (2D GIS Only)
+  // Tile Layer Definitions (OpenStreetMap Standard Basemap - Zero API Key required)
   const tileConfigs = {
+    osm: {
+      url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+      options: { 
+        maxZoom: 19, 
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> contributors' 
+      }
+    },
     topo: {
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-      options: { maxZoom: 18, attribution: '&copy; Esri &copy; USGS' }
-    },
-    light: {
-      url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-      options: { maxZoom: 19, subdomains: 'abcd', attribution: '&copy; CartoDB &copy; OpenStreetMap' }
+      options: { 
+        maxZoom: 18, 
+        attribution: '&copy; Esri &copy; USGS' 
+      }
     },
     satellite: {
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-      options: { maxZoom: 18, attribution: '&copy; Esri World Imagery' }
-    },
-    dark: {
-      url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      options: { maxZoom: 19, subdomains: 'abcd', attribution: '&copy; CartoDB &copy; OpenStreetMap' }
+      options: { 
+        maxZoom: 18, 
+        attribution: '&copy; Esri World Imagery' 
+      }
     }
   };
 
-  // 1. Initialize 2D Leaflet Map
+  // 1. Initialize 2D Leaflet Map with OpenStreetMap Standard Basemap
   useEffect(() => {
     if (!mapRef.current) return;
 
@@ -62,11 +69,11 @@ const GisMap = ({ mode = 'hero' }) => {
         center: [26.4, 91.8],
         zoom: 7,
         zoomControl: false,
-        attributionControl: false
+        attributionControl: true
       });
 
-      // Default Dark Tactical Tile Layer
-      const baseTile = L.tileLayer(tileConfigs.dark.url, tileConfigs.dark.options).addTo(map);
+      // Default OpenStreetMap Tile Layer (Zero API Key required)
+      const baseTile = L.tileLayer(tileConfigs.osm.url, tileConfigs.osm.options).addTo(map);
       tileLayerRef.current = baseTile;
 
       L.control.zoom({ position: 'bottomright' }).addTo(map);
@@ -77,7 +84,7 @@ const GisMap = ({ mode = 'hero' }) => {
     }
   }, []);
 
-  // 2. Switch Basemap (Dark GIS vs Topography vs Satellite)
+  // 2. Switch Basemap (OpenStreetMap vs Topography vs Satellite)
   useEffect(() => {
     const map = leafletMapRef.current;
     if (!map) return;
@@ -86,7 +93,7 @@ const GisMap = ({ mode = 'hero' }) => {
       map.removeLayer(tileLayerRef.current);
     }
 
-    const config = tileConfigs[baseMapType] || tileConfigs.dark;
+    const config = tileConfigs[baseMapType] || tileConfigs.osm;
     const newTile = L.tileLayer(config.url, config.options).addTo(map);
     newTile.bringToBack();
     tileLayerRef.current = newTile;
@@ -218,43 +225,117 @@ const GisMap = ({ mode = 'hero' }) => {
     if (mapLayers.roads) {
       roads.forEach(road => {
         const isBlocked = road.status === 'BLOCKED' || road.status === 'UNSAFE';
+        const isAdvisoryTarget = routeAdvisoryActive && road.id === 'road-nh10';
 
-        // Main Highway Polyline
-        const roadLine = L.polyline(road.coordinates, {
-          color: isBlocked ? '#D32F2F' : '#1565C0',
-          weight: 4,
-          dashArray: isBlocked ? '8, 8' : null,
-          opacity: 0.85
-        });
+        // 1. HAZARDOUS ROUTE WHERE LANDSLIDE MAY OCCUR (Thick Red Line)
+        if (isBlocked) {
+          // Outer Hazard Glow Aura
+          const halo = L.polyline(road.coordinates, {
+            color: 'rgba(211, 47, 47, 0.35)',
+            weight: isAdvisoryTarget ? 16 : 12,
+            lineCap: 'round',
+            lineJoin: 'round'
+          });
+          halo.addTo(layerGroup);
 
-        roadLine.bindTooltip(`
-          <div class="map-tooltip-content">
-            <span class="map-tooltip-title">${road.name}</span>
-            <span class="map-tooltip-sep">•</span>
-            <span style="font-weight: 700; color: ${isBlocked ? '#D32F2F' : '#2E7D32'}">${road.status}</span>
-          </div>
-        `, { sticky: true, className: 'leaflet-minimal-tooltip' });
+          // Main Thick Red Polyline
+          const roadLine = L.polyline(road.coordinates, {
+            color: '#D32F2F',
+            weight: isAdvisoryTarget ? 9 : 7,
+            opacity: 1,
+            lineCap: 'round',
+            lineJoin: 'round'
+          });
 
-        roadLine.addTo(layerGroup);
+          roadLine.bindTooltip(`
+            <div class="map-tooltip-content" style="border-left: 3px solid #D32F2F;">
+              <span class="map-tooltip-title" style="color: #D32F2F; font-weight: 800;">🔴 HIGH LANDSLIDE RISK: ${road.name}</span>
+              <span class="map-tooltip-sep">•</span>
+              <span style="font-weight: 700; color: #D32F2F;">${road.riskPercentage}% Hazard (BLOCKED)</span>
+            </div>
+          `, { sticky: true, className: 'leaflet-minimal-tooltip' });
 
-        // If blocked, render Green Alternative Safe Detour Route
+          roadLine.addTo(layerGroup);
+
+          // Blockage / Rockslide icon along blocked section (e.g. 29th Mile)
+          if (road.blockedSection) {
+            const blockIcon = L.divIcon({
+              html: `
+                <div style="background: #D32F2F; color: #FFFFFF; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; box-shadow: 0 2px 10px rgba(211,47,47,0.5); white-space: nowrap; border: 2px solid #FFF; display: flex; align-items: center; gap: 4px;">
+                  ⚠️ Active Rockslide: 29th Mile (NH-10 Blocked)
+                </div>
+              `,
+              className: 'leaflet-road-blockage-icon',
+              iconAnchor: [85, 14]
+            });
+            const blockMarker = L.marker(road.blockedSection[0], { icon: blockIcon });
+            blockMarker.bindTooltip("Severe active rockslide with debris blocking both carriageways. 4.2 mm/h tension cracks.", { direction: 'top' });
+            blockMarker.addTo(layerGroup);
+          }
+        } else {
+          // Normal Open Highway
+          const roadLine = L.polyline(road.coordinates, {
+            color: '#1565C0',
+            weight: 4,
+            opacity: 0.85
+          });
+
+          roadLine.bindTooltip(`
+            <div class="map-tooltip-content">
+              <span class="map-tooltip-title">${road.name}</span>
+              <span class="map-tooltip-sep">•</span>
+              <span style="font-weight: 700; color: #2E7D32;">OPEN / SAFE</span>
+            </div>
+          `, { sticky: true, className: 'leaflet-minimal-tooltip' });
+
+          roadLine.addTo(layerGroup);
+        }
+
+        // 2. BEST REFERRED ROUTE BY AI (Thick Green Line)
         if (isBlocked && road.alternativeRoute && mapLayers.blockages) {
+          // Outer Safe Glow Aura
+          const altHalo = L.polyline(road.alternativeRoute.coordinates, {
+            color: 'rgba(46, 125, 50, 0.35)',
+            weight: isAdvisoryTarget ? 16 : 12,
+            lineCap: 'round',
+            lineJoin: 'round'
+          });
+          altHalo.addTo(layerGroup);
+
+          // Main Thick Green Polyline
           const altLine = L.polyline(road.alternativeRoute.coordinates, {
             color: '#2E7D32',
-            weight: 5,
-            dashArray: '10, 6',
-            opacity: 0.95
+            weight: isAdvisoryTarget ? 9 : 7,
+            opacity: 1,
+            lineCap: 'round',
+            lineJoin: 'round'
           });
 
           altLine.bindTooltip(`
-            <div class="map-tooltip-content">
-              <span class="map-tooltip-title" style="color: #2E7D32;">✓ Safe Detour: ${road.alternativeRoute.name}</span>
+            <div class="map-tooltip-content" style="border-left: 3px solid #2E7D32;">
+              <span class="map-tooltip-title" style="color: #2E7D32; font-weight: 800;">🟢 BEST REFERRED ROUTE BY AI</span>
               <span class="map-tooltip-sep">•</span>
-              <span class="map-tooltip-muted">${road.alternativeRoute.riskPercentage}% Risk</span>
+              <span class="map-tooltip-title">${road.alternativeRoute.name}</span>
+              <span class="map-tooltip-sep">•</span>
+              <span style="color: #2E7D32; font-weight: 700;">${road.alternativeRoute.riskPercentage}% Risk (SAFE & CLEAR)</span>
             </div>
           `, { sticky: true, className: 'leaflet-minimal-tooltip' });
 
           altLine.addTo(layerGroup);
+
+          // Safe route waypoint marker
+          const safeIcon = L.divIcon({
+            html: `
+              <div style="background: #2E7D32; color: #FFFFFF; font-size: 11px; font-weight: 800; padding: 4px 8px; border-radius: 6px; box-shadow: 0 2px 10px rgba(46,125,50,0.5); white-space: nowrap; border: 2px solid #FFF; display: flex; align-items: center; gap: 4px;">
+                ✓ AI Recommended Safe Detour (Lava - Reshi Pass)
+              </div>
+            `,
+            className: 'leaflet-road-safe-icon',
+            iconAnchor: [95, 14]
+          });
+          const safeMarker = L.marker(road.alternativeRoute.coordinates[2], { icon: safeIcon });
+          safeMarker.bindTooltip("Geologically stable ridgeline bypass route actively monitored by BRO clearance patrol units.", { direction: 'top' });
+          safeMarker.addTo(layerGroup);
         }
       });
     }
@@ -283,7 +364,18 @@ const GisMap = ({ mode = 'hero' }) => {
       `, { sticky: true, className: 'leaflet-minimal-tooltip', direction: 'top', offset: [0, -10] });
       userMarker.addTo(layerGroup);
     }
-  }, [locations, selectedZoneId, sensors, roads, userCoordinates, mapLayers]);
+  }, [locations, selectedZoneId, sensors, roads, userCoordinates, mapLayers, routeAdvisoryActive]);
+
+  // Automatically zoom and fit both routes when Route Advisory is activated
+  useEffect(() => {
+    if (routeAdvisoryActive && leafletMapRef.current) {
+      // Zoom to encompass both NH-10 and Lava-Reshi Detour in Sikkim
+      leafletMapRef.current.fitBounds([
+        [27.36, 88.42],
+        [27.60, 88.74]
+      ], { padding: [50, 50], maxZoom: 12, animate: true, duration: 1.2 });
+    }
+  }, [routeAdvisoryActive]);
 
   // Handle Fullscreen resize trigger
   const toggleFullScreen = (e) => {
@@ -313,6 +405,59 @@ const GisMap = ({ mode = 'hero' }) => {
 
   return (
     <div className={`gis-map-container ${containerClass}`}>
+      {/* Route Advisory Active Floating HUD Banner */}
+      {routeAdvisoryActive && (
+        <div style={{
+          position: 'absolute',
+          top: '56px',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          zIndex: 1000,
+          background: 'rgba(255, 255, 255, 0.96)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid var(--color-border)',
+          borderRadius: 'var(--radius-pill)',
+          boxShadow: '0 4px 18px rgba(11, 31, 51, 0.16)',
+          padding: '6px 16px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          maxWidth: '92%'
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.78rem', flexWrap: 'wrap' }}>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', color: '#D32F2F', fontWeight: 800 }}>
+              <span style={{ width: '16px', height: '5px', background: '#D32F2F', borderRadius: '2px', display: 'inline-block' }} />
+              Hazard Route: NH-10 (Landslide Risk: 92%)
+            </span>
+            <span style={{ color: 'var(--color-text-muted)', fontWeight: 700 }}>vs</span>
+            <span style={{ display: 'inline-flex', alignItems: 'center', gap: '5px', color: '#2E7D32', fontWeight: 800 }}>
+              <span style={{ width: '16px', height: '5px', background: '#2E7D32', borderRadius: '2px', display: 'inline-block' }} />
+              Best Referred Route by AI: Lava - Reshi Detour (24% Safe)
+            </span>
+          </div>
+          <button
+            onClick={() => setRouteAdvisoryActive(false)}
+            style={{
+              background: 'var(--color-blue-50)',
+              border: '1px solid var(--color-blue-200)',
+              color: 'var(--color-navy)',
+              cursor: 'pointer',
+              padding: '3px 8px',
+              borderRadius: 'var(--radius-pill)',
+              fontSize: '0.72rem',
+              fontWeight: 700,
+              display: 'flex',
+              alignItems: 'center',
+              gap: '4px'
+            }}
+            title="Reset Map View"
+          >
+            <X size={13} />
+            <span>Close Route View</span>
+          </button>
+        </div>
+      )}
+
       {/* Floating Top Controls HUD */}
       <div className="map-floating-top-controls">
         <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
@@ -326,8 +471,16 @@ const GisMap = ({ mode = 'hero' }) => {
             </button>
           )}
 
-          {/* Basemap Switcher: Topography | Light GIS | Satellite | Dark */}
+          {/* Basemap Switcher: OpenStreetMap | Topography | Satellite */}
           <div className="map-view-switcher">
+            <button 
+              className={`map-view-pill-btn ${baseMapType === 'osm' ? 'active' : ''}`}
+              onClick={() => setBaseMapType('osm')}
+              title="OpenStreetMap Standard Basemap (Zero API Key)"
+            >
+              <Map size={13} style={{ display: 'inline', marginRight: '4px' }} />
+              OpenStreetMap
+            </button>
             <button 
               className={`map-view-pill-btn ${baseMapType === 'topo' ? 'active' : ''}`}
               onClick={() => setBaseMapType('topo')}
@@ -337,27 +490,12 @@ const GisMap = ({ mode = 'hero' }) => {
               Topo
             </button>
             <button 
-              className={`map-view-pill-btn ${baseMapType === 'light' ? 'active' : ''}`}
-              onClick={() => setBaseMapType('light')}
-              title="CartoDB Clean Light GIS"
-            >
-              <Map size={13} style={{ display: 'inline', marginRight: '4px' }} />
-              Light GIS
-            </button>
-            <button 
               className={`map-view-pill-btn ${baseMapType === 'satellite' ? 'active' : ''}`}
               onClick={() => setBaseMapType('satellite')}
               title="High-Resolution Satellite Imagery"
             >
               <Satellite size={13} style={{ display: 'inline', marginRight: '4px' }} />
               Satellite
-            </button>
-            <button 
-              className={`map-view-pill-btn ${baseMapType === 'dark' ? 'active' : ''}`}
-              onClick={() => setBaseMapType('dark')}
-              title="Dark Matter GIS"
-            >
-              Dark
             </button>
           </div>
 
