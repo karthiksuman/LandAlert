@@ -16,15 +16,15 @@ const AuthorityPortal = () => {
     <div className="authority-layout">
       {/* Collapsible Command Sidebar */}
       <aside className={`portal-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
-        <div style={{ padding: '16px 14px', display: 'flex', justifyContent: isSidebarCollapsed ? 'center' : 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-subtle)' }}>
+        <div style={{ padding: '16px 14px', display: 'flex', justifyContent: isSidebarCollapsed ? 'center' : 'space-between', alignItems: 'center', borderBottom: '1px solid var(--color-border)' }}>
           {!isSidebarCollapsed && (
-            <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--brand-cyan)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-blue-600)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Authority Center
             </div>
           )}
           <button
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
+            style={{ background: 'none', border: 'none', color: 'var(--color-text-secondary)', cursor: 'pointer', padding: '4px' }}
             title={isSidebarCollapsed ? "Expand Sidebar" : "Collapse Sidebar"}
           >
             {isSidebarCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}

@@ -17,15 +17,15 @@ const AdminPortal = () => {
     <div className="admin-layout">
       {/* Admin Sidebar */}
       <aside className={`portal-sidebar ${isSidebarCollapsed ? 'collapsed' : ''}`}>
-        <div style={{ padding: '16px 14px', display: 'flex', justifyContent: isSidebarCollapsed ? 'center' : 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-subtle)' }}>
+        <div style={{ padding: '16px 14px', display: 'flex', justifyContent: isSidebarCollapsed ? 'center' : 'space-between', alignItems: 'center', borderBottom: '1px solid var(--color-border)' }}>
           {!isSidebarCollapsed && (
-            <div style={{ fontSize: '0.82rem', fontWeight: 800, color: '#66BB6A', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
+            <div style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--color-blue-600)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
               Super Admin Console
             </div>
           )}
           <button
             onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-            style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', padding: '4px' }}
+            style={{ background: 'none', border: 'none', color: 'var(--color-text-secondary)', cursor: 'pointer', padding: '4px' }}
           >
             {isSidebarCollapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
           </button>
