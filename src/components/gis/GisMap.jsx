@@ -149,11 +149,12 @@ const GisMap = ({ mode = 'hero' }) => {
         });
 
         circle.bindTooltip(`
-          <div style="font-family: var(--font-main); font-size: 11px; font-weight: bold; color: #fff;">
-            <strong>${loc.name}</strong><br/>
-            Landslide Hazard: <span style="color: ${color}">${loc.riskPercentage}% (${loc.riskLevel})</span>
+          <div class="map-tooltip-content">
+            <span class="map-tooltip-title">${loc.name}</span>
+            <span class="map-tooltip-sep">•</span>
+            <span style="color: ${color}; font-weight: 700;">${loc.riskPercentage}% (${loc.riskLevel})</span>
           </div>
-        `, { sticky: true, className: 'leaflet-custom-tooltip' });
+        `, { sticky: true, className: 'leaflet-minimal-tooltip', direction: 'top', offset: [0, -10] });
 
         circle.on('click', () => {
           setSelectedZoneId(loc.id);
@@ -194,14 +195,16 @@ const GisMap = ({ mode = 'hero' }) => {
 
         const marker = L.marker(sensor.coordinates, { icon: customIcon });
 
+        const statusColor = sensor.status === 'ONLINE' ? '#2E7D32' : sensor.status === 'CRITICAL' ? '#D32F2F' : '#F57C00';
         marker.bindTooltip(`
-          <div style="font-family: var(--font-main); font-size: 11px; color: #fff;">
-            <strong>${sensor.name} (${sensor.id})</strong><br/>
-            Status: <span style="font-weight: bold; color: ${sensor.status === 'ONLINE' ? '#19D47B' : sensor.status === 'CRITICAL' ? '#FF3B3B' : '#FF8A00'}">${sensor.status}</span><br/>
-            Live Reading: ${sensor.value} ${sensor.unit}<br/>
-            Battery: ${sensor.battery}% | Telemetry: 99.9%
+          <div class="map-tooltip-content">
+            <span class="map-tooltip-title">${sensor.id}</span>
+            <span class="map-tooltip-sep">•</span>
+            <span style="font-weight: 700; color: ${statusColor}">${sensor.status}</span>
+            <span class="map-tooltip-sep">•</span>
+            <span class="map-tooltip-muted">${sensor.value} ${sensor.unit}</span>
           </div>
-        `, { sticky: true });
+        `, { sticky: true, className: 'leaflet-minimal-tooltip', direction: 'top', offset: [0, -14] });
 
         marker.on('click', () => {
           map.flyTo(sensor.coordinates, 10, { duration: 1 });
@@ -218,37 +221,38 @@ const GisMap = ({ mode = 'hero' }) => {
 
         // Main Highway Polyline
         const roadLine = L.polyline(road.coordinates, {
-          color: isBlocked ? '#FF3B3B' : '#1687FF',
+          color: isBlocked ? '#D32F2F' : '#1565C0',
           weight: 4,
           dashArray: isBlocked ? '8, 8' : null,
           opacity: 0.85
         });
 
         roadLine.bindTooltip(`
-          <div style="font-family: var(--font-main); font-size: 11px; color: #fff;">
-            <strong>${road.name}</strong><br/>
-            Status: <span style="font-weight: bold; color: ${isBlocked ? '#FF3B3B' : '#19D47B'}">${road.status}</span><br/>
-            ${road.reason}
+          <div class="map-tooltip-content">
+            <span class="map-tooltip-title">${road.name}</span>
+            <span class="map-tooltip-sep">•</span>
+            <span style="font-weight: 700; color: ${isBlocked ? '#D32F2F' : '#2E7D32'}">${road.status}</span>
           </div>
-        `);
+        `, { sticky: true, className: 'leaflet-minimal-tooltip' });
 
         roadLine.addTo(layerGroup);
 
         // If blocked, render Green Alternative Safe Detour Route
         if (isBlocked && road.alternativeRoute && mapLayers.blockages) {
           const altLine = L.polyline(road.alternativeRoute.coordinates, {
-            color: '#19D47B',
+            color: '#2E7D32',
             weight: 5,
             dashArray: '10, 6',
             opacity: 0.95
           });
 
           altLine.bindTooltip(`
-            <div style="font-family: var(--font-main); font-size: 11px; color: #fff;">
-              <strong style="color: #19D47B;">Recommended Safe Detour: ${road.alternativeRoute.name}</strong><br/>
-              Status: Clear & Monitored (Risk: ${road.alternativeRoute.riskPercentage}%)
+            <div class="map-tooltip-content">
+              <span class="map-tooltip-title" style="color: #2E7D32;">✓ Safe Detour: ${road.alternativeRoute.name}</span>
+              <span class="map-tooltip-sep">•</span>
+              <span class="map-tooltip-muted">${road.alternativeRoute.riskPercentage}% Risk</span>
             </div>
-          `, { sticky: true });
+          `, { sticky: true, className: 'leaflet-minimal-tooltip' });
 
           altLine.addTo(layerGroup);
         }

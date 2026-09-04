@@ -140,7 +140,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: var(--z-map-controls);
+  z-index: 700;
   pointer-events: none;
 }
 
@@ -231,44 +231,44 @@
   position: absolute;
   bottom: 14px;
   left: 14px;
-  z-index: var(--z-map-controls);
-  background: rgba(255, 255, 255, 0.92);
+  z-index: 350 !important; /* Strictly below layers panel (950) */
+  background: rgba(255, 255, 255, 0.94);
   backdrop-filter: blur(12px) saturate(160%);
   -webkit-backdrop-filter: blur(12px) saturate(160%);
   border: 1px solid var(--color-border);
-  border-radius: 12px;
-  padding: 10px 14px;
-  box-shadow: var(--shadow-md);
+  border-radius: 10px;
+  padding: 6px 12px;
+  box-shadow: var(--shadow-sm);
 }
 
 .legend-title {
-  font-size: 0.72rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: var(--color-navy);
   text-transform: uppercase;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   letter-spacing: 0.5px;
 }
 
 .legend-items {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  gap: 6px;
-  font-size: 0.78rem;
+  gap: 5px;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--color-text-secondary);
 }
 
 .legend-swatch {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
 }
 
 .legend-swatch.critical { background: var(--color-risk-critical); }
@@ -280,6 +280,7 @@
   position: relative;
   display: inline-block;
   pointer-events: auto;
+  z-index: 750;
 }
 
 /* Floating Layer Controls Panel */
@@ -287,13 +288,14 @@
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
-  z-index: 750 !important; /* Higher than location-info-panel so it is NEVER blocked */
+  z-index: 950 !important; /* Stays above legend (350) and location panel (500) */
   background: #FFFFFF;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  padding: 14px;
-  width: 250px;
-  max-width: 90vw;
+  padding: 10px 14px;
+  width: 240px;
+  max-height: 230px;
+  overflow-y: auto;
   box-shadow: var(--shadow-lg);
   animation: dropdown-pop 150ms ease-out;
 }
@@ -302,8 +304,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
+  margin-bottom: 8px;
+  padding-bottom: 5px;
   border-bottom: 1px solid var(--color-border);
   color: var(--color-navy);
   font-weight: 700;
@@ -314,8 +316,8 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 6px 0;
-  font-size: 0.82rem;
+  padding: 3px 0;
+  font-size: 0.78rem;
   color: var(--color-text-secondary);
 }
 
@@ -324,6 +326,54 @@
   cursor: pointer;
   accent-color: var(--color-blue-500);
 }
+
+/* Minimal Compact Leaflet Tooltips */
+.leaflet-tooltip,
+.leaflet-minimal-tooltip {
+  background: #FFFFFF !important;
+  color: var(--color-navy) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 6px !important;
+  padding: 3px 8px !important;
+  font-family: var(--font-main) !important;
+  font-size: 0.74rem !important;
+  line-height: 1.25 !important;
+  box-shadow: 0 2px 8px rgba(11, 31, 51, 0.12) !important;
+  white-space: nowrap !important;
+  pointer-events: none !important;
+  width: auto !important;
+  max-width: fit-content !important;
+}
+
+.map-tooltip-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: var(--font-main);
+  font-size: 0.74rem;
+  color: var(--color-navy);
+  white-space: nowrap;
+}
+
+.map-tooltip-title {
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+.map-tooltip-sep {
+  color: var(--color-border-strong);
+  font-size: 0.68rem;
+}
+
+.map-tooltip-muted {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+}
+
+.leaflet-tooltip-top:before { border-top-color: var(--color-border) !important; }
+.leaflet-tooltip-bottom:before { border-bottom-color: var(--color-border) !important; }
+.leaflet-tooltip-left:before { border-left-color: var(--color-border) !important; }
+.leaflet-tooltip-right:before { border-right-color: var(--color-border) !important; }
 
 /* Custom Marker Styling for Leaflet */
 .custom-sensor-icon {
