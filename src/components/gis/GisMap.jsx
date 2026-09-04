@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import { useApp } from '../../context/AppContext';
-import Terrain3DCanvas from './Terrain3DCanvas';
 import MapLegend from './MapLegend';
 import MapLayerControls from './MapLayerControls';
 import LocationInfoPanel from './LocationInfoPanel';
-import { Maximize2, Minimize2, Layers, Crosshair, PhoneCall, ArrowLeft, Globe, Map } from 'lucide-react';
+import { Maximize2, Minimize2, Layers, Crosshair, Box, PhoneCall, ArrowLeft } from 'lucide-react';
 
-const GisMap = ({ mode = 'hero' }) => {
+const GisMap = ({ mode = 'half' }) => {
   const {
     locations,
     selectedZoneId,
@@ -18,24 +17,24 @@ const GisMap = ({ mode = 'hero' }) => {
     mapLayers,
     isFullScreenMap,
     setIsFullScreenMap,
+    setIsTerrain3DOpen,
     setIsSosOpen
   } = useApp();
-
-  const [viewMode, setViewMode] = useState('3d'); // '3d' (Three.js Spatial Terrain) or '2d' (Leaflet GIS)
-  const [showLayerControls, setShowLayerControls] = useState(false);
 
   const mapRef = useRef(null);
   const leafletMapRef = useRef(null);
   const layerGroupRef = useRef(null);
+  const [showLayerControls, setShowLayerControls] = useState(false);
 
+  // Selected Zone Object
   const selectedZone = locations.find(l => l.id === selectedZoneId) || locations[0];
 
-  // Initialize Leaflet for 2D mode when active
+  // Initialize Leaflet Map
   useEffect(() => {
-    if (viewMode !== '2d') return;
     if (!mapRef.current) return;
 
     if (!leafletMapRef.current) {
+      // Center on North-East India (around Sikkim/Assam)
       const map = L.map(mapRef.current, {
         center: [26.4, 91.8],
         zoom: 7,
@@ -43,6 +42,7 @@ const GisMap = ({ mode = 'hero' }) => {
         attributionControl: false
       });
 
+      // CartoDB Dark Matter Tiles (High-contrast, GIS command center look)
       L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
         maxZoom: 18,
         subdomains: 'abcd'
@@ -54,30 +54,38 @@ const GisMap = ({ mode = 'hero' }) => {
       layerGroupRef.current = L.layerGroup().addTo(map);
     }
 
+    return () => {
+      // Cleanup on unmount
+    };
+  }, []);
+
+  // Update Layers & Overlays whenever data or layer toggles change
+  useEffect(() => {
     const map = leafletMapRef.current;
     const layerGroup = layerGroupRef.current;
     if (!map || !layerGroup) return;
 
     layerGroup.clearLayers();
 
-    // 1. RISK ZONES
+    // 1. RISK ZONES LAYER
     if (mapLayers.riskZones) {
       locations.forEach(loc => {
         const isSelected = loc.id === selectedZoneId;
-        let color = '#19D47B';
-        let fillColor = 'rgba(25, 212, 123, 0.35)';
+        let color = '#2E7D32'; // Low
+        let fillColor = 'rgba(46, 125, 50, 0.35)';
 
         if (loc.riskLevel === 'CRITICAL') {
-          color = '#FF3B3B';
-          fillColor = 'rgba(255, 59, 59, 0.45)';
+          color = '#D32F2F';
+          fillColor = 'rgba(211, 47, 47, 0.45)';
         } else if (loc.riskLevel === 'HIGH') {
-          color = '#FF8A00';
-          fillColor = 'rgba(255, 138, 0, 0.4)';
+          color = '#F57C00';
+          fillColor = 'rgba(245, 124, 0, 0.4)';
         } else if (loc.riskLevel === 'MODERATE') {
-          color = '#FFD43B';
-          fillColor = 'rgba(255, 212, 59, 0.35)';
+          color = '#FBC02D';
+          fillColor = 'rgba(251, 192, 45, 0.35)';
         }
 
+        // Add risk zone polygon or circle
         const circle = L.circle(loc.coordinates, {
           radius: loc.riskLevel === 'CRITICAL' ? 14000 : 10000,
           color: color,
@@ -88,11 +96,11 @@ const GisMap = ({ mode = 'hero' }) => {
         });
 
         circle.bindTooltip(`
-          <div style="font-family: var(--font-main); font-size: 11px; font-weight: bold; color: #fff;">
+          <div style="font-family: Inter, sans-serif; font-size: 12px; font-weight: bold; color: #fff;">
             <strong>${loc.name}</strong><br/>
-            Estimated Risk: <span style="color: ${color}">${loc.riskPercentage}% (${loc.riskLevel})</span>
+            Risk: <span style="color: ${color}">${loc.riskPercentage}% (${loc.riskLevel})</span>
           </div>
-        `, { sticky: true });
+        `, { sticky: true, className: 'leaflet-custom-tooltip' });
 
         circle.on('click', () => {
           setSelectedZoneId(loc.id);
@@ -103,11 +111,11 @@ const GisMap = ({ mode = 'hero' }) => {
       });
     }
 
-    // 2. SENSORS
+    // 2. IOT SENSORS LAYER
     if (mapLayers.sensors) {
       sensors.forEach(sensor => {
         const iconHtml = `
-          <div class="custom-sensor-icon sensor-marker-${sensor.status.toLowerCase()}" style="width: 24px; height: 24px; font-size: 10px;">
+          <div class="custom-sensor-icon sensor-marker-${sensor.status.toLowerCase()}" style="width: 26px; height: 26px; font-size: 11px;">
             ${sensor.id.replace('S-', '')}
           </div>
         `;
@@ -115,112 +123,185 @@ const GisMap = ({ mode = 'hero' }) => {
         const customIcon = L.divIcon({
           html: iconHtml,
           className: 'leaflet-sensor-div-icon',
-          iconSize: [24, 24],
-          iconAnchor: [12, 12]
+          iconSize: [26, 26],
+          iconAnchor: [13, 13]
         });
 
         const marker = L.marker(sensor.coordinates, { icon: customIcon });
-        marker.bindTooltip(`<strong>${sensor.name} (${sensor.id})</strong><br/>Status: ${sensor.status}`, { sticky: true });
+
+        marker.bindTooltip(`
+          <div style="font-family: Inter, sans-serif; font-size: 11px; color: #fff;">
+            <strong>${sensor.name} (${sensor.id})</strong><br/>
+            Status: <span style="font-weight: bold; color: ${sensor.status === 'ONLINE' ? '#4CAF50' : sensor.status === 'CRITICAL' ? '#FF5252' : '#FFA726'}">${sensor.status}</span><br/>
+            Reading: ${sensor.value} ${sensor.unit}<br/>
+            Battery: ${sensor.battery}% | Signal: ${sensor.signal} dBm
+          </div>
+        `, { sticky: true });
+
+        marker.on('click', () => {
+          map.flyTo(sensor.coordinates, 11, { duration: 1 });
+        });
+
         marker.addTo(layerGroup);
       });
     }
 
-    // 3. ROADS & DETOURS
+    // 3. ROAD NETWORK & BLOCKAGES / SAFE DETOURS
     if (mapLayers.roads) {
       roads.forEach(road => {
         const isBlocked = road.status === 'BLOCKED' || road.status === 'UNSAFE';
+
+        // Main Highway Polyline
         const roadLine = L.polyline(road.coordinates, {
-          color: isBlocked ? '#FF3B3B' : '#1687FF',
+          color: isBlocked ? '#D32F2F' : '#1E88E5',
           weight: 4,
           dashArray: isBlocked ? '8, 8' : null,
           opacity: 0.85
         });
+
+        roadLine.bindTooltip(`
+          <div style="font-family: Inter, sans-serif; font-size: 11px; color: #fff;">
+            <strong>${road.name}</strong><br/>
+            Status: <span style="font-weight: bold; color: ${isBlocked ? '#FF5252' : '#66BB6A'}">${road.status}</span><br/>
+            ${road.reason}
+          </div>
+        `);
+
         roadLine.addTo(layerGroup);
 
+        // If blocked, render Green Alternative Safe Route
         if (isBlocked && road.alternativeRoute && mapLayers.blockages) {
           const altLine = L.polyline(road.alternativeRoute.coordinates, {
-            color: '#19D47B',
+            color: '#00E676',
             weight: 5,
             dashArray: '10, 6',
             opacity: 0.95
           });
+
+          altLine.bindTooltip(`
+            <div style="font-family: Inter, sans-serif; font-size: 11px; color: #fff;">
+              <strong style="color: #00E676;">✓ ${road.alternativeRoute.name}</strong><br/>
+              Status: Safe Alternative Detour (Risk: ${road.alternativeRoute.riskPercentage}%)
+            </div>
+          `, { sticky: true });
+
           altLine.addTo(layerGroup);
         }
       });
     }
-  }, [viewMode, locations, selectedZoneId, sensors, roads, mapLayers]);
 
+    // 4. USER CURRENT GPS LOCATION MARKER
+    if (userCoordinates) {
+      const userGpsIcon = L.divIcon({
+        html: `
+          <div class="user-gps-marker">
+            <div class="user-gps-pulse"></div>
+            <div class="user-gps-center"></div>
+          </div>
+        `,
+        className: 'leaflet-gps-div-icon',
+        iconSize: [22, 22],
+        iconAnchor: [11, 11]
+      });
+
+      const userMarker = L.marker(userCoordinates, { icon: userGpsIcon });
+      userMarker.bindTooltip("<strong>Your Current GPS Location</strong><br/>North Sikkim Slope Zone", { sticky: true });
+      userMarker.addTo(layerGroup);
+    }
+  }, [locations, selectedZoneId, sensors, roads, userCoordinates, mapLayers]);
+
+  // Handle Fullscreen resize trigger
   const toggleFullScreen = (e) => {
     if (e) e.stopPropagation();
-    setIsFullScreenMap(prev => !prev);
+    setIsFullScreenMap(prev => {
+      const next = !prev;
+      setTimeout(() => {
+        if (leafletMapRef.current) {
+          leafletMapRef.current.invalidateSize();
+        }
+      }, 300);
+      return next;
+    });
   };
 
-  const handleSelectZone = (zoneId) => {
-    setSelectedZoneId(zoneId);
+  const handleRecenter = () => {
+    if (leafletMapRef.current && userCoordinates) {
+      leafletMapRef.current.flyTo(userCoordinates, 9, { duration: 1.2 });
+    }
   };
 
-  let containerClass = "gis-map-hero";
+  // Determine container class
+  let containerClass = "gis-map-half";
   if (mode === 'authority') containerClass = "gis-map-authority";
   if (isFullScreenMap) containerClass = "gis-map-fullscreen";
 
   return (
-    <div className={`gis-map-container ${containerClass}`}>
-      {/* 1. 3D Spatial Terrain View (Three.js Hero) */}
-      {viewMode === '3d' ? (
-        <Terrain3DCanvas 
-          onSelectZone={handleSelectZone}
-          activeZoneId={selectedZoneId}
-        />
-      ) : (
-        /* 2. 2D Tactical GIS Map View (Leaflet) */
-        <div ref={mapRef} className="map-instance" />
-      )}
-
-      {/* Floating Top Controls HUD */}
+    <div 
+      className={`gis-map-container ${containerClass}`}
+      onClick={() => {
+        // If on mobile/half mode, clicking the map expands to full-screen mode!
+        if (!isFullScreenMap && mode === 'half') {
+          toggleFullScreen();
+        }
+      }}
+    >
+      {/* Floating Top Controls */}
       <div className="map-floating-top-controls">
-        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+        <div style={{ display: 'flex', gap: '8px' }}>
           {isFullScreenMap && (
-            <button className="map-control-btn" onClick={toggleFullScreen}>
+            <button 
+              className="map-control-btn"
+              onClick={toggleFullScreen}
+            >
               <ArrowLeft size={16} />
               <span>Back</span>
             </button>
           )}
 
-          {/* View Mode Toggle Pill (3D Spatial vs 2D GIS) */}
-          <div className="map-view-switcher">
-            <button 
-              className={`map-view-pill-btn ${viewMode === '3d' ? 'active' : ''}`}
-              onClick={() => setViewMode('3d')}
-            >
-              <Globe size={13} style={{ display: 'inline', marginRight: '4px' }} />
-              3D Spatial Terrain
-            </button>
-            <button 
-              className={`map-view-pill-btn ${viewMode === '2d' ? 'active' : ''}`}
-              onClick={() => setViewMode('2d')}
-            >
-              <Map size={13} style={{ display: 'inline', marginRight: '4px' }} />
-              2D Tactical GIS
-            </button>
-          </div>
+          <button 
+            className="map-control-btn"
+            onClick={handleRecenter}
+            title="Recenter to my location"
+          >
+            <Crosshair size={16} color="#29B6F6" />
+            <span>My Location</span>
+          </button>
 
           <button 
             className="map-control-btn"
-            onClick={() => setShowLayerControls(!showLayerControls)}
-            title="Toggle Spatial Layers"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowLayerControls(!showLayerControls);
+            }}
+            title="Toggle Map Layers"
           >
-            <Layers size={15} color="var(--cyan)" />
+            <Layers size={16} color="#29B6F6" />
             <span>Layers</span>
+          </button>
+
+          <button 
+            className="map-control-btn"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsTerrain3DOpen(true);
+            }}
+            title="Open 3D Elevation Model"
+          >
+            <Box size={16} color="#00E676" />
+            <span>3D DEM</span>
           </button>
         </div>
 
         <div style={{ display: 'flex', gap: '8px' }}>
           <button 
             className="map-control-btn map-control-btn-critical"
-            onClick={() => setIsSosOpen(true)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsSosOpen(true);
+            }}
             title="Emergency SOS Contacts"
           >
-            <PhoneCall size={15} />
+            <PhoneCall size={16} />
             <span>SOS</span>
           </button>
 
@@ -242,13 +323,16 @@ const GisMap = ({ mode = 'hero' }) => {
       {/* Floating Legend */}
       <MapLegend />
 
-      {/* Floating Location Information Panel when a zone is active */}
+      {/* Floating Detailed Location Info Panel when a zone is active */}
       {selectedZone && (
         <LocationInfoPanel 
           zone={selectedZone} 
           onClose={() => setSelectedZoneId(null)} 
         />
       )}
+
+      {/* Leaflet Map Div */}
+      <div ref={mapRef} className="map-instance" />
     </div>
   );
 };

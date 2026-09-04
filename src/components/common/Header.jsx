@@ -1,7 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import PortalSwitcher from './PortalSwitcher';
-import { Mountain, PhoneCall, ShieldCheck, Activity } from 'lucide-react';
+import { Mountain, AlertTriangle, PhoneCall, ShieldCheck } from 'lucide-react';
 
 const Header = () => {
   const { t, activePortal, currentUser, logout, setIsSosOpen } = useApp();
@@ -15,18 +15,12 @@ const Header = () => {
         <div className="header-brand">
           <div className="header-title">
             <span>TerraAlert</span>
-            <span className="header-tag">3D DISASTER COMMAND</span>
+            <span className="header-tag">NE-INDIA</span>
           </div>
           <div className="header-subtitle">
-            {t.systemTitle || "Landslide Early Warning & Spatial Disaster Intelligence"}
+            {t.systemTitle || "Landslide Early Warning & Disaster Management"}
           </div>
         </div>
-      </div>
-
-      {/* Center Live Operational Beacon */}
-      <div className="header-center-status">
-        <span className="pulse-dot pulse-dot-low" style={{ width: '7px', height: '7px' }} />
-        <span>System Operational • 99.96% IoT Telemetry Uptime</span>
       </div>
 
       <div className="header-right">
@@ -46,7 +40,7 @@ const Header = () => {
         {/* If logged in with non-citizen role, show user badge and logout */}
         {currentUser.role !== 'citizen' && (
           <div className="user-profile-badge">
-            <ShieldCheck size={16} color="var(--cyan)" />
+            <ShieldCheck size={16} color="#29B6F6" />
             <span style={{ maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {currentUser.name}
             </span>
