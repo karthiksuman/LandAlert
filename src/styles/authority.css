@@ -5,8 +5,11 @@
 
 .authority-layout {
   display: flex;
-  min-height: calc(100vh - var(--header-height));
+  min-height: calc(100dvh - var(--header-height));
+  width: 100vw;
+  max-width: 100vw;
   background: var(--color-bg-primary);
+  overflow-x: hidden;
 }
 
 /* ==========================================
