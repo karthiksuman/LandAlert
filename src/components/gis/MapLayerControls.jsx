@@ -1,9 +1,26 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useApp } from '../../context/AppContext';
 import { Layers, X } from 'lucide-react';
 
 const MapLayerControls = ({ onClose }) => {
   const { mapLayers, toggleMapLayer } = useApp();
+  const panelRef = useRef(null);
+
+  useEffect(() => {
+    const handleOutsideClick = (e) => {
+      if (panelRef.current && !panelRef.current.contains(e.target)) {
+        onClose();
+      }
+    };
+    // Delay adding click listener so the trigger button click doesn't close it immediately
+    const timer = setTimeout(() => {
+      document.addEventListener('mousedown', handleOutsideClick);
+    }, 50);
+    return () => {
+      clearTimeout(timer);
+      document.removeEventListener('mousedown', handleOutsideClick);
+    };
+  }, [onClose]);
 
   const layersConfig = [
     { key: 'riskZones', label: 'Landslide Risk Zones' },
@@ -18,14 +35,22 @@ const MapLayerControls = ({ onClose }) => {
   ];
 
   return (
-    <div className="map-floating-layers-panel">
+    <div 
+      className="map-floating-layers-panel" 
+      ref={panelRef}
+      onClick={(e) => e.stopPropagation()}
+    >
       <div className="layers-header">
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem', fontWeight: 700, color: '#fff' }}>
-          <Layers size={16} color="#29B6F6" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem', fontWeight: 700, color: 'var(--color-navy)' }}>
+          <Layers size={16} color="var(--color-blue-500)" />
           <span>GIS Map Layers</span>
         </div>
-        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', padding: '2px' }}>
-          <X size={16} />
+        <button 
+          onClick={onClose} 
+          style={{ background: 'var(--color-blue-50)', border: '1px solid var(--color-border)', borderRadius: '50%', color: 'var(--color-text-muted)', width: '24px', height: '24px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer', padding: 0 }}
+          title="Close Layers"
+        >
+          <X size={14} />
         </button>
       </div>
 

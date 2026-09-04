@@ -360,17 +360,24 @@ const GisMap = ({ mode = 'hero' }) => {
             <span>My Location</span>
           </button>
 
-          <button 
-            className="map-control-btn"
-            onClick={(e) => {
-              e.stopPropagation();
-              setShowLayerControls(!showLayerControls);
-            }}
-            title="Toggle Spatial Layers"
-          >
-            <Layers size={15} color="var(--cyan)" />
-            <span>Layers</span>
-          </button>
+          <div className="map-layers-control-wrapper">
+            <button 
+              className={`map-control-btn ${showLayerControls ? 'active' : ''}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowLayerControls(!showLayerControls);
+              }}
+              title="Toggle Spatial Layers"
+            >
+              <Layers size={15} color="var(--color-blue-500)" />
+              <span>Layers</span>
+            </button>
+
+            {/* Layer Controls Floating Dropdown anchored right to this button */}
+            {showLayerControls && (
+              <MapLayerControls onClose={() => setShowLayerControls(false)} />
+            )}
+          </div>
         </div>
 
         <div style={{ display: 'flex', gap: '8px' }}>
@@ -395,11 +402,6 @@ const GisMap = ({ mode = 'hero' }) => {
           </button>
         </div>
       </div>
-
-      {/* Layer Controls Floating Panel */}
-      {showLayerControls && (
-        <MapLayerControls onClose={() => setShowLayerControls(false)} />
-      )}
 
       {/* Floating Legend */}
       <MapLegend />
