@@ -1,8 +1,9 @@
 $git = "C:\Users\ACER\AppData\Local\GitHubDesktop\app-3.6.4\resources\app\git\cmd\git.exe"
+$originUrl = & $git remote get-url origin
 Push-Location dist
 if (Test-Path .git) { Remove-Item -Recurse -Force .git }
 & $git init
-& $git remote add origin https://github.com/karthiksuman/LandAlert.git
+& $git remote add origin $originUrl
 & $git checkout -B gh-pages
 & $git add -A
 & $git commit -m "Deploy LandAlert to GitHub Pages"
