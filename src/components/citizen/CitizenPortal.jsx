@@ -15,6 +15,7 @@ const CitizenPortal = () => {
     citizenActiveTab, 
     setCitizenActiveTab,
     alerts,
+    offlineReportsQueue,
     t
   } = useApp();
 
@@ -86,9 +87,29 @@ const CitizenPortal = () => {
         <button
           className={`bottom-nav-item ${citizenActiveTab === 'report' ? 'active' : ''}`}
           onClick={() => setCitizenActiveTab('report')}
+          style={{ position: 'relative' }}
         >
           <FilePlus2 size={19} />
           <span>{t.nav?.report || "Report"}</span>
+          {offlineReportsQueue.length > 0 && (
+            <span
+              style={{
+                position: 'absolute',
+                top: '4px',
+                right: '18%',
+                background: '#F57C00',
+                color: '#FFF',
+                fontSize: '0.62rem',
+                fontWeight: 800,
+                borderRadius: '8px',
+                padding: '1px 5px',
+                lineHeight: 1
+              }}
+              title={`${offlineReportsQueue.length} offline report(s) queued for auto-sync`}
+            >
+              {offlineReportsQueue.length}
+            </span>
+          )}
         </button>
 
         <button
