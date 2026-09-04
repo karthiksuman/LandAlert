@@ -9,4 +9,4 @@ if (Test-Path .git) { Remove-Item -Recurse -Force .git }
 & $git push -f origin gh-pages
 Remove-Item -Recurse -Force .git
 Pop-Location
-Write-Output "Successfully deployed real files to gh-pages for karthiksuman/LandAlert!"
+Write-Output "Successfully deployed production website to gh-pages for karthiksuman/LandAlert!"
