@@ -1,44 +1,48 @@
 /* ==========================================================================
-   GIS MAP STYLES: LEAFLET INTEGRATION, RISK ZONES, CONTROLS, FULLSCREEN
+   GIS MAP STYLES: 2D LEAFLET INTEGRATION, RISK ZONES, CONTROLS, FLOATING PANELS
+   Theme: Cool White + Light Blue Government GIS Command Interface
    ========================================================================== */
 
-.gis-map-container {
+.gis-map-container,
+.map-container {
   position: relative;
   width: 100%;
-  background: #06111C;
+  background: var(--color-bg-tertiary);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-smooth);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
 }
 
-/* 68% screen height default in Citizen Home (Dominant Hero GIS) */
-.gis-map-hero {
-  height: 68vh;
-  min-height: 480px;
-  max-height: 750px;
+/* 50-52% screen height default in Citizen Home */
+.gis-map-hero,
+.map-container {
+  height: 52vh;
+  min-height: 400px;
+  max-height: 600px;
 }
 
 .gis-map-half {
-  height: 55vh;
-  min-height: 380px;
+  height: 48vh;
+  min-height: 360px;
 }
 
-/* 70% screen height in Authority Dashboard */
-.gis-map-authority {
-  height: calc(100vh - 120px);
+/* 72% screen height in Authority Dashboard */
+.gis-map-authority,
+.map-container--authority {
+  height: 72vh;
   min-height: 520px;
 }
 
-/* Full-Screen Mode (100vw, 100vh taking over entire screen) */
-.gis-map-fullscreen {
+/* Full-Screen Mode */
+.gis-map-fullscreen,
+.map-container--fullscreen {
   position: fixed !important;
-  top: 0 !important;
-  left: 0 !important;
+  inset: 0 !important;
   width: 100vw !important;
-  height: 100vh !important;
-  z-index: 9990 !important;
+  height: 100dvh !important;
+  z-index: var(--z-modal) !important;
   border-radius: 0 !important;
   border: none !important;
 }
@@ -46,73 +50,85 @@
 .map-instance {
   width: 100%;
   height: 100%;
-  z-index: 1;
+  z-index: var(--z-map-base);
 }
 
-/* Leaflet Dark Theme Overrides */
+/* Leaflet Clean Theme Overrides */
 .leaflet-container {
-  background-color: #040E17 !important;
+  background-color: var(--color-bg-tertiary) !important;
   font-family: var(--font-main) !important;
 }
 
 .leaflet-bar {
-  border: 1px solid var(--border-glass) !important;
+  border: 1px solid var(--color-border) !important;
   border-radius: var(--radius-md) !important;
   overflow: hidden;
-  box-shadow: var(--shadow-md) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 .leaflet-bar a {
-  background-color: rgba(8, 28, 43, 0.9) !important;
-  color: #FFFFFF !important;
-  border-bottom: 1px solid var(--border-subtle) !important;
+  background-color: #FFFFFF !important;
+  color: var(--color-text-primary) !important;
+  border-bottom: 1px solid var(--color-border) !important;
   transition: background var(--transition-fast) !important;
 }
 
 .leaflet-bar a:hover {
-  background-color: var(--brand-blue) !important;
-  color: #FFFFFF !important;
+  background-color: var(--color-blue-50) !important;
+  color: var(--color-blue-500) !important;
 }
 
-/* Basemap View Switcher Group (Dark GIS / Topography / Satellite) */
+/* Floating Elements Over the GIS Map */
+.map-floating-panel {
+  position: absolute;
+  z-index: var(--z-map-controls);
+  background: var(--color-surface-glass);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  border-radius: 14px;
+  box-shadow: var(--shadow-lg);
+}
+
+/* Basemap View Switcher Group */
 .map-view-switcher {
   pointer-events: auto;
   display: inline-flex;
   align-items: center;
-  background: rgba(6, 19, 31, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-pill);
   padding: 3px;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   gap: 2px;
 }
 
 .map-view-pill-btn {
   background: transparent;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   border: none;
   padding: 6px 12px;
   border-radius: var(--radius-pill);
-  font-size: 0.76rem;
-  font-weight: 700;
+  font-size: 0.78rem;
+  font-weight: 600;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   transition: all var(--transition-fast);
-  letter-spacing: 0.4px;
+  min-height: 32px;
 }
 
 .map-view-pill-btn:hover {
-  color: #fff;
-  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-navy);
+  background: var(--color-blue-50);
 }
 
 .map-view-pill-btn.active {
-  background: linear-gradient(135deg, #1687FF 0%, #19C7FF 100%);
-  color: #fff;
-  box-shadow: 0 0 12px var(--cyan-glow);
+  background: var(--color-blue-500);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
 }
 
 /* Floating Top Controls over Map */
@@ -124,41 +140,49 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  z-index: 1000;
+  z-index: var(--z-map-controls);
   pointer-events: none;
 }
 
 .map-control-btn {
   pointer-events: auto;
-  background: rgba(8, 28, 43, 0.9);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
-  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-primary);
   padding: 8px 14px;
   border-radius: var(--radius-pill);
   font-size: 0.82rem;
-  font-weight: 700;
-  box-shadow: var(--shadow-md);
+  font-weight: 600;
+  box-shadow: var(--shadow-sm);
   display: inline-flex;
   align-items: center;
   gap: 7px;
+  min-height: 36px;
   transition: all var(--transition-fast);
 }
 
 .map-control-btn:hover {
-  border-color: var(--cyan);
-  box-shadow: 0 0 14px var(--cyan-glow);
+  border-color: var(--color-blue-400);
+  background: #FFFFFF;
+  box-shadow: var(--shadow-md);
   transform: translateY(-2px);
 }
 
 .map-control-btn-critical {
-  background: rgba(255, 59, 59, 0.92);
-  border-color: rgba(255, 255, 255, 0.35);
-  box-shadow: 0 0 16px rgba(255, 59, 59, 0.6);
+  background: var(--color-risk-critical);
+  color: #FFFFFF;
+  border-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.35);
 }
 
-/* Sensor Telemetry Mesh Animated Lines */
+.map-control-btn-critical:hover {
+  background: #B71C1C;
+  color: #FFFFFF;
+}
+
+/* Sensor Telemetry Connection Lines */
 .leaflet-sensor-telemetry-line {
   stroke-dasharray: 6, 8;
   animation: telemetryPulse 2.5s linear infinite;
@@ -172,8 +196,8 @@
 /* Circular Radar Pulse on Location Selection */
 .location-radar-pulse {
   position: relative;
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   pointer-events: none;
 }
@@ -183,16 +207,16 @@
   position: absolute;
   inset: 0;
   border-radius: 50%;
-  background: rgba(25, 199, 255, 0.2);
-  border: 1.5px solid var(--cyan);
+  background: rgba(21, 101, 192, 0.15);
+  border: 1.5px solid var(--color-blue-500);
 }
 
 .location-radar-pulse::after {
   content: '';
   position: absolute;
-  inset: -10px;
+  inset: -8px;
   border-radius: 50%;
-  border: 2px solid var(--cyan);
+  border: 2px solid var(--color-blue-500);
   animation: radarWave 2s cubic-bezier(0.2, 0.8, 0.4, 1) infinite;
 }
 
@@ -202,26 +226,28 @@
 }
 
 /* Floating Map Legend */
-.map-floating-legend {
+.map-floating-legend,
+.map-legend {
   position: absolute;
   bottom: 14px;
   left: 14px;
-  z-index: 1000;
-  background: rgba(6, 19, 31, 0.9);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-md);
+  z-index: var(--z-map-controls);
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px) saturate(160%);
+  -webkit-backdrop-filter: blur(12px) saturate(160%);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
   padding: 10px 14px;
   box-shadow: var(--shadow-md);
 }
 
 .legend-title {
-  font-size: 0.7rem;
+  font-size: 0.72rem;
   font-weight: 700;
-  color: var(--text-muted);
+  color: var(--color-navy);
   text-transform: uppercase;
   margin-bottom: 6px;
-  letter-spacing: 0.6px;
+  letter-spacing: 0.5px;
 }
 
 .legend-items {
@@ -236,6 +262,7 @@
   gap: 6px;
   font-size: 0.78rem;
   font-weight: 600;
+  color: var(--color-text-secondary);
 }
 
 .legend-swatch {
@@ -244,20 +271,20 @@
   border-radius: 3px;
 }
 
-.legend-swatch.critical { background: var(--risk-critical); box-shadow: 0 0 6px var(--risk-critical); }
-.legend-swatch.high { background: var(--risk-high); box-shadow: 0 0 6px var(--risk-high); }
-.legend-swatch.moderate { background: var(--risk-moderate); }
-.legend-swatch.low { background: var(--risk-low); }
+.legend-swatch.critical { background: var(--color-risk-critical); }
+.legend-swatch.high     { background: var(--color-risk-high); }
+.legend-swatch.moderate { background: var(--color-risk-moderate); }
+.legend-swatch.low      { background: var(--color-risk-low); }
 
 /* Floating Layer Controls Panel */
 .map-floating-layers-panel {
   position: absolute;
   top: 60px;
   right: 14px;
-  z-index: 1000;
-  background: rgba(13, 34, 53, 0.92);
+  z-index: var(--z-map-controls);
+  background: rgba(255, 255, 255, 0.95);
   backdrop-filter: blur(16px);
-  border: 1px solid var(--border-subtle);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 14px;
   width: 220px;
@@ -276,7 +303,10 @@
   justify-content: space-between;
   margin-bottom: 10px;
   padding-bottom: 6px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-navy);
+  font-weight: 700;
+  font-size: 0.85rem;
 }
 
 .layer-toggle-row {
@@ -285,13 +315,13 @@
   justify-content: space-between;
   padding: 6px 0;
   font-size: 0.82rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
 .layer-toggle-row input[type="checkbox"] {
   width: auto;
   cursor: pointer;
-  accent-color: var(--brand-cyan);
+  accent-color: var(--color-blue-500);
 }
 
 /* Custom Marker Styling for Leaflet */
@@ -307,32 +337,31 @@
 }
 
 .custom-sensor-icon:hover {
-  transform: scale(1.3);
+  transform: scale(1.25);
 }
 
 .sensor-marker-online {
-  background: rgba(46, 125, 50, 0.85);
-  border: 2px solid #66BB6A;
-  box-shadow: 0 0 10px #4CAF50;
+  background: var(--color-risk-low);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 8px rgba(56, 142, 60, 0.35);
 }
 
 .sensor-marker-warning {
-  background: rgba(245, 124, 0, 0.85);
-  border: 2px solid #FFA726;
-  box-shadow: 0 0 12px #FF9800;
+  background: var(--color-risk-high);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 8px rgba(245, 124, 0, 0.35);
 }
 
 .sensor-marker-critical {
-  background: rgba(211, 47, 47, 0.9);
-  border: 2px solid #FF5252;
-  box-shadow: 0 0 16px #FF1744;
-  animation: pulse-red 1.8s infinite;
+  background: var(--color-risk-critical);
+  border: 2px solid #FFFFFF;
+  box-shadow: 0 2px 10px rgba(211, 47, 47, 0.45);
+  animation: pulse-ring 1.8s infinite;
 }
 
 .sensor-marker-offline {
-  background: rgba(80, 80, 80, 0.85);
-  border: 2px dashed #B0BEC5;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+  background: #78909C;
+  border: 2px dashed #FFFFFF;
 }
 
 /* Current GPS Location Pulse Marker */
@@ -345,20 +374,20 @@
 .user-gps-center {
   width: 14px;
   height: 14px;
-  background: var(--brand-cyan);
+  background: var(--color-blue-500);
   border: 2px solid #FFFFFF;
   border-radius: 50%;
   position: absolute;
   top: 4px;
   left: 4px;
-  box-shadow: 0 0 10px var(--brand-cyan);
+  box-shadow: 0 0 8px var(--color-blue-500);
 }
 
 .user-gps-pulse {
   position: absolute;
   inset: -6px;
   border-radius: 50%;
-  border: 2px solid var(--brand-cyan);
+  border: 2px solid var(--color-blue-500);
   animation: gpsPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
 }
 
@@ -374,20 +403,21 @@
   right: 20px;
   width: 380px;
   max-width: calc(100% - 40px);
-  background: rgba(8, 28, 43, 0.94);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
-  border: 1px solid var(--border-highlight);
+  background: rgba(255, 255, 255, 0.96);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-lg), 0 0 30px rgba(0, 0, 0, 0.8);
+  box-shadow: var(--shadow-lg);
   padding: 20px;
-  z-index: 500 !important; /* Strictly below header (z-index: 99999) and portal dropdown (z-index: 100001) */
+  z-index: var(--z-map-controls) !important; /* Kept strictly below header/dropdown */
   animation: slideUp 250ms cubic-bezier(0.16, 1, 0.3, 1);
   max-height: calc(100% - 40px);
   overflow-y: auto;
+  color: var(--color-text-primary);
 }
 
-/* Mobile Draggable Bottom Sheet Override */
+/* Mobile Bottom Sheet Override */
 @media (max-width: 768px) {
   .location-info-panel {
     position: fixed !important;
@@ -396,16 +426,16 @@
     right: 0 !important;
     width: 100% !important;
     max-width: 100% !important;
-    border-radius: 24px 24px 0 0 !important;
-    max-height: calc(85vh - var(--header-height)) !important;
-    z-index: 900 !important; /* Stays below header so portal dropdown is never blocked! */
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.9) !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: calc(82vh - var(--header-height)) !important;
+    z-index: var(--z-nav) !important;
+    box-shadow: 0 -4px 20px rgba(11, 31, 51, 0.12) !important;
   }
-  
+
   .bottom-sheet-drag-handle {
     width: 44px;
     height: 4px;
-    background: rgba(255, 255, 255, 0.3);
+    background: var(--color-border-strong);
     border-radius: 2px;
     margin: -8px auto 14px auto;
   }
@@ -416,26 +446,27 @@
   align-items: flex-start;
   justify-content: space-between;
   margin-bottom: 12px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 8px;
 }
 
 .zone-title {
   font-size: 1.15rem;
-  font-weight: 800;
-  color: #fff;
+  font-weight: 700;
+  color: var(--color-navy);
 }
 
 .zone-subtitle {
   font-size: 0.8rem;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
 }
 
 .risk-score-display {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: rgba(7, 21, 34, 0.7);
+  background: var(--color-blue-50);
+  border: 1px solid var(--color-border);
   padding: 12px;
   border-radius: var(--radius-md);
   margin-bottom: 14px;
@@ -456,13 +487,13 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.8rem;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
   margin-bottom: 3px;
 }
 
 .factor-progress-bg {
   height: 6px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-blue-100);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
@@ -470,22 +501,53 @@
 .factor-progress-fill {
   height: 100%;
   border-radius: var(--radius-full);
-  transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
+  transition: width 400ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .ai-reasoning-box {
-  background: rgba(41, 182, 246, 0.08);
-  border: 1px solid rgba(41, 182, 246, 0.25);
+  background: var(--color-blue-50);
+  border: 1px solid var(--color-blue-200);
   border-radius: var(--radius-md);
   padding: 10px;
   font-size: 0.82rem;
-  color: #B0BEC5;
+  color: var(--color-text-secondary);
   margin: 12px 0;
   line-height: 1.4;
 }
 
 .ai-reasoning-box strong {
-  color: var(--brand-cyan);
+  color: var(--color-blue-600);
   display: block;
   margin-bottom: 4px;
+}
+
+/* Risk Zone SVG / Path Overlays (GIS) */
+.risk-zone-critical {
+  fill: var(--color-risk-critical);
+  opacity: 0.35;
+}
+
+.risk-zone-high {
+  fill: var(--color-risk-high);
+  opacity: 0.32;
+}
+
+.risk-zone-moderate {
+  fill: var(--color-risk-moderate);
+  opacity: 0.30;
+}
+
+.risk-zone-low {
+  fill: var(--color-risk-low);
+  opacity: 0.22;
+}
+
+.risk-zone-critical:hover,
+.risk-zone-high:hover,
+.risk-zone-moderate:hover,
+.risk-zone-low:hover {
+  opacity: 0.5;
+  filter: brightness(1.05);
+  transition: opacity 0.2s ease, filter 0.2s ease;
+  cursor: pointer;
 }

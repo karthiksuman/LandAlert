@@ -69,18 +69,19 @@ const AuthModal = () => {
         className="modal-content auth-modal-box" 
         onClick={e => e.stopPropagation()}
         style={{
-          backgroundImage: `linear-gradient(rgba(7, 21, 34, 0.88), rgba(7, 21, 34, 0.94)), url(${currentMeta.bgImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          background: '#FFFFFF',
           position: 'relative',
-          padding: '32px 28px'
+          padding: '32px 28px',
+          borderRadius: '16px',
+          boxShadow: 'var(--shadow-lg)',
+          border: '1px solid var(--color-border)'
         }}
       >
         {/* Close Button */}
         <button 
           className="btn-secondary" 
           onClick={() => setAuthModalRole(null)}
-          style={{ position: 'absolute', top: 16, right: 16, padding: '6px 10px', borderRadius: '50%' }}
+          style={{ position: 'absolute', top: 16, right: 16, padding: '6px 10px', borderRadius: '50%', minHeight: '36px' }}
         >
           <X size={18} />
         </button>
@@ -90,33 +91,32 @@ const AuthModal = () => {
             style={{ 
               width: '56px', 
               height: '56px', 
-              borderRadius: '16px', 
-              background: 'rgba(255, 255, 255, 0.08)', 
-              border: `1px solid ${currentMeta.iconColor}`,
+              borderRadius: '14px', 
+              background: 'var(--color-blue-50)', 
+              border: `1px solid var(--color-blue-200)`,
               display: 'flex', 
               alignItems: 'center', 
-              justifyContent: 'center',
-              margin: '0 auto 12px',
-              boxShadow: `0 0 20px ${currentMeta.iconColor}40`
+              justifyContent: 'center', 
+              margin: '0 auto 12px'
             }}
           >
             <RoleIcon size={28} color={currentMeta.iconColor} />
           </div>
-          <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '4px' }}>
+          <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
             {currentMeta.title}
           </h2>
-          <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>
             {currentMeta.subtitle}
           </p>
         </div>
 
         {error && (
           <div style={{ 
-            background: 'rgba(211, 47, 47, 0.2)', 
-            border: '1px solid #E57373', 
+            background: '#FDECEC', 
+            border: '1px solid #FFCDD2', 
             borderRadius: '8px', 
             padding: '10px', 
-            color: '#FFCDD2', 
+            color: '#C62828', 
             fontSize: '0.85rem', 
             marginBottom: '16px', 
             textAlign: 'center' 
@@ -166,12 +166,14 @@ const AuthModal = () => {
             style={{ 
               alignSelf: 'flex-start', 
               fontSize: '0.78rem', 
-              color: 'var(--brand-cyan)', 
-              background: 'rgba(41, 182, 246, 0.08)',
-              border: '1px dashed rgba(41, 182, 246, 0.3)',
+              fontWeight: 600,
+              color: 'var(--color-blue-600)', 
+              background: 'var(--color-blue-50)',
+              border: '1px dashed var(--color-blue-300)',
               padding: '6px 12px',
               borderRadius: '6px',
-              marginTop: '4px'
+              marginTop: '4px',
+              cursor: 'pointer'
             }}
           >
             <Sparkles size={12} />

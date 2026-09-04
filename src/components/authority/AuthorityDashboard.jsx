@@ -24,10 +24,10 @@ const AuthorityDashboard = () => {
       {/* Top Action Bar */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <div>
-          <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '2px' }}>
+          <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '2px' }}>
             Disaster Operations Command & Control Center
           </h2>
-          <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+          <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
             Real-Time GIS Predictive Hazard Map & Incident Dispatch • North-East India Sector
           </p>
         </div>
@@ -53,8 +53,8 @@ const AuthorityDashboard = () => {
         <div className="authority-triage-panel">
           <div className="triage-header">
             <div>
-              <h3 style={{ fontSize: '1.05rem', color: '#fff' }}>Citizen Reports Triage</h3>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700 }}>Citizen Reports Triage</h3>
+              <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
                 {pendingReports.length} pending operations review
               </span>
             </div>
@@ -65,7 +65,7 @@ const AuthorityDashboard = () => {
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {pendingReports.length === 0 ? (
-              <div style={{ padding: '24px 10px', textAlign: 'center', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
+              <div style={{ padding: '24px 10px', textAlign: 'center', color: 'var(--color-text-muted)', fontSize: '0.85rem' }}>
                 ✓ No unreviewed citizen reports in queue.
               </div>
             ) : (
@@ -73,19 +73,19 @@ const AuthorityDashboard = () => {
                 <div key={report.id} className="report-triage-card">
                   <div className="report-triage-header">
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--brand-cyan)', fontFamily: 'var(--font-mono)' }}>
+                      <span style={{ fontSize: '0.8rem', fontWeight: 800, color: 'var(--color-blue-600)', fontFamily: 'var(--font-mono)' }}>
                         {report.id}
                       </span>
                       <span className="badge badge-critical" style={{ fontSize: '0.65rem' }}>
                         {report.status}
                       </span>
                     </div>
-                    <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                    <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>
                       {report.timestamp.split(' ')[1]}
                     </span>
                   </div>
 
-                  <h4 style={{ fontSize: '0.88rem', color: '#fff', marginBottom: '4px' }}>
+                  <h4 style={{ fontSize: '0.88rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
                     {report.hazardType} • {report.locationName}
                   </h4>
 

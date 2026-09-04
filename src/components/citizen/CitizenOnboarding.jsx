@@ -61,8 +61,8 @@ const CitizenOnboarding = () => {
         {step === 1 && (
           <div>
             <div className="onboarding-header">
-              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'rgba(41, 182, 246, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Globe size={26} color="#29B6F6" />
+              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'var(--color-blue-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Globe size={26} color="var(--color-blue-500)" />
               </div>
               <h2>{t.onboarding?.step1Title || "Select Preferred Language"}</h2>
               <p>{t.onboarding?.step1Desc || "Choose your language for disaster warnings and interface"}</p>
@@ -96,8 +96,8 @@ const CitizenOnboarding = () => {
         {step === 2 && (
           <div>
             <div className="onboarding-header">
-              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'rgba(46, 125, 50, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShieldCheck size={26} color="#66BB6A" />
+              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'var(--color-risk-low-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ShieldCheck size={26} color="var(--color-risk-low)" />
               </div>
               <h2>{t.onboarding?.step2Title || "Terms & Safety Agreement"}</h2>
               <p>{t.onboarding?.step2Desc || "Please review disaster data usage and citizen guidelines"}</p>
@@ -140,8 +140,8 @@ const CitizenOnboarding = () => {
         {step === 3 && (
           <div>
             <div className="onboarding-header">
-              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'rgba(21, 101, 192, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Mountain size={26} color="#29B6F6" />
+              <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'var(--color-blue-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Mountain size={26} color="var(--color-blue-500)" />
               </div>
               <h2>{t.onboarding?.step3Title || "Permissions for Safety"}</h2>
               <p>{t.onboarding?.step3Desc || "Allow location and notifications for life-saving warnings"}</p>
@@ -154,19 +154,19 @@ const CitizenOnboarding = () => {
                   <MapPin size={22} />
                 </div>
                 <div>
-                  <h4 style={{ color: '#fff', fontSize: '0.92rem' }}>{t.onboarding?.locationTitle || "Current Location Access"}</h4>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                  <h4 style={{ color: 'var(--color-navy)', fontSize: '0.92rem', fontWeight: 700 }}>{t.onboarding?.locationTitle || "Current Location Access"}</h4>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
                     {t.onboarding?.locationDesc || "Pinpoints your position against real-time geological risk zones"}
                   </p>
                 </div>
               </div>
 
               <button
-                className={locationGranted ? "btn-secondary" : "btn-outline-cyan"}
+                className={locationGranted ? "btn-secondary" : "btn-primary"}
                 style={{ fontSize: '0.8rem', padding: '8px 12px' }}
                 onClick={handleAllowLocation}
               >
-                {locationGranted ? <Check size={14} color="#00E676" /> : null}
+                {locationGranted ? <Check size={14} color="var(--color-risk-low)" /> : null}
                 {locationGranted ? (t.onboarding?.granted || "Allowed") : (t.onboarding?.allowLocation || "Allow")}
               </button>
             </div>
@@ -174,12 +174,12 @@ const CitizenOnboarding = () => {
             {/* Notification Permission Card */}
             <div className="permission-card">
               <div className="permission-icon-text">
-                <div className="permission-icon" style={{ background: 'rgba(211, 47, 47, 0.15)', color: '#FF5252' }}>
+                <div className="permission-icon" style={{ background: 'var(--color-risk-critical-bg)', color: 'var(--color-risk-critical)' }}>
                   <Bell size={22} />
                 </div>
                 <div>
-                  <h4 style={{ color: '#fff', fontSize: '0.92rem' }}>{t.onboarding?.notifyTitle || "Emergency Notifications"}</h4>
-                  <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
+                  <h4 style={{ color: 'var(--color-navy)', fontSize: '0.92rem', fontWeight: 700 }}>{t.onboarding?.notifyTitle || "Emergency Notifications"}</h4>
+                  <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
                     {t.onboarding?.notifyDesc || "Sends urgent high-priority disaster warnings and siren alerts"}
                   </p>
                 </div>

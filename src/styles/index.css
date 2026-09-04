@@ -1,96 +1,161 @@
 /* ==========================================================================
-   TERRA-ALERT / LEWDMS DESIGN SYSTEM & GLOBAL STYLES
+   TERRA-ALERT INDIA / LEWDMS DESIGN SYSTEM & GLOBAL STYLES
+   Theme: Professional Government-Grade Disaster Management (Cool White + Light Blue)
    ========================================================================== */
 
 :root {
-  /* Futuristic Command Center Color Palette */
-  --bg-primary: #040E17;
-  --bg-secondary: #081C2B;
-  --bg-card: rgba(8, 28, 43, 0.85);
-  --bg-card-hover: rgba(13, 38, 59, 0.95);
-  --bg-glass: rgba(8, 28, 43, 0.82);
-  --bg-glass-light: rgba(25, 199, 255, 0.08);
-  
-  --border-subtle: rgba(255, 255, 255, 0.1);
-  --border-glass: rgba(25, 199, 255, 0.18);
-  --border-highlight: rgba(25, 199, 255, 0.5);
-  --border-critical: rgba(255, 59, 59, 0.55);
-  
-  --text-primary: #FFFFFF;
-  --text-secondary: #C4D3E0;
-  --text-muted: #7E95A8;
-  --text-inverse: #040E17;
-  
-  /* Brand & Status Colors */
-  --brand-blue: #1687FF;
-  --brand-blue-hover: #19C7FF;
-  --brand-cyan: #19C7FF;
-  --brand-cyan-glow: rgba(25, 199, 255, 0.4);
-  --cyan: #19C7FF;
-  --cyan-glow: rgba(25, 199, 255, 0.45);
-  --green: #19D47B;
-  --green-glow: rgba(25, 212, 123, 0.4);
-  
-  /* Risk Levels */
-  --risk-critical: #FF3B3B;
-  --risk-critical-bg: rgba(255, 59, 59, 0.18);
-  --risk-critical-glow: rgba(255, 59, 59, 0.5);
-  
-  --risk-high: #FF8A00;
-  --risk-high-bg: rgba(255, 138, 0, 0.18);
-  --risk-high-glow: rgba(255, 138, 0, 0.45);
-  
-  --risk-moderate: #FFD43B;
-  --risk-moderate-bg: rgba(255, 212, 59, 0.18);
-  --risk-moderate-glow: rgba(255, 212, 59, 0.4);
-  
-  --risk-low: #19D47B;
-  --risk-low-bg: rgba(25, 212, 123, 0.18);
-  --risk-low-glow: rgba(25, 212, 123, 0.45);
-  
+  /* ==========================================
+     1. COLOR PALETTE & DESIGN TOKENS
+     ========================================== */
+  /* Base / Theme */
+  --color-bg-primary: #F7FAFC;        /* cool white app background */
+  --color-bg-secondary: #FFFFFF;      /* card/panel surfaces */
+  --color-bg-tertiary: #EAF2FA;       /* subtle section backgrounds */
+  --color-surface-glass: rgba(255, 255, 255, 0.75); /* glass panels over map */
+
+  /* Aliases for universal selector compatibility */
+  --bg-primary: #F7FAFC;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #EAF2FA;
+  --bg-card: #FFFFFF;
+  --bg-card-hover: #F0F6FC;
+  --bg-glass: rgba(255, 255, 255, 0.85);
+  --bg-glass-light: rgba(21, 101, 192, 0.05);
+  --surface-glass: rgba(255, 255, 255, 0.75);
+
+  /* Light Blue Family */
+  --color-blue-50:  #EAF4FD;
+  --color-blue-100: #D2E9FB;
+  --color-blue-200: #A9D3F5;
+  --color-blue-300: #7CB9EC;
+  --color-blue-400: #4A9BE0;
+  --color-blue-500: #1565C0;          /* primary brand blue */
+  --color-blue-600: #0D47A1;
+  --color-navy: #0B1F33;              /* headers, dark UI chrome */
+
+  /* Aliases */
+  --blue-50:  #EAF4FD;
+  --blue-100: #D2E9FB;
+  --blue-200: #A9D3F5;
+  --blue-300: #7CB9EC;
+  --blue-400: #4A9BE0;
+  --blue-500: #1565C0;
+  --blue-600: #0D47A1;
+  --navy:     #0B1F33;
+  --brand-blue: #1565C0;
+  --brand-blue-hover: #0D47A1;
+  --brand-cyan: #1565C0;
+  --brand-cyan-glow: rgba(21, 101, 192, 0.25);
+  --cyan: #1565C0;
+  --cyan-glow: rgba(21, 101, 192, 0.25);
+  --green: #388E3C;
+  --green-glow: rgba(56, 142, 60, 0.25);
+
+  /* Risk / Status Colors (Reserved strictly for risk-status signaling) */
+  --color-risk-critical: #D32F2F;
+  --color-risk-high: #F57C00;
+  --color-risk-moderate: #FBC02D;
+  --color-risk-low: #388E3C;
+
+  /* Aliases */
+  --risk-critical: #D32F2F;
+  --risk-critical-bg: #FDECEC;
+  --risk-critical-glow: rgba(211, 47, 47, 0.35);
+
+  --risk-high: #F57C00;
+  --risk-high-bg: #FFF3E0;
+  --risk-high-glow: rgba(245, 124, 0, 0.35);
+
+  --risk-moderate: #FBC02D;
+  --risk-moderate-bg: #FFFDE7;
+  --risk-moderate-glow: rgba(251, 192, 45, 0.35);
+
+  --risk-low: #388E3C;
+  --risk-low-bg: #E8F5E9;
+  --risk-low-glow: rgba(56, 142, 60, 0.35);
+
+  /* Text Colors */
+  --color-text-primary: #10202E;
+  --color-text-secondary: #4A5A68;
+  --color-text-muted: #8393A0;
+  --color-text-on-dark: #F2F7FC;
+
+  /* Aliases */
+  --text-primary: #10202E;
+  --text-secondary: #4A5A68;
+  --text-muted: #8393A0;
+  --text-on-dark: #F2F7FC;
+  --text-inverse: #FFFFFF;
+
+  /* Borders / Dividers */
+  --color-border: #DCE7F0;
+  --color-border-strong: #B9CFE0;
+  --border: #DCE7F0;
+  --border-strong: #B9CFE0;
+  --border-subtle: #E2ECF5;
+  --border-glass: rgba(21, 101, 192, 0.15);
+  --border-highlight: #A9D3F5;
+
+  /* Shadows (Tinted blue, not pure black) */
+  --shadow-color: 210deg 45% 45%;
+  --shadow-sm: 0 1px 2px hsl(var(--shadow-color) / 0.08);
+  --shadow-md: 0 4px 12px hsl(var(--shadow-color) / 0.10);
+  --shadow-lg: 0 12px 32px hsl(var(--shadow-color) / 0.16);
+  --shadow-focus: 0 0 0 3px rgba(21, 101, 192, 0.25);
+  --shadow-glow: 0 0 16px rgba(21, 101, 192, 0.2);
+
+  /* Z-Index Scale (Centralized) */
+  --z-map-base: 0;
+  --z-map-overlay: 100;
+  --z-map-controls: 500;
+  --z-nav: 800;
+  --z-dropdown: 900;
+  --z-modal-backdrop: 1000;
+  --z-modal: 1010;
+  --z-toast-alert: 1100;
+
   /* Typography */
-  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  --font-heading: 'Outfit', var(--font-main);
+  --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, system-ui, sans-serif;
+  --font-heading: 'Inter', var(--font-main);
   --font-mono: 'JetBrains Mono', monospace;
-  
-  /* Elevation & Shadows */
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.5);
-  --shadow-lg: 0 12px 36px rgba(0, 0, 0, 0.7);
-  --shadow-glow: 0 0 24px var(--cyan-glow);
-  
+
   /* Transitions */
   --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
   --transition-normal: 220ms cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-smooth: 350ms cubic-bezier(0.16, 1, 0.3, 1);
-  
+  --transition-smooth: 300ms cubic-bezier(0.16, 1, 0.3, 1);
+
   /* Layout Constants */
   --header-height: 64px;
-  --bottom-nav-height: 68px;
+  --bottom-nav-height: 64px;
   --sidebar-width: 260px;
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 16px;
-  --radius-xl: 20px;
+  --radius-lg: 14px;
+  --radius-xl: 16px;
   --radius-pill: 9999px;
   --radius-full: 9999px;
 }
 
-/* Reset & Box Sizing */
+/* ==========================================
+   2. RESET & GLOBAL BASE
+   ========================================== */
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
 }
 
-html, body {
+html {
+  overflow-x: hidden;
+}
+
+body {
   width: 100%;
-  height: 100%;
   min-height: 100%;
-  background-color: var(--bg-primary);
-  color: var(--text-primary);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
   font-family: var(--font-main);
-  font-size: 15px;
+  font-size: clamp(0.9rem, 0.85rem + 0.2vw, 1rem);
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -98,39 +163,138 @@ html, body {
 }
 
 #root {
-  min-height: 100%;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
+  background-color: var(--color-bg-primary);
 }
 
-/* Typography Hierarchy */
+/* Container */
+.container {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: clamp(1rem, 2vw, 2.5rem);
+}
+
+/* Responsive Grid */
+.grid-responsive {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+/* Section Band */
+.section-band {
+  background: linear-gradient(180deg, var(--color-blue-50) 0%, var(--color-bg-primary) 100%);
+}
+
+/* ==========================================
+   3. TYPOGRAPHY
+   ========================================== */
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
-  font-weight: 700;
-  color: var(--text-primary);
   line-height: 1.25;
 }
 
-h1 { font-size: 1.8rem; }
-h2 { font-size: 1.4rem; }
-h3 { font-size: 1.15rem; }
-h4 { font-size: 1.0rem; }
+h1 {
+  font-size: clamp(1.5rem, 1.1rem + 1.5vw, 2.25rem);
+  font-weight: 700;
+  color: var(--color-navy);
+}
+
+h2 {
+  font-size: clamp(1.2rem, 1rem + 0.8vw, 1.6rem);
+  font-weight: 600;
+  color: var(--color-navy);
+}
+
+h3 {
+  font-size: clamp(1.05rem, 0.95rem + 0.5vw, 1.3rem);
+  font-weight: 600;
+  color: var(--color-navy);
+}
+
+h4 {
+  font-size: 1.0rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
 
 p {
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
+}
+
+.hero-title {
+  text-shadow: 0 1px 3px rgba(11, 31, 51, 0.25);
 }
 
 a {
-  color: var(--brand-cyan);
+  color: var(--color-blue-500);
   text-decoration: none;
   transition: color var(--transition-fast);
 }
 
 a:hover {
+  color: var(--color-blue-600);
   text-decoration: underline;
 }
 
-/* Button & Interactive Elements */
+/* ==========================================
+   4. CORE SURFACES: CARDS & PANELS
+   ========================================== */
+.card,
+.glass-panel {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: var(--shadow-sm);
+  padding: 1.25rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.card:hover,
+.glass-panel-hoverable:hover,
+.card-tilt-3d:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-strong);
+}
+
+.card--interactive:active,
+.card:active {
+  transform: translateY(-1px) scale(0.99);
+}
+
+/* Risk Cards with Left Accent Bar (Cool palette dominant) */
+.risk-card {
+  border-left: 5px solid var(--color-risk-high);
+  border-radius: 12px;
+}
+
+.risk-card[data-level="critical"],
+.risk-card.critical {
+  border-left-color: var(--color-risk-critical);
+}
+
+.risk-card[data-level="high"],
+.risk-card.high {
+  border-left-color: var(--color-risk-high);
+}
+
+.risk-card[data-level="moderate"],
+.risk-card.moderate {
+  border-left-color: var(--color-risk-moderate);
+}
+
+.risk-card[data-level="low"],
+.risk-card.low {
+  border-left-color: var(--color-risk-low);
+}
+
+/* ==========================================
+   5. BUTTONS & INTERACTIVE CONTROLS
+   ========================================== */
 button {
   font-family: var(--font-main);
   cursor: pointer;
@@ -141,160 +305,165 @@ button {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-size: 0.95rem;
+  font-size: 0.92rem;
   font-weight: 600;
   border-radius: var(--radius-md);
-  padding: 10px 18px;
-  transition: all var(--transition-normal);
-}
-
-button:active {
-  transform: scale(0.98);
+  padding: 0.65rem 1.4rem;
+  min-height: 44px; /* Accessible touch target */
+  transition: transform 0.15s ease, box-shadow 0.15s ease, filter 0.15s ease;
 }
 
 .btn-primary {
-  background: linear-gradient(135deg, var(--brand-blue) 0%, #1976D2 100%);
-  color: #FFFFFF;
-  box-shadow: 0 4px 12px rgba(21, 101, 192, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: linear-gradient(135deg, var(--color-blue-400), var(--color-blue-500));
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  box-shadow: var(--shadow-sm);
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #1976D2 0%, #2196F3 100%);
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(21, 101, 192, 0.6);
+  box-shadow: var(--shadow-md);
+  filter: brightness(1.05);
 }
 
-.btn-critical {
-  background: linear-gradient(135deg, var(--risk-critical) 0%, #B71C1C 100%);
-  color: #FFFFFF;
-  box-shadow: 0 4px 14px rgba(211, 47, 47, 0.5);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-}
-
-.btn-critical:hover {
-  background: linear-gradient(135deg, #E53935 0%, var(--risk-critical) 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(211, 47, 47, 0.7);
+.btn-primary:active {
+  transform: translateY(0);
+  filter: brightness(0.95);
 }
 
 .btn-secondary {
-  background: var(--bg-glass-light);
-  color: var(--text-primary);
-  border: 1px solid var(--border-subtle);
-  backdrop-filter: blur(10px);
+  background: var(--color-blue-50);
+  color: var(--color-blue-600);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.14);
-  border-color: rgba(255, 255, 255, 0.25);
+  background: var(--color-blue-100);
+  border-color: var(--color-border-strong);
   transform: translateY(-2px);
+}
+
+.btn-critical {
+  background: var(--color-risk-critical);
+  color: #FFFFFF;
+  box-shadow: 0 2px 8px rgba(211, 47, 47, 0.35);
+  border-radius: 10px;
+}
+
+.btn-critical:hover {
+  filter: brightness(1.08);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(211, 47, 47, 0.45);
 }
 
 .btn-outline-cyan {
-  border: 1px solid var(--brand-cyan);
-  color: var(--brand-cyan);
-  background: rgba(41, 182, 246, 0.08);
+  border: 1px solid var(--color-blue-500);
+  color: var(--color-blue-500);
+  background: var(--color-blue-50);
+  border-radius: 10px;
 }
 
 .btn-outline-cyan:hover {
-  background: rgba(41, 182, 246, 0.2);
+  background: var(--color-blue-100);
   transform: translateY(-2px);
-  box-shadow: 0 0 12px var(--brand-cyan-glow);
 }
 
-/* Glass Card Base */
-.glass-panel {
-  background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glass);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  transition: transform var(--transition-normal), border-color var(--transition-normal), box-shadow var(--transition-normal);
+/* SOS Button */
+.sos-button {
+  background: var(--color-risk-critical);
+  color: #fff;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(211, 47, 47, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.glass-panel-hoverable:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-highlight);
-  box-shadow: var(--shadow-lg), 0 0 20px rgba(25, 199, 255, 0.2);
+.sos-button:hover {
+  transform: scale(1.06);
 }
 
-/* Card Micro-Hover Depth (UI Components Only - Not GIS Map) */
-.card-tilt-3d {
-  transition: transform 220ms cubic-bezier(0.16, 1, 0.3, 1), box-shadow 220ms ease, border-color 220ms ease;
-  position: relative;
+.sos-button:active {
+  transform: scale(0.95);
 }
 
-.card-tilt-3d:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 18px rgba(25, 199, 255, 0.18);
-  border-color: rgba(25, 199, 255, 0.45);
-}
-
-/* Form Inputs */
+/* ==========================================
+   6. FORM INPUTS
+   ========================================== */
 input, textarea, select {
   font-family: var(--font-main);
-  background: rgba(7, 21, 34, 0.85);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
-  color: var(--text-primary);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  color: var(--color-text-primary);
   padding: 10px 14px;
-  font-size: 0.95rem;
-  transition: all var(--transition-fast);
+  font-size: 0.92rem;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
   outline: none;
   width: 100%;
 }
 
 input:focus, textarea:focus, select:focus {
-  border-color: var(--brand-cyan);
-  box-shadow: 0 0 0 3px var(--brand-cyan-glow);
+  border-color: var(--color-blue-500);
+  box-shadow: var(--shadow-focus);
 }
 
-/* Status Badges */
+/* ==========================================
+   7. STATUS BADGES & PULSES
+   ========================================== */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 6px;
   padding: 4px 10px;
   border-radius: var(--radius-full);
-  font-size: 0.8rem;
+  font-size: 0.78rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.4px;
 }
 
 .badge-critical {
   background: var(--risk-critical-bg);
-  color: #FF8A80;
-  border: 1px solid var(--risk-critical);
+  color: var(--color-risk-critical);
+  border: 1px solid var(--color-risk-critical);
 }
 
 .badge-high {
   background: var(--risk-high-bg);
-  color: #FFD180;
-  border: 1px solid var(--risk-high);
+  color: #C25E00;
+  border: 1px solid var(--color-risk-high);
 }
 
 .badge-moderate {
   background: var(--risk-moderate-bg);
-  color: #FFFF8D;
-  border: 1px solid var(--risk-moderate);
+  color: #9C6C00;
+  border: 1px solid #D4A017;
 }
 
 .badge-low {
   background: var(--risk-low-bg);
-  color: #B9F6CA;
-  border: 1px solid var(--risk-low);
+  color: var(--color-risk-low);
+  border: 1px solid var(--color-risk-low);
 }
 
 .badge-info {
-  background: rgba(41, 182, 246, 0.15);
-  color: #80D8FF;
-  border: 1px solid var(--brand-cyan);
+  background: var(--color-blue-50);
+  color: var(--color-blue-600);
+  border: 1px solid var(--color-blue-300);
 }
 
-/* Pulsing Dots */
+/* Pulse only for CRITICAL / active alerts */
+.badge-pulse {
+  animation: pulse-ring 1.8s ease-out infinite;
+}
+
+@keyframes pulse-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.45); }
+  70%  { box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+}
+
 .pulse-dot {
   width: 10px;
   height: 10px;
@@ -304,75 +473,145 @@ input:focus, textarea:focus, select:focus {
 }
 
 .pulse-dot-critical {
-  background-color: var(--risk-critical);
-  box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7);
-  animation: pulse-red 2s infinite;
+  background-color: var(--color-risk-critical);
+  animation: pulse-ring 1.8s ease-out infinite;
 }
 
 .pulse-dot-high {
-  background-color: var(--risk-high);
-  box-shadow: 0 0 0 0 rgba(245, 124, 0, 0.7);
-  animation: pulse-orange 2.5s infinite;
+  background-color: var(--color-risk-high);
 }
 
 .pulse-dot-moderate {
-  background-color: var(--risk-moderate);
+  background-color: var(--color-risk-moderate);
 }
 
 .pulse-dot-low {
-  background-color: var(--risk-low);
+  background-color: var(--color-risk-low);
 }
 
-@keyframes pulse-red {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(211, 47, 47, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(211, 47, 47, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(211, 47, 47, 0); }
+/* ==========================================
+   8. ALERTS & NOTIFICATIONS
+   ========================================== */
+.alert-banner {
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-md);
+  border-left: 6px solid var(--color-blue-500);
+  animation: alert-slide-in 0.35s ease-out;
 }
 
-@keyframes pulse-orange {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 124, 0, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(245, 124, 0, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(245, 124, 0, 0); }
+.alert-banner--critical {
+  background: #FDECEC;
+  border-left-color: var(--color-risk-critical);
+  border-color: #FFCDD2;
 }
 
-/* Modal Overlay */
+.alert-banner--high {
+  background: #FFF3E0;
+  border-left-color: var(--color-risk-high);
+  border-color: #FFE0B2;
+}
+
+@keyframes alert-slide-in {
+  from { opacity: 0; transform: translateY(-12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================
+   9. TABLES & DATA OVERFLOW
+   ========================================== */
+.data-table-wrapper,
+.data-table-container {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  background: var(--color-bg-secondary);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 640px;
+  text-align: left;
+}
+
+.data-table thead {
+  background: var(--color-blue-50);
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.data-table th {
+  padding: 12px 16px;
+  color: var(--color-navy);
+  font-weight: 700;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid var(--color-border);
+}
+
+.data-table td {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  font-size: 0.88rem;
+}
+
+.data-table tbody tr:hover {
+  background: var(--color-blue-50);
+}
+
+/* ==========================================
+   10. MODALS & DIALOGS
+   ========================================== */
+.modal-backdrop,
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(4, 12, 20, 0.82);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  background: rgba(11, 31, 51, 0.45);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
+  z-index: var(--z-modal-backdrop);
   padding: 16px;
-  animation: fadeIn 200ms ease-out;
+  animation: modal-fade 0.2s ease-out;
 }
 
+.modal,
 .modal-content {
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  position: relative;
+  z-index: var(--z-modal);
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid var(--color-border);
   box-shadow: var(--shadow-lg);
   width: 100%;
   max-width: 580px;
   max-height: 90vh;
   overflow-y: auto;
-  animation: slideUp 250ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: modal-rise 0.25s ease-out;
 }
 
-@keyframes fadeIn {
+@keyframes modal-fade {
   from { opacity: 0; }
-  to { opacity: 1; }
+  to   { opacity: 1; }
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+@keyframes modal-rise {
+  from { opacity: 0; transform: translateY(16px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
 }
 
-/* Accessibility: prefers-reduced-motion */
+/* ==========================================
+   11. ACCESSIBILITY & REDUCED MOTION
+   ========================================== */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     animation-duration: 0.01ms !important;
@@ -384,19 +623,19 @@ input:focus, textarea:focus, select:focus {
 
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 7px;
+  height: 7px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-primary);
+  background: var(--color-bg-primary);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--bg-card);
-  border-radius: 3px;
+  background: var(--color-border-strong);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--brand-blue);
+  background: var(--color-blue-400);
 }

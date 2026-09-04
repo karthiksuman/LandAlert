@@ -14,7 +14,7 @@ const CitizenReportsQueue = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2 style={{ fontSize: '1.3rem', color: '#fff', marginBottom: '4px' }}>
+          <h2 style={{ fontSize: '1.3rem', color: 'var(--color-navy)', marginBottom: '4px' }}>
             Citizen Field Incident Triage Queue
           </h2>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
@@ -43,13 +43,13 @@ const CitizenReportsQueue = () => {
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '10px' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-                    <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--brand-cyan)', fontFamily: 'var(--font-mono)' }}>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 800, color: 'var(--color-blue-500)', fontFamily: 'var(--font-mono)' }}>
                       {report.id}
                     </span>
                     <span className={`badge ${statusBadgeClass}`} style={{ fontSize: '0.7rem' }}>
                       {report.status}
                     </span>
-                    <span style={{ fontSize: '0.82rem', color: '#fff', fontWeight: 700 }}>
+                    <span style={{ fontSize: '0.82rem', color: 'var(--color-navy)', fontWeight: 700 }}>
                       {report.hazardType}
                     </span>
                   </div>
@@ -76,7 +76,7 @@ const CitizenReportsQueue = () => {
               </div>
 
               {report.assignedOfficer && (
-                <div style={{ background: 'rgba(21, 101, 192, 0.15)', padding: '8px 12px', borderRadius: '6px', fontSize: '0.78rem', color: 'var(--brand-cyan)', marginBottom: '12px' }}>
+                <div style={{ background: 'var(--color-blue-50)', border: '1px solid var(--color-blue-100)', padding: '8px 12px', borderRadius: '6px', fontSize: '0.78rem', color: 'var(--color-blue-600)', marginBottom: '12px' }}>
                   👷 Dispatched Field Unit: <strong>{report.assignedOfficer}</strong>
                 </div>
               )}
@@ -93,7 +93,7 @@ const CitizenReportsQueue = () => {
                       VERIFY INCIDENT
                     </button>
                     <button 
-                      className="btn-triage-reject"
+                      className="btn-triage-reject" 
                       onClick={() => addToast("Report Rejected", `Report ${report.id} marked invalid/false alarm.`, "info")}
                     >
                       <X size={14} />
@@ -113,14 +113,14 @@ const CitizenReportsQueue = () => {
                 )}
 
                 {isAssigned && (
-                  <span style={{ fontSize: '0.8rem', color: '#FFA726', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-risk-high)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <Clock size={14} />
                     Field Inspection In Progress
                   </span>
                 )}
 
                 {isResolved && (
-                  <span style={{ fontSize: '0.8rem', color: '#00E676', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                  <span style={{ fontSize: '0.8rem', color: 'var(--color-risk-low)', display: 'flex', alignItems: 'center', gap: '6px' }}>
                     <CheckCircle2 size={14} />
                     Incident Remediated & Closed
                   </span>

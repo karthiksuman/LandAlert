@@ -41,7 +41,7 @@ const PortalSwitcher = () => {
         aria-expanded={isOpen}
         aria-label="Switch Portal"
       >
-        <CurrentIcon size={16} color="#29B6F6" />
+        <CurrentIcon size={16} color="var(--color-blue-300)" />
         <span className="portal-text">{currentPortalConfig.label}</span>
         <ChevronDown size={14} style={{ transform: isOpen ? 'rotate(180deg)' : 'none', transition: 'transform 200ms' }} />
       </button>
@@ -63,13 +63,13 @@ const PortalSwitcher = () => {
                 onClick={() => handleSelect(portal.id)}
               >
                 <div className="option-icon-label">
-                  <IconComponent size={16} color={isSelected ? '#29B6F6' : '#B0BEC5'} />
+                  <IconComponent size={16} color={isSelected ? 'var(--color-blue-500)' : 'var(--color-text-muted)'} />
                   <span>{portal.label}</span>
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  {!isUnlocked && <Lock size={12} color="#78909C" />}
-                  {isSelected && <Check size={16} color="#29B6F6" />}
+                  {!isUnlocked && <Lock size={12} color="var(--color-text-muted)" />}
+                  {isSelected && <Check size={16} color="var(--color-blue-500)" />}
                 </div>
               </button>
             );

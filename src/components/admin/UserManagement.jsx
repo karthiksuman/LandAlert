@@ -14,7 +14,7 @@ const UserManagement = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2 style={{ fontSize: '1.3rem', color: '#fff', marginBottom: '2px' }}>
+          <h2 style={{ fontSize: '1.3rem', color: 'var(--color-navy)', marginBottom: '2px' }}>
             System Users & Role-Based Access Control
           </h2>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -39,8 +39,8 @@ const UserManagement = () => {
             {users.map(u => (
               <tr key={u.id}>
                 <td>
-                  <div style={{ fontWeight: 600, color: '#fff' }}>{u.name}</div>
-                  <div style={{ fontSize: '0.75rem', color: 'var(--brand-cyan)', fontFamily: 'var(--font-mono)' }}>{u.id}</div>
+                  <div style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{u.name}</div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--color-blue-500)', fontFamily: 'var(--font-mono)' }}>{u.id}</div>
                 </td>
                 <td>
                   <span className={`badge ${u.role === 'admin' ? 'badge-low' : u.role === 'authority' ? 'badge-critical' : u.role === 'fieldOfficer' ? 'badge-high' : 'badge-info'}`}>
@@ -49,7 +49,7 @@ const UserManagement = () => {
                 </td>
                 <td>{u.agency}</td>
                 <td>
-                  <span style={{ color: '#00E676', fontWeight: 600, fontSize: '0.82rem' }}>
+                  <span style={{ color: 'var(--color-risk-low)', fontWeight: 600, fontSize: '0.82rem' }}>
                     ● {u.status}
                   </span>
                 </td>

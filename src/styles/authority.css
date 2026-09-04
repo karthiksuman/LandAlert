@@ -1,25 +1,31 @@
 /* ==========================================================================
-   AUTHORITY PORTAL STYLES: COMMAND CENTER, 70% GIS MAP, TRIAGE QUEUE
+   AUTHORITY PORTAL STYLES: COMMAND CENTER, 72% GIS MAP, TRIAGE QUEUE
+   Theme: Cool White + Light Blue Government Command Interface
    ========================================================================== */
 
 .authority-layout {
   display: flex;
   min-height: calc(100vh - var(--header-height));
-  background: var(--bg-primary);
+  background: var(--color-bg-primary);
 }
 
-/* Collapsible Sidebar */
-.portal-sidebar {
-  width: var(--sidebar-width);
-  background: rgba(13, 34, 53, 0.7);
-  border-right: 1px solid var(--border-subtle);
+/* ==========================================
+   1. COLLAPSIBLE SIDEBAR
+   ========================================== */
+.portal-sidebar,
+.sidebar {
+  width: 260px;
+  background: var(--color-navy);
+  color: var(--color-text-on-dark);
   display: flex;
   flex-direction: column;
   flex-shrink: 0;
-  transition: width var(--transition-normal);
+  transition: width 0.25s ease;
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.portal-sidebar.collapsed {
+.portal-sidebar.collapsed,
+.sidebar--collapsed {
   width: 72px;
 }
 
@@ -38,24 +44,34 @@
   gap: 12px;
   padding: 10px 14px;
   border-radius: var(--radius-md);
-  color: var(--text-secondary);
+  color: var(--color-blue-100);
   font-weight: 600;
   font-size: 0.88rem;
   justify-content: flex-start;
+  min-height: 44px;
   transition: all var(--transition-fast);
 }
 
 .sidebar-nav-btn:hover {
-  background: rgba(255, 255, 255, 0.08);
-  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  color: #FFFFFF;
 }
 
 .sidebar-nav-btn.active {
-  background: rgba(21, 101, 192, 0.25);
-  color: var(--brand-cyan);
-  border-left: 3px solid var(--brand-cyan);
+  background: var(--color-blue-500);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
 }
 
+.portal-sidebar.collapsed .sidebar-label,
+.sidebar--collapsed .sidebar__label {
+  opacity: 0;
+  display: none;
+}
+
+/* ==========================================
+   2. MAIN CONTENT & COMMAND GRID
+   ========================================== */
 .authority-main-content {
   flex: 1;
   display: flex;
@@ -63,9 +79,10 @@
   padding: 16px;
   overflow-y: auto;
   gap: 16px;
+  background: var(--color-bg-primary);
 }
 
-/* 70% GIS Command View Grid */
+/* 72% GIS Command View Grid */
 .authority-command-grid {
   display: grid;
   grid-template-columns: 2.8fr 1.2fr;
@@ -79,11 +96,10 @@
   }
 }
 
+/* Authority Triage Panel */
 .authority-triage-panel {
-  background: rgba(8, 28, 43, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glass);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: 18px;
   display: flex;
@@ -91,29 +107,35 @@
   gap: 14px;
   max-height: calc(100vh - 120px);
   overflow-y: auto;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
 }
 
 .triage-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  border-bottom: 1px solid var(--border-glass);
+  border-bottom: 1px solid var(--color-border);
   padding-bottom: 10px;
 }
 
+.triage-header h3 {
+  color: var(--color-navy);
+  font-weight: 700;
+}
+
+/* Report Triage Card */
 .report-triage-card {
-  background: rgba(6, 19, 31, 0.7);
-  border: 1px solid var(--border-glass);
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
   padding: 16px;
-  transition: all var(--transition-fast);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
 }
 
 .report-triage-card:hover {
-  border-color: var(--cyan);
-  box-shadow: 0 0 16px var(--cyan-glow);
   transform: translateY(-2px);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
 }
 
 .report-triage-header {
@@ -131,40 +153,43 @@
 }
 
 .btn-triage-verify {
-  background: rgba(46, 125, 50, 0.25);
-  border: 1px solid #4CAF50;
-  color: #81C784;
-  padding: 6px 10px;
-  font-size: 0.78rem;
+  background: #E8F5E9;
+  border: 1px solid #A5D6A7;
+  color: #2E7D32;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  min-height: 36px;
 }
 
 .btn-triage-verify:hover {
-  background: #4CAF50;
-  color: #fff;
+  background: #C8E6C9;
 }
 
 .btn-triage-assign {
-  background: rgba(21, 101, 192, 0.25);
-  border: 1px solid var(--brand-blue);
-  color: var(--brand-cyan);
-  padding: 6px 10px;
-  font-size: 0.78rem;
+  background: var(--color-blue-50);
+  border: 1px solid var(--color-blue-200);
+  color: var(--color-blue-600);
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  min-height: 36px;
 }
 
 .btn-triage-assign:hover {
-  background: var(--brand-blue);
-  color: #fff;
+  background: var(--color-blue-100);
 }
 
 .btn-triage-reject {
-  background: rgba(211, 47, 47, 0.15);
-  border: 1px solid #E57373;
-  color: #FF8A80;
-  padding: 6px 10px;
-  font-size: 0.78rem;
+  background: #FFEBEE;
+  border: 1px solid #FFCDD2;
+  color: #C62828;
+  padding: 6px 12px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+  min-height: 36px;
 }
 
 .btn-triage-reject:hover {
-  background: #E53935;
-  color: #fff;
+  background: #FFCDD2;
 }

@@ -13,7 +13,7 @@ const ToastNotifications = () => {
         position: 'fixed',
         top: '74px',
         right: '16px',
-        zIndex: 9999,
+        zIndex: 'var(--z-toast-alert, 1100)',
         display: 'flex',
         flexDirection: 'column',
         gap: '10px',
@@ -27,43 +27,44 @@ const ToastNotifications = () => {
         const isWarning = toast.type === 'warning';
         const isSuccess = toast.type === 'success';
 
-        let borderColor = 'var(--border-subtle)';
-        let bgColor = 'rgba(13, 34, 53, 0.95)';
+        let borderColor = 'var(--color-blue-500)';
+        let bgColor = '#FFFFFF';
         let IconComp = Info;
-        let iconColor = '#29B6F6';
+        let iconColor = 'var(--color-blue-500)';
 
         if (isCritical) {
-          borderColor = 'var(--risk-critical)';
-          bgColor = 'rgba(38, 12, 16, 0.96)';
+          borderColor = 'var(--color-risk-critical)';
+          bgColor = '#FDECEC';
           IconComp = AlertTriangle;
-          iconColor = '#FF5252';
+          iconColor = 'var(--color-risk-critical)';
         } else if (isWarning) {
-          borderColor = 'var(--risk-high)';
-          bgColor = 'rgba(38, 24, 12, 0.96)';
+          borderColor = 'var(--color-risk-high)';
+          bgColor = '#FFFFFF';
           IconComp = AlertTriangle;
-          iconColor = '#FFA726';
+          iconColor = 'var(--color-risk-high)';
         } else if (isSuccess) {
-          borderColor = '#4CAF50';
-          bgColor = 'rgba(10, 32, 18, 0.96)';
+          borderColor = 'var(--color-risk-low)';
+          bgColor = '#FFFFFF';
           IconComp = CheckCircle2;
-          iconColor = '#66BB6A';
+          iconColor = 'var(--color-risk-low)';
         }
 
         return (
           <div
             key={toast.id}
+            className={isCritical ? "badge-pulse" : ""}
             style={{
               pointerEvents: 'auto',
               background: bgColor,
-              border: `1px solid ${borderColor}`,
+              border: '1px solid var(--color-border)',
+              borderLeft: `5px solid ${borderColor}`,
               borderRadius: '12px',
               padding: '14px 16px',
-              boxShadow: '0 8px 24px rgba(0, 0, 0, 0.6)',
-              backdropFilter: 'blur(16px)',
+              boxShadow: 'var(--shadow-lg)',
               display: 'flex',
               alignItems: 'flex-start',
               gap: '12px',
-              animation: 'slideInRight 250ms cubic-bezier(0.16, 1, 0.3, 1)'
+              animation: 'alert-slide-in 0.3s ease-out'
             }}
           >
             <div style={{ flexShrink: 0, marginTop: '2px' }}>
@@ -72,14 +73,14 @@ const ToastNotifications = () => {
 
             <div style={{ flex: 1 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2px' }}>
-                <h4 style={{ fontSize: '0.9rem', color: '#fff', fontWeight: 700 }}>
+                <h4 style={{ fontSize: '0.9rem', color: 'var(--color-navy)', fontWeight: 700 }}>
                   {toast.title}
                 </h4>
-                <span style={{ fontSize: '0.7rem', color: 'var(--text-muted)' }}>
+                <span style={{ fontSize: '0.7rem', color: 'var(--color-text-muted)' }}>
                   {toast.timestamp}
                 </span>
               </div>
-              <p style={{ fontSize: '0.82rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.4 }}>
+              <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.4 }}>
                 {toast.message}
               </p>
             </div>
@@ -90,7 +91,7 @@ const ToastNotifications = () => {
                 background: 'none',
                 border: 'none',
                 padding: '2px',
-                color: 'var(--text-muted)',
+                color: 'var(--color-text-muted)',
                 cursor: 'pointer',
                 flexShrink: 0
               }}

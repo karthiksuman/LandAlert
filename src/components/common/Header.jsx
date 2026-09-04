@@ -46,7 +46,7 @@ const Header = () => {
         {/* If logged in with non-citizen role, show user badge and logout */}
         {currentUser.role !== 'citizen' && (
           <div className="user-profile-badge">
-            <ShieldCheck size={16} color="#29B6F6" />
+            <ShieldCheck size={16} color="var(--color-blue-300)" />
             <span style={{ maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {currentUser.name}
             </span>

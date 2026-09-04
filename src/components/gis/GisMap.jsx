@@ -26,7 +26,7 @@ const GisMap = ({ mode = 'hero' }) => {
   const layerGroupRef = useRef(null);
   const telemetryGroupRef = useRef(null);
 
-  const [baseMapType, setBaseMapType] = useState('dark'); // 'dark' | 'topo' | 'satellite'
+  const [baseMapType, setBaseMapType] = useState('topo'); // 'topo' | 'light' | 'satellite' | 'dark'
   const [showLayerControls, setShowLayerControls] = useState(false);
 
   // Selected Zone Object
@@ -34,17 +34,21 @@ const GisMap = ({ mode = 'hero' }) => {
 
   // Tile Layer Definitions (2D GIS Only)
   const tileConfigs = {
-    dark: {
-      url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
-      options: { maxZoom: 19, subdomains: 'abcd', attribution: '&copy; CartoDB &copy; OpenStreetMap' }
-    },
     topo: {
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
       options: { maxZoom: 18, attribution: '&copy; Esri &copy; USGS' }
     },
+    light: {
+      url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      options: { maxZoom: 19, subdomains: 'abcd', attribution: '&copy; CartoDB &copy; OpenStreetMap' }
+    },
     satellite: {
       url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
       options: { maxZoom: 18, attribution: '&copy; Esri World Imagery' }
+    },
+    dark: {
+      url: 'https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',
+      options: { maxZoom: 19, subdomains: 'abcd', attribution: '&copy; CartoDB &copy; OpenStreetMap' }
     }
   };
 
@@ -105,9 +109,9 @@ const GisMap = ({ mode = 'hero' }) => {
         const s2 = sensors[i + 1];
 
         const line = L.polyline([s1.coordinates, s2.coordinates], {
-          color: '#19C7FF',
-          weight: 1.8,
-          opacity: 0.5,
+          color: '#1565C0',
+          weight: 2,
+          opacity: 0.6,
           dashArray: '5, 10',
           className: 'leaflet-sensor-telemetry-line'
         });
@@ -119,18 +123,18 @@ const GisMap = ({ mode = 'hero' }) => {
     if (mapLayers.riskZones) {
       locations.forEach(loc => {
         const isSelected = loc.id === selectedZoneId;
-        let color = '#19D47B'; // Low/Safe
-        let fillColor = 'rgba(25, 212, 123, 0.35)';
+        let color = '#388E3C'; // Low
+        let fillOpacity = 0.22;
 
         if (loc.riskLevel === 'CRITICAL') {
-          color = '#FF3B3B';
-          fillColor = 'rgba(255, 59, 59, 0.45)';
+          color = '#D32F2F';
+          fillOpacity = 0.35;
         } else if (loc.riskLevel === 'HIGH') {
-          color = '#FF8A00';
-          fillColor = 'rgba(255, 138, 0, 0.4)';
+          color = '#F57C00';
+          fillOpacity = 0.32;
         } else if (loc.riskLevel === 'MODERATE') {
-          color = '#FFD43B';
-          fillColor = 'rgba(255, 212, 59, 0.35)';
+          color = '#FBC02D';
+          fillOpacity = 0.30;
         }
 
         // Risk Zone Circle with soft boundary
@@ -138,9 +142,10 @@ const GisMap = ({ mode = 'hero' }) => {
           radius: loc.riskLevel === 'CRITICAL' ? 14000 : 10000,
           color: color,
           weight: isSelected ? 3.5 : 1.8,
-          fillColor: fillColor,
-          fillOpacity: isSelected ? 0.65 : 0.45,
-          dashArray: loc.riskLevel === 'CRITICAL' ? '6, 5' : null
+          fillColor: color,
+          fillOpacity: isSelected ? Math.min(0.55, fillOpacity + 0.15) : fillOpacity,
+          dashArray: loc.riskLevel === 'CRITICAL' ? '6, 5' : null,
+          className: `risk-zone-${loc.riskLevel.toLowerCase()}`
         });
 
         circle.bindTooltip(`
@@ -311,31 +316,38 @@ const GisMap = ({ mode = 'hero' }) => {
             </button>
           )}
 
-          {/* Basemap Switcher: Dark GIS | Topography | Satellite */}
+          {/* Basemap Switcher: Topography | Light GIS | Satellite | Dark */}
           <div className="map-view-switcher">
-            <button 
-              className={`map-view-pill-btn ${baseMapType === 'dark' ? 'active' : ''}`}
-              onClick={() => setBaseMapType('dark')}
-              title="CartoDB Dark Matter GIS"
-            >
-              <Map size={13} style={{ display: 'inline', marginRight: '4px' }} />
-              Dark GIS
-            </button>
             <button 
               className={`map-view-pill-btn ${baseMapType === 'topo' ? 'active' : ''}`}
               onClick={() => setBaseMapType('topo')}
-              title="Elevation Contours & Topography"
+              title="Elevation Contours & Mountain Topography"
             >
               <Mountain size={13} style={{ display: 'inline', marginRight: '4px' }} />
-              Topography
+              Topo
+            </button>
+            <button 
+              className={`map-view-pill-btn ${baseMapType === 'light' ? 'active' : ''}`}
+              onClick={() => setBaseMapType('light')}
+              title="CartoDB Clean Light GIS"
+            >
+              <Map size={13} style={{ display: 'inline', marginRight: '4px' }} />
+              Light GIS
             </button>
             <button 
               className={`map-view-pill-btn ${baseMapType === 'satellite' ? 'active' : ''}`}
               onClick={() => setBaseMapType('satellite')}
-              title="True-color Satellite Imagery"
+              title="High-Resolution Satellite Imagery"
             >
               <Satellite size={13} style={{ display: 'inline', marginRight: '4px' }} />
               Satellite
+            </button>
+            <button 
+              className={`map-view-pill-btn ${baseMapType === 'dark' ? 'active' : ''}`}
+              onClick={() => setBaseMapType('dark')}
+              title="Dark Matter GIS"
+            >
+              Dark
             </button>
           </div>
 

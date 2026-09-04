@@ -38,7 +38,7 @@ const EmergencyHelplines = () => {
     <div style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
         <div>
-          <h2 style={{ fontSize: '1.3rem', color: '#fff', marginBottom: '2px' }}>
+          <h2 style={{ fontSize: '1.3rem', color: 'var(--color-navy)', marginBottom: '2px' }}>
             Emergency Helpline Directory Management
           </h2>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -50,7 +50,7 @@ const EmergencyHelplines = () => {
 
       {/* Add New Helpline Form */}
       <form onSubmit={handleAdd} className="glass-panel" style={{ padding: '20px' }}>
-        <h4 style={{ color: '#fff', fontSize: '0.98rem', marginBottom: '12px' }}>
+        <h4 style={{ color: 'var(--color-navy)', fontSize: '0.98rem', marginBottom: '12px' }}>
           Add New Regional Emergency / Relief Line
         </h4>
 
@@ -104,20 +104,20 @@ const EmergencyHelplines = () => {
           <tbody>
             {helplines.map(hl => (
               <tr key={hl.id}>
-                <td style={{ fontWeight: 600, color: '#fff' }}>{hl.name}</td>
+                <td style={{ fontWeight: 600, color: 'var(--color-navy)' }}>{hl.name}</td>
                 <td>
                   <span className="badge badge-critical" style={{ fontSize: '0.68rem' }}>
                     {hl.category}
                   </span>
                 </td>
-                <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--brand-cyan)' }}>
+                <td style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--color-blue-500)' }}>
                   {hl.number}
                 </td>
                 <td style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{hl.description}</td>
                 <td>
                   <button 
                     onClick={() => handleDelete(hl.id)}
-                    style={{ background: 'none', border: 'none', color: '#FF5252', cursor: 'pointer', padding: '4px' }}
+                    style={{ background: 'none', border: 'none', color: 'var(--color-risk-critical)', cursor: 'pointer', padding: '4px' }}
                     title="Delete Hotline"
                   >
                     <Trash2 size={16} />

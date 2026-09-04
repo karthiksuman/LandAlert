@@ -50,7 +50,7 @@ const InspectionForm = ({ task, onSubmitted }) => {
     <form onSubmit={handleSubmit} className="glass-panel" style={{ padding: '24px' }}>
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
         <div>
-          <h3 style={{ fontSize: '1.2rem', color: '#fff', marginBottom: '2px' }}>
+          <h3 style={{ fontSize: '1.2rem', color: 'var(--color-navy)', marginBottom: '2px' }}>
             On-Site Geotechnical Inspection Form
           </h3>
           <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
@@ -134,13 +134,13 @@ const InspectionForm = ({ task, onSubmitted }) => {
       <div className="ai-analysis-box">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <Cpu size={18} color="#29B6F6" />
-            <h4 style={{ color: '#fff', fontSize: '0.92rem' }}>AI Computer Vision Fracture Analysis</h4>
+            <Cpu size={18} color="var(--color-blue-500)" />
+            <h4 style={{ color: 'var(--color-navy)', fontSize: '0.92rem' }}>AI Computer Vision Fracture Analysis</h4>
           </div>
 
           <button 
             type="button" 
-            className="btn-outline-cyan"
+            className="btn-secondary"
             style={{ fontSize: '0.78rem', padding: '6px 12px' }}
             onClick={handleRunAiVision}
             disabled={isAnalyzingAi}
@@ -151,8 +151,8 @@ const InspectionForm = ({ task, onSubmitted }) => {
         </div>
 
         {aiResult ? (
-          <div style={{ fontSize: '0.82rem', color: '#B0BEC5', lineHeight: 1.4, marginTop: '8px', background: 'rgba(7, 21, 34, 0.7)', padding: '10px', borderRadius: '6px' }}>
-            <strong style={{ color: '#29B6F6', display: 'block', marginBottom: '2px' }}>
+          <div style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', lineHeight: 1.4, marginTop: '8px', background: 'var(--color-blue-50)', border: '1px solid var(--color-blue-100)', padding: '10px', borderRadius: '6px' }}>
+            <strong style={{ color: 'var(--color-blue-600)', display: 'block', marginBottom: '2px' }}>
               ✓ Neural Geotechnical Diagnostic:
             </strong>
             {aiResult}

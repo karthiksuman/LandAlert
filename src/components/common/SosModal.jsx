@@ -47,8 +47,8 @@ const SosModal = () => {
             <PhoneCall size={24} color="#fff" />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.4rem', color: '#fff' }}>Emergency SOS Helplines</h2>
-            <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+            <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700 }}>Emergency SOS Helplines</h2>
+            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
               24/7 National, Regional & Local Disaster Operations Dispatch
             </p>
           </div>
@@ -57,8 +57,8 @@ const SosModal = () => {
         {/* Current GPS coordinates banner for emergency caller */}
         <div 
           style={{ 
-            background: 'rgba(41, 182, 246, 0.1)', 
-            border: '1px solid rgba(41, 182, 246, 0.3)', 
+            background: 'var(--color-blue-50)', 
+            border: '1px solid var(--color-border)', 
             borderRadius: '10px', 
             padding: '12px 16px',
             marginBottom: '20px',
@@ -69,19 +69,19 @@ const SosModal = () => {
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <MapPin size={20} color="#29B6F6" />
+            <MapPin size={20} color="var(--color-blue-500)" />
             <div>
-              <div style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--brand-cyan)', textTransform: 'uppercase' }}>
+              <div style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--color-blue-600)', textTransform: 'uppercase' }}>
                 Your Emergency GPS Coordinates
               </div>
-              <div style={{ fontSize: '0.92rem', color: '#fff', fontWeight: 600, fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: '0.92rem', color: 'var(--color-navy)', fontWeight: 700, fontFamily: 'var(--font-mono)' }}>
                 {userCoordinates[0].toFixed(5)}°N, {userCoordinates[1].toFixed(5)}°E
               </div>
             </div>
           </div>
           <button 
             onClick={handleCopyLocation}
-            className="btn-outline-cyan"
+            className="btn-secondary"
             style={{ padding: '6px 12px', fontSize: '0.8rem' }}
           >
             {copied ? <Check size={14} /> : <Copy size={14} />}
@@ -95,8 +95,8 @@ const SosModal = () => {
             <div 
               key={hl.id} 
               style={{ 
-                background: 'rgba(7, 21, 34, 0.65)', 
-                border: '1px solid var(--border-subtle)', 
+                background: 'var(--color-bg-tertiary)', 
+                border: '1px solid var(--color-border)', 
                 borderRadius: '10px', 
                 padding: '14px',
                 display: 'flex',
@@ -110,9 +110,9 @@ const SosModal = () => {
                   <span className="badge badge-critical" style={{ fontSize: '0.68rem', padding: '2px 8px' }}>
                     {hl.category}
                   </span>
-                  <h4 style={{ fontSize: '0.95rem', color: '#fff' }}>{hl.name}</h4>
+                  <h4 style={{ fontSize: '0.95rem', color: 'var(--color-navy)', fontWeight: 700 }}>{hl.name}</h4>
                 </div>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
+                <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', margin: 0 }}>
                   {hl.description}
                 </p>
               </div>

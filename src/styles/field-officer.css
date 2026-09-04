@@ -1,5 +1,6 @@
 /* ==========================================================================
-   FIELD OFFICER PORTAL STYLES: WORKFLOW STEPPER, TELEMETRY, AI VISION
+   FIELD OFFICER PORTAL STYLES: WORKFLOW STEPPER, TASK QUEUE, AI TELEMETRY
+   Theme: Cool White + Light Blue Emergency Response Interface
    ========================================================================== */
 
 .officer-layout {
@@ -11,20 +12,24 @@
   margin: 0 auto;
   width: 100%;
   gap: 16px;
+  background: var(--color-bg-primary);
 }
 
-/* Workflow Progress Stepper */
+/* ==========================================
+   1. WORKFLOW PROGRESS STEPPER
+   ========================================== */
 .workflow-stepper {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   padding: 16px 20px;
   position: relative;
   overflow-x: auto;
   gap: 12px;
+  box-shadow: var(--shadow-sm);
 }
 
 .step-node {
@@ -40,9 +45,9 @@
   width: 36px;
   height: 36px;
   border-radius: 50%;
-  background: rgba(255, 255, 255, 0.08);
-  border: 2px solid var(--border-subtle);
-  color: var(--text-muted);
+  background: var(--color-blue-50);
+  border: 2px solid var(--color-border);
+  color: var(--color-text-muted);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -52,50 +57,62 @@
 }
 
 .step-node.completed .step-icon-circle {
-  background: var(--brand-blue);
-  border-color: var(--brand-cyan);
-  color: #fff;
-  box-shadow: 0 0 10px var(--brand-cyan-glow);
+  background: var(--color-blue-500);
+  border-color: var(--color-blue-500);
+  color: #FFFFFF;
+  box-shadow: var(--shadow-sm);
 }
 
 .step-node.current .step-icon-circle {
-  background: var(--brand-cyan);
-  border-color: #fff;
-  color: var(--text-inverse);
-  box-shadow: 0 0 16px var(--brand-cyan-glow);
-  transform: scale(1.1);
+  background: var(--color-blue-100);
+  border-color: var(--color-blue-500);
+  color: var(--color-blue-600);
+  transform: scale(1.08);
+  box-shadow: var(--shadow-sm);
 }
 
 .step-label {
-  font-size: 0.72rem;
+  font-size: 0.74rem;
   font-weight: 600;
-  color: var(--text-muted);
+  color: var(--color-text-muted);
   text-transform: uppercase;
+  letter-spacing: 0.4px;
 }
 
 .step-node.current .step-label {
-  color: var(--brand-cyan);
+  color: var(--color-blue-600);
+  font-weight: 700;
 }
 
-/* Task Inspection Card */
+/* ==========================================
+   2. TASK INSPECTION CARD
+   ========================================== */
 .task-card {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
   padding: 20px;
-  box-shadow: var(--shadow-md);
+  box-shadow: var(--shadow-sm);
   margin-bottom: 16px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.task-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .task-card.priority-critical {
-  border-left: 4px solid var(--risk-critical);
+  border-left: 5px solid var(--color-risk-critical);
 }
 
 .task-card.priority-high {
-  border-left: 4px solid var(--risk-high);
+  border-left: 5px solid var(--color-risk-high);
 }
 
-/* Field Telemetry Form Grid */
+/* ==========================================
+   3. FIELD TELEMETRY FORM GRID
+   ========================================== */
 .telemetry-form-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -110,15 +127,17 @@
 }
 
 .telemetry-input-group label {
-  font-size: 0.8rem;
+  font-size: 0.82rem;
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--color-text-secondary);
 }
 
-/* Simulated AI Image Analysis Box */
+/* ==========================================
+   4. SIMULATED AI IMAGE ANALYSIS BOX
+   ========================================== */
 .ai-analysis-box {
-  background: rgba(41, 182, 246, 0.06);
-  border: 1px dashed var(--brand-cyan);
+  background: var(--color-blue-50);
+  border: 1px dashed var(--color-blue-300);
   border-radius: var(--radius-md);
   padding: 16px;
   display: flex;
@@ -136,13 +155,13 @@
 .confidence-bar {
   flex: 1;
   height: 8px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-blue-100);
   border-radius: var(--radius-full);
   overflow: hidden;
 }
 
 .confidence-fill {
   height: 100%;
-  background: linear-gradient(90deg, #29B6F6, #00E676);
+  background: linear-gradient(90deg, var(--color-blue-400), var(--color-risk-low));
   border-radius: var(--radius-full);
 }

@@ -1,11 +1,12 @@
 /* ==========================================================================
-   ADMIN PORTAL STYLES: COMMAND DASHBOARD, SENSOR ALERTS, AI WEIGHT SLIDERS
+   ADMIN PORTAL STYLES: COMMAND DASHBOARD, KPI CARDS, SENSOR ALERTS, TABLES
+   Theme: Cool White + Light Blue Professional Administration Console
    ========================================================================== */
 
 .admin-layout {
   display: flex;
   min-height: calc(100vh - var(--header-height));
-  background: var(--bg-primary);
+  background: var(--color-bg-primary);
 }
 
 .admin-content {
@@ -20,7 +21,9 @@
   width: 100%;
 }
 
-/* KPI Summary Cards Grid */
+/* ==========================================
+   1. KPI SUMMARY CARDS GRID
+   ========================================== */
 .kpi-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -28,67 +31,69 @@
 }
 
 .kpi-card {
-  background: rgba(8, 28, 43, 0.85);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border-glass);
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-xl);
   padding: 20px;
   display: flex;
   align-items: center;
   gap: 16px;
-  box-shadow: var(--shadow-md);
-  transition: all var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
   position: relative;
   overflow: hidden;
 }
 
 .kpi-card:hover {
   transform: translateY(-3px);
-  border-color: var(--cyan);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.5), 0 0 16px var(--cyan-glow);
+  border-color: var(--color-border-strong);
+  box-shadow: var(--shadow-md);
 }
 
 .kpi-icon {
   width: 52px;
   height: 52px;
   border-radius: var(--radius-md);
-  background: rgba(25, 199, 255, 0.12);
-  border: 1px solid rgba(25, 199, 255, 0.25);
-  color: var(--cyan);
+  background: var(--color-blue-50);
+  border: 1px solid var(--color-blue-100);
+  color: var(--color-blue-500);
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-shrink: 0;
 }
 
 .kpi-value {
   font-size: 2rem;
   font-weight: 800;
   font-family: var(--font-heading);
-  color: #fff;
+  color: var(--color-navy);
   line-height: 1.1;
 }
 
 .kpi-label {
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: var(--color-text-secondary);
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.5px;
 }
 
-/* Automated Sensor Failure Alert Banner (Critical Feature H) */
+/* ==========================================
+   2. SENSOR FAILURE ALERT BANNER
+   ========================================== */
 .sensor-failure-alert-banner {
-  background: linear-gradient(135deg, rgba(211, 47, 47, 0.25) 0%, rgba(13, 34, 53, 0.9) 100%);
-  border: 1px solid var(--risk-critical);
+  background: #FDECEC;
+  border: 1px solid #FFCDD2;
+  border-left: 6px solid var(--color-risk-critical);
   border-radius: var(--radius-lg);
   padding: 18px 20px;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  box-shadow: 0 0 25px rgba(211, 47, 47, 0.35);
-  animation: pulse-red 2.5s infinite;
+  box-shadow: var(--shadow-md);
+  color: var(--color-text-primary);
 }
 
 .alert-banner-left {
@@ -101,21 +106,26 @@
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background: var(--risk-critical);
+  background: var(--color-risk-critical);
   color: #fff;
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 16px rgba(211, 47, 47, 0.8);
+  box-shadow: 0 4px 12px rgba(211, 47, 47, 0.35);
+  animation: pulse-ring 1.8s infinite;
+  flex-shrink: 0;
 }
 
-/* Sensor Telemetry Table */
-.data-table-container {
-  background: var(--bg-card);
-  border: 1px solid var(--border-subtle);
+/* ==========================================
+   3. SENSOR TELEMETRY DATA TABLE
+   ========================================== */
+.data-table-container,
+.data-table-wrapper {
+  background: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
   border-radius: var(--radius-lg);
-  overflow: hidden;
-  box-shadow: var(--shadow-md);
+  overflow-x: auto;
+  box-shadow: var(--shadow-sm);
 }
 
 .data-table {
@@ -123,30 +133,36 @@
   border-collapse: collapse;
   text-align: left;
   font-size: 0.88rem;
+  min-width: 640px;
 }
 
 .data-table th {
-  background: rgba(7, 21, 34, 0.8);
+  background: var(--color-blue-50);
   padding: 12px 16px;
-  color: var(--text-muted);
+  color: var(--color-navy);
   font-weight: 700;
   text-transform: uppercase;
   font-size: 0.75rem;
   letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border-subtle);
+  border-bottom: 2px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 2;
 }
 
 .data-table td {
   padding: 14px 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-  color: var(--text-primary);
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
 }
 
 .data-table tr:hover td {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--color-blue-50);
 }
 
-/* AI Model Configuration Sliders */
+/* ==========================================
+   4. AI MODEL CONFIGURATION SLIDERS
+   ========================================== */
 .slider-group {
   margin-bottom: 18px;
 }
@@ -156,15 +172,16 @@
   justify-content: space-between;
   font-size: 0.85rem;
   font-weight: 600;
+  color: var(--color-text-primary);
   margin-bottom: 6px;
 }
 
 .range-slider {
   width: 100%;
   height: 6px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--color-blue-100);
   border-radius: var(--radius-full);
   outline: none;
   cursor: pointer;
-  accent-color: var(--brand-cyan);
+  accent-color: var(--color-blue-500);
 }

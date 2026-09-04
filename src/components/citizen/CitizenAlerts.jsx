@@ -16,10 +16,10 @@ const CitizenAlerts = () => {
   return (
     <div className="citizen-feed-container">
       <div style={{ marginBottom: '16px' }}>
-        <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '4px' }}>
+        <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
           Official Emergency Alerts & Warnings
         </h2>
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+        <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
           Real-time disaster advisories broadcasted by District & State Operations Centers
         </p>
       </div>
@@ -41,7 +41,7 @@ const CitizenAlerts = () => {
           Landslides
         </button>
         <button
-          className={filter === 'FLOOD' ? 'btn-outline-cyan' : 'btn-secondary'}
+          className={filter === 'FLOOD' ? 'btn-primary' : 'btn-secondary'}
           style={{ fontSize: '0.82rem', padding: '6px 14px' }}
           onClick={() => setFilter('FLOOD')}
         >
@@ -61,45 +61,46 @@ const CitizenAlerts = () => {
         {filteredAlerts.map(alert => {
           const isFlood = alert.type === 'FLASH_FLOOD';
           const isBlockage = alert.type === 'ROAD_BLOCKAGE';
+          const accentColor = isFlood ? 'var(--color-blue-500)' : isBlockage ? 'var(--color-risk-high)' : 'var(--color-risk-critical)';
 
           return (
             <div 
               key={alert.id}
-              className="glass-panel"
+              className="card"
               style={{
                 padding: '18px 20px',
-                borderLeft: `5px solid ${isFlood ? '#29B6F6' : '#D32F2F'}`,
-                boxShadow: isFlood ? '0 0 16px rgba(41, 182, 246, 0.2)' : '0 0 18px rgba(211, 47, 47, 0.25)'
+                borderLeft: `5px solid ${accentColor}`,
+                boxShadow: 'var(--shadow-sm)'
               }}
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                  {isFlood ? <Waves size={20} color="#29B6F6" /> : isBlockage ? <AlertOctagon size={20} color="#FF9100" /> : <AlertTriangle size={20} color="#FF5252" />}
-                  <span className={`badge ${isFlood ? 'badge-info' : 'badge-critical'}`} style={{ fontSize: '0.7rem' }}>
+                  {isFlood ? <Waves size={20} color="var(--color-blue-500)" /> : isBlockage ? <AlertOctagon size={20} color="var(--color-risk-high)" /> : <AlertTriangle size={20} color="var(--color-risk-critical)" />}
+                  <span className={`badge ${isFlood ? 'badge-info' : isBlockage ? 'badge-high' : 'badge-critical'}`} style={{ fontSize: '0.7rem' }}>
                     {alert.level}
                   </span>
-                  <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
                     📍 {alert.district}
                   </span>
                 </div>
-                <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)' }}>
                   {alert.issuedAt}
                 </span>
               </div>
 
-              <h3 style={{ fontSize: '1.05rem', color: '#fff', marginBottom: '6px' }}>
+              <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '6px' }}>
                 {alert.title}
               </h3>
 
-              <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', lineHeight: 1.4, marginBottom: '10px' }}>
+              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', lineHeight: 1.4, marginBottom: '10px' }}>
                 {alert.message}
               </p>
 
               {/* Recommended Action */}
               <div 
                 style={{ 
-                  background: 'rgba(255, 255, 255, 0.05)', 
-                  border: '1px solid var(--border-subtle)', 
+                  background: 'var(--color-blue-50)', 
+                  border: '1px solid var(--color-border)', 
                   borderRadius: '8px', 
                   padding: '10px 14px',
                   display: 'flex',
@@ -108,12 +109,12 @@ const CitizenAlerts = () => {
                   marginBottom: '12px'
                 }}
               >
-                <ShieldCheck size={18} color="#00E676" style={{ marginTop: '2px', flexShrink: 0 }} />
+                <ShieldCheck size={18} color="var(--color-risk-low)" style={{ marginTop: '2px', flexShrink: 0 }} />
                 <div>
-                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: '#00E676', textTransform: 'uppercase' }}>
+                  <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-risk-low)', textTransform: 'uppercase' }}>
                     Mandatory Action / Evacuation Advice
                   </div>
-                  <div style={{ fontSize: '0.82rem', color: '#fff' }}>
+                  <div style={{ fontSize: '0.82rem', color: 'var(--color-text-primary)' }}>
                     {alert.action}
                   </div>
                 </div>

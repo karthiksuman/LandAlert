@@ -44,11 +44,11 @@ const FieldOfficerPortal = () => {
       {/* Officer Status Top Banner */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-          <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'rgba(255, 167, 38, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <HardHat size={24} color="#FFA726" />
+          <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'var(--color-blue-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <HardHat size={24} color="var(--color-risk-high)" />
           </div>
           <div>
-            <h2 style={{ fontSize: '1.3rem', color: '#fff', marginBottom: '2px' }}>
+            <h2 style={{ fontSize: '1.3rem', color: 'var(--color-navy)', marginBottom: '2px' }}>
               Field Inspection Unit: FO-402 (T. Dorjee)
             </h2>
             <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)' }}>
@@ -73,7 +73,7 @@ const FieldOfficerPortal = () => {
               <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                 Active Workflow Progression: {currentTask.id}
               </span>
-              <h3 style={{ fontSize: '1.05rem', color: '#fff' }}>{currentTask.title}</h3>
+              <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)' }}>{currentTask.title}</h3>
             </div>
 
             {currentStepIndex < steps.length - 1 && (

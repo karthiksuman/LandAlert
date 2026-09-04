@@ -12,15 +12,15 @@ const RouteSafetyCard = () => {
     <div className="route-safety-card">
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '8px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-          <AlertOctagon size={20} color="#FF5252" />
-          <h3 style={{ fontSize: '1.05rem', color: '#fff' }}>Route Safety & Detour Advisory</h3>
+          <AlertOctagon size={20} color="var(--color-risk-critical)" />
+          <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700 }}>Route Safety & Detour Advisory</h3>
         </div>
         <span className="badge badge-critical" style={{ fontSize: '0.72rem' }}>
           {highRiskRoad.status}
         </span>
       </div>
 
-      <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)', marginBottom: '14px' }}>
+      <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '14px' }}>
         AI slope hazard models and ground displacement telemetry predict hazardous travel on primary mountain highways.
       </p>
 
@@ -28,17 +28,17 @@ const RouteSafetyCard = () => {
         {/* Unsafe / Blocked Primary Highway */}
         <div className="route-option-box blocked">
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#FF5252', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+            <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-risk-critical)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
               HIGH RISK / NOT RECOMMENDED
             </span>
-            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#FF8A80' }}>
+            <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-risk-critical)' }}>
               Risk: {highRiskRoad.riskPercentage}%
             </span>
           </div>
-          <h4 style={{ fontSize: '0.95rem', color: '#fff', marginBottom: '4px' }}>
+          <h4 style={{ fontSize: '0.95rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
             {highRiskRoad.name}
           </h4>
-          <p style={{ fontSize: '0.78rem', color: 'var(--text-muted)', margin: 0 }}>
+          <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)', margin: 0 }}>
             {highRiskRoad.reason}
           </p>
         </div>
@@ -47,17 +47,17 @@ const RouteSafetyCard = () => {
         {alt && (
           <div className="route-option-box recommended">
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '6px' }}>
-              <span style={{ fontSize: '0.75rem', fontWeight: 800, color: '#00E676', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-risk-low)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                 RECOMMENDED SAFE DETOUR
               </span>
-              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#B9F6CA' }}>
+              <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-risk-low)' }}>
                 Risk: {alt.riskPercentage}% (Safe)
               </span>
             </div>
-            <h4 style={{ fontSize: '0.95rem', color: '#fff', marginBottom: '4px' }}>
+            <h4 style={{ fontSize: '0.95rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
               {alt.name}
             </h4>
-            <p style={{ fontSize: '0.78rem', color: 'var(--text-secondary)', margin: 0 }}>
+            <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)', margin: 0 }}>
               Geologically stable ridgeline bypass route actively monitored by BRO clearance patrol units.
             </p>
           </div>

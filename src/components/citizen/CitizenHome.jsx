@@ -51,45 +51,44 @@ const CitizenHome = () => {
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px', padding: '0 4px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span className="pulse-dot pulse-dot-critical" />
-            <span style={{ fontSize: '0.82rem', fontWeight: 800, color: '#fff', textTransform: 'uppercase', letterSpacing: '0.8px' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-navy)', textTransform: 'uppercase', letterSpacing: '0.6px' }}>
               Live GIS Geological Risk Command Map • North-East India
             </span>
           </div>
           <button 
             onClick={() => setIsFullScreenMap(true)}
-            style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--cyan)', background: 'rgba(25, 199, 255, 0.1)', border: '1px solid rgba(25, 199, 255, 0.25)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '5px' }}
+            style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-blue-600)', background: 'var(--color-blue-50)', border: '1px solid var(--color-border)', padding: '5px 12px', borderRadius: 'var(--radius-pill)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
             <span>Expand Fullscreen</span>
             <ArrowUpRight size={14} />
           </button>
         </div>
 
-        {/* The 68% Hero 2D GIS Map */}
+        {/* The 52vh Hero 2D GIS Map */}
         <GisMap mode="hero" />
       </div>
 
       {/* 2. CITIZEN FEED & LOCAL CONDITIONS */}
       <div className="citizen-feed-container">
         {/* Core Citizen Question: "AM I SAFE?" */}
-        <div className={`risk-summary-card card-tilt-3d ${statusInfo.cardClass}`}>
+        <div className={`risk-summary-card ${statusInfo.cardClass}`}>
           <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px' }}>
             <div 
               style={{ 
                 width: '52px', 
                 height: '52px', 
-                borderRadius: '16px', 
-                background: currentZone.riskLevel === 'CRITICAL' ? 'rgba(255, 59, 59, 0.2)' : 'rgba(25, 212, 123, 0.2)',
-                border: currentZone.riskLevel === 'CRITICAL' ? '1px solid rgba(255, 59, 59, 0.4)' : '1px solid rgba(25, 212, 123, 0.4)',
+                borderRadius: '14px', 
+                background: currentZone.riskLevel === 'CRITICAL' ? 'var(--risk-critical-bg)' : 'var(--risk-low-bg)',
+                border: currentZone.riskLevel === 'CRITICAL' ? '1px solid var(--color-risk-critical)' : '1px solid var(--color-risk-low)',
                 display: 'flex', 
                 alignItems: 'center', 
                 justifyContent: 'center',
-                flexShrink: 0,
-                boxShadow: currentZone.riskLevel === 'CRITICAL' ? '0 0 20px rgba(255, 59, 59, 0.4)' : '0 0 20px rgba(25, 212, 123, 0.3)'
+                flexShrink: 0
               }}
             >
               <ShieldAlert 
-                size={30} 
-                color={currentZone.riskLevel === 'CRITICAL' ? '#FF3B3B' : '#19D47B'} 
+                size={28} 
+                color={currentZone.riskLevel === 'CRITICAL' ? 'var(--color-risk-critical)' : 'var(--color-risk-low)'} 
               />
             </div>
 
@@ -99,14 +98,14 @@ const CitizenHome = () => {
                   <span className={`pulse-dot pulse-dot-${currentZone.riskLevel.toLowerCase()}`} />
                   {currentZone.riskLevel} RISK ({currentZone.riskPercentage}%)
                 </span>
-                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
-                  📍 Selected Zone: <strong style={{ color: '#fff' }}>{currentZone.name}</strong>
+                <span style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
+                  📍 Selected Zone: <strong style={{ color: 'var(--color-navy)' }}>{currentZone.name}</strong>
                 </span>
               </div>
-              <h2 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#fff', marginBottom: '6px' }}>
+              <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-navy)', marginBottom: '6px' }}>
                 {statusInfo.title}
               </h2>
-              <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
+              <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.5 }}>
                 {statusInfo.desc}
               </p>
             </div>
@@ -115,66 +114,66 @@ const CitizenHome = () => {
           <button 
             className="btn-primary"
             onClick={() => setCitizenActiveTab('alerts')}
-            style={{ padding: '10px 20px', fontSize: '0.85rem', fontWeight: 700, borderRadius: 'var(--radius-md)', whiteSpace: 'nowrap' }}
+            style={{ padding: '8px 18px', fontSize: '0.85rem', fontWeight: 600, borderRadius: '10px', whiteSpace: 'nowrap' }}
           >
             View Official Warnings
           </button>
         </div>
 
         {/* Route Safety Warning & Safe Detour */}
-        <div className="card-tilt-3d">
+        <div>
           <RouteSafetyCard />
         </div>
 
         {/* Local Micro-Climate Weather & Telemetry Card */}
         {currentZone.weather && (
-          <div className="glass-panel card-tilt-3d" style={{ padding: '22px 24px', borderRadius: 'var(--radius-xl)' }}>
+          <div className="card" style={{ padding: '20px 22px', borderRadius: '14px' }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(25, 199, 255, 0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                  <CloudRain size={20} color="var(--cyan)" />
+                <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'var(--color-blue-50)', border: '1px solid var(--color-blue-100)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <CloudRain size={20} color="var(--color-blue-500)" />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: '#fff', margin: 0 }}>Himalayan Atmospheric & Saturation Telemetry</h3>
-                  <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)' }}>Automated Weather Station (AWS) Mesh</div>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--color-navy)', margin: 0 }}>Himalayan Atmospheric & Saturation Telemetry</h3>
+                  <div style={{ fontSize: '0.74rem', color: 'var(--color-text-muted)' }}>Automated Weather Station (AWS) Mesh</div>
                 </div>
               </div>
-              <span style={{ fontSize: '0.78rem', color: 'var(--cyan)', background: 'rgba(25, 199, 255, 0.1)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', border: '1px solid rgba(25, 199, 255, 0.2)' }}>
+              <span style={{ fontSize: '0.78rem', color: 'var(--color-blue-600)', background: 'var(--color-blue-50)', padding: '4px 10px', borderRadius: 'var(--radius-pill)', border: '1px solid var(--color-border)' }}>
                 {currentZone.district}, {currentZone.state}
               </span>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '14px' }}>
-              <div style={{ background: 'rgba(6, 19, 31, 0.7)', border: '1px solid var(--border-glass)', padding: '14px 12px', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Ambient Temperature</div>
-                <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#fff', margin: '4px 0' }}>
+              <div style={{ background: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', padding: '14px 12px', borderRadius: '10px', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Ambient Temperature</div>
+                <div style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-navy)', margin: '4px 0' }}>
                   {currentZone.weather.temp}°C
                 </div>
-                <div style={{ fontSize: '0.74rem', color: 'var(--cyan)', fontWeight: 600 }}>{currentZone.weather.condition}</div>
+                <div style={{ fontSize: '0.74rem', color: 'var(--color-blue-500)', fontWeight: 600 }}>{currentZone.weather.condition}</div>
               </div>
 
-              <div style={{ background: 'rgba(6, 19, 31, 0.7)', border: '1px solid var(--border-glass)', padding: '14px 12px', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>24h Precipitation</div>
-                <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#19C7FF', margin: '4px 0', textShadow: '0 0 10px rgba(25, 199, 255, 0.4)' }}>
+              <div style={{ background: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', padding: '14px 12px', borderRadius: '10px', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>24h Precipitation</div>
+                <div style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-blue-600)', margin: '4px 0' }}>
                   {currentZone.weather.rainfall} mm
                 </div>
-                <div style={{ fontSize: '0.74rem', color: '#FF8A00', fontWeight: 600 }}>Heavy Infiltration</div>
+                <div style={{ fontSize: '0.74rem', color: 'var(--color-risk-high)', fontWeight: 600 }}>Heavy Infiltration</div>
               </div>
 
-              <div style={{ background: 'rgba(6, 19, 31, 0.7)', border: '1px solid var(--border-glass)', padding: '14px 12px', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Soil Saturation</div>
-                <div style={{ fontSize: '1.35rem', fontWeight: 800, color: '#19D47B', margin: '4px 0', textShadow: '0 0 10px rgba(25, 212, 123, 0.4)' }}>
+              <div style={{ background: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', padding: '14px 12px', borderRadius: '10px', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Soil Saturation</div>
+                <div style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-risk-low)', margin: '4px 0' }}>
                   {currentZone.weather.humidity}%
                 </div>
-                <div style={{ fontSize: '0.74rem', color: 'var(--green)', fontWeight: 600 }}>Near Saturation</div>
+                <div style={{ fontSize: '0.74rem', color: 'var(--color-risk-low)', fontWeight: 600 }}>Near Saturation</div>
               </div>
 
-              <div style={{ background: 'rgba(6, 19, 31, 0.7)', border: '1px solid var(--border-glass)', padding: '14px 12px', borderRadius: 'var(--radius-md)', textAlign: 'center' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Ridge Wind Vector</div>
-                <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#fff', margin: '6px 0' }}>
+              <div style={{ background: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', padding: '14px 12px', borderRadius: '10px', textAlign: 'center' }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Ridge Wind Vector</div>
+                <div style={{ fontSize: '1.2rem', fontWeight: 700, color: 'var(--color-navy)', margin: '6px 0' }}>
                   {currentZone.weather.wind}
                 </div>
-                <div style={{ fontSize: '0.74rem', color: 'var(--text-muted)', fontWeight: 600 }}>Gusting Winds</div>
+                <div style={{ fontSize: '0.74rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>Gusting Winds</div>
               </div>
             </div>
           </div>

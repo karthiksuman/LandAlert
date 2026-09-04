@@ -7,7 +7,7 @@ const AlertBroadcastModal = ({ isOpen, onClose }) => {
 
   const [type, setType] = useState('CRITICAL_LANDSLIDE');
   const [level, setLevel] = useState('CRITICAL');
-  const [title, setTitle] = useState('🔴 CRITICAL LANDSLIDE EVACUATION ADVISORY');
+  const [title, setTitle] = useState('CRITICAL LANDSLIDE EVACUATION ADVISORY');
   const [district, setDistrict] = useState('North Sikkim');
   const [probability, setProbability] = useState(88);
   const [message, setMessage] = useState('Excessive rainfall (112mm) and deep geotechnical shear vibration detected. High likelihood of slope failure in next 4 hours.');
@@ -43,11 +43,11 @@ const AlertBroadcastModal = ({ isOpen, onClose }) => {
       >
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-            <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'rgba(211, 47, 47, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Radio size={22} color="#FF5252" />
+            <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: 'var(--color-blue-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Radio size={22} color="var(--color-risk-critical)" />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.25rem', color: '#fff' }}>Broadcast Emergency Alert</h3>
+              <h3 style={{ fontSize: '1.25rem', color: 'var(--color-navy)' }}>Broadcast Emergency Alert</h3>
               <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
                 Targeted push notification and siren advisory to citizen devices
               </p>

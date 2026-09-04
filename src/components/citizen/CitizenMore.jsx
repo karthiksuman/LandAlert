@@ -31,10 +31,10 @@ const CitizenMore = () => {
   return (
     <div className="citizen-feed-container">
       <div style={{ marginBottom: '16px' }}>
-        <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '4px' }}>
+        <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
           Safety Information & Settings
         </h2>
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+        <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
           Disaster preparedness guides, emergency directory, and language configuration
         </p>
       </div>
@@ -85,7 +85,7 @@ const CitizenMore = () => {
       {activeSection === 'helplines' && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '4px' }}>
-            <span style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+            <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
               Verified 24x7 National & State Emergency Hotlines
             </span>
             <button className="btn-critical" style={{ fontSize: '0.78rem', padding: '6px 12px' }} onClick={() => setIsSosOpen(true)}>
@@ -95,13 +95,13 @@ const CitizenMore = () => {
           </div>
 
           {helplines.map(hl => (
-            <div key={hl.id} className="glass-panel" style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <div key={hl.id} className="card" style={{ padding: '16px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <div>
                 <span className="badge badge-critical" style={{ fontSize: '0.68rem', marginBottom: '4px' }}>
                   {hl.category}
                 </span>
-                <h4 style={{ color: '#fff', fontSize: '0.98rem' }}>{hl.name}</h4>
-                <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: '2px 0 0' }}>{hl.description}</p>
+                <h4 style={{ color: 'var(--color-navy)', fontSize: '0.98rem', fontWeight: 700 }}>{hl.name}</h4>
+                <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', margin: '2px 0 0' }}>{hl.description}</p>
               </div>
               <a href={`tel:${hl.number.split('/')[0].trim()}`} className="btn-primary" style={{ flexShrink: 0, padding: '8px 16px' }}>
                 <PhoneCall size={14} />
@@ -114,10 +114,10 @@ const CitizenMore = () => {
 
       {/* SECTION 3: SETTINGS & LANGUAGE */}
       {activeSection === 'settings' && (
-        <div className="glass-panel" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
+        <div className="card" style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: '20px' }}>
           {/* Language Selector */}
           <div>
-            <h4 style={{ color: '#fff', fontSize: '1.0rem', marginBottom: '8px' }}>Interface Language</h4>
+            <h4 style={{ color: 'var(--color-navy)', fontSize: '1.0rem', fontWeight: 700, marginBottom: '8px' }}>Interface Language</h4>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(140px, 1fr))', gap: '8px' }}>
               {languages.map(lang => (
                 <button
@@ -133,12 +133,12 @@ const CitizenMore = () => {
           </div>
 
           {/* Permissions Status */}
-          <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
-            <h4 style={{ color: '#fff', fontSize: '1.0rem', marginBottom: '8px' }}>System Permissions</h4>
+          <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '16px' }}>
+            <h4 style={{ color: 'var(--color-navy)', fontSize: '1.0rem', fontWeight: 700, marginBottom: '8px' }}>System Permissions</h4>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem' }}>
-                  <MapPin size={16} color="#29B6F6" />
+                  <MapPin size={16} color="var(--color-blue-500)" />
                   <span>Location Access</span>
                 </div>
                 <span className="badge badge-low">{locationGranted ? "Active" : "Simulated Regional"}</span>
@@ -146,7 +146,7 @@ const CitizenMore = () => {
 
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '0.88rem' }}>
-                  <Bell size={16} color="#29B6F6" />
+                  <Bell size={16} color="var(--color-blue-500)" />
                   <span>Siren Emergency Notifications</span>
                 </div>
                 <span className="badge badge-low">{notificationsGranted ? "Enabled" : "Active"}</span>
@@ -155,7 +155,7 @@ const CitizenMore = () => {
           </div>
 
           {/* Reset Onboarding Option */}
-          <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '16px' }}>
+          <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '16px' }}>
             <button
               className="btn-secondary"
               style={{ fontSize: '0.85rem' }}
@@ -173,17 +173,17 @@ const CitizenMore = () => {
 
       {/* SECTION 4: ABOUT SYSTEM */}
       {activeSection === 'about' && (
-        <div className="glass-panel" style={{ padding: '24px' }}>
-          <h3 style={{ color: '#fff', fontSize: '1.2rem', marginBottom: '8px' }}>
+        <div className="card" style={{ padding: '24px' }}>
+          <h3 style={{ color: 'var(--color-navy)', fontSize: '1.2rem', fontWeight: 700, marginBottom: '8px' }}>
             About TerraAlert India (LEWDMS)
           </h3>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+          <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', lineHeight: 1.5 }}>
             TerraAlert is an advanced Landslide Early Warning and Disaster Management System engineered for high-altitude landslide corridors across North-Eastern India (Sikkim, Assam, Meghalaya, Nagaland, Mizoram, Arunachal Pradesh, and Manipur).
           </p>
-          <p style={{ fontSize: '0.88rem', color: 'var(--text-secondary)', lineHeight: 1.5, marginTop: '10px' }}>
+          <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', lineHeight: 1.5, marginTop: '10px' }}>
             The platform synthesizes telemetry from real-time geotechnical IoT ground sensors (geophones, borehole extensometers, biaxial inclinometers, TDR soil-moisture probes) with satellite precipitation data and machine-learning stability models to generate geo-fenced early warnings up to 6 hours before catastrophic failure.
           </p>
-          <div style={{ marginTop: '18px', padding: '12px', background: 'rgba(7, 21, 34, 0.6)', borderRadius: '8px', fontSize: '0.8rem', color: 'var(--text-muted)' }}>
+          <div style={{ marginTop: '18px', padding: '12px', background: 'var(--color-blue-50)', border: '1px solid var(--color-border)', borderRadius: '8px', fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
             System Version: <strong>4.2.8-prod (SIH Certified Edition)</strong> • AI Engine: <strong>GeoEnsemble-V4.2</strong>
           </div>
         </div>

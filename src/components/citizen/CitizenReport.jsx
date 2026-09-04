@@ -61,10 +61,10 @@ const CitizenReport = () => {
   return (
     <div className="citizen-feed-container">
       <div style={{ marginBottom: '18px' }}>
-        <h2 style={{ fontSize: '1.4rem', color: '#fff', marginBottom: '4px' }}>
+        <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
           Report a Hazard or Landslide
         </h2>
-        <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
+        <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
           Submit geo-tagged field observations directly to District Emergency Control Rooms
         </p>
       </div>
@@ -72,12 +72,12 @@ const CitizenReport = () => {
       {submittedId ? (
         /* Report Submission Success Screen */
         <div 
-          className="glass-panel" 
+          className="card" 
           style={{ 
             padding: '36px 24px', 
             textAlign: 'center', 
             border: '1px solid #4CAF50',
-            boxShadow: '0 0 25px rgba(76, 175, 80, 0.25)',
+            boxShadow: 'var(--shadow-md)',
             animation: 'fadeIn 300ms ease-out'
           }}
         >
@@ -86,17 +86,17 @@ const CitizenReport = () => {
               width: '64px', 
               height: '64px', 
               borderRadius: '50%', 
-              background: 'rgba(76, 175, 80, 0.2)', 
+              background: 'var(--color-risk-low-bg)', 
               display: 'flex', 
               alignItems: 'center', 
               justifyContent: 'center', 
               margin: '0 auto 16px' 
             }}
           >
-            <CheckCircle2 size={36} color="#00E676" />
+            <CheckCircle2 size={36} color="var(--color-risk-low)" />
           </div>
 
-          <h3 style={{ fontSize: '1.3rem', color: '#fff', marginBottom: '6px' }}>
+          <h3 style={{ fontSize: '1.3rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '6px' }}>
             Report Submitted Successfully
           </h3>
           <p style={{ fontSize: '0.9rem', color: 'var(--text-secondary)', maxWidth: '440px', margin: '0 auto 18px' }}>
@@ -199,17 +199,17 @@ const CitizenReport = () => {
           </div>
 
           {/* Location & GPS Info */}
-          <div style={{ background: 'rgba(7, 21, 34, 0.65)', border: '1px solid var(--border-subtle)', borderRadius: '8px', padding: '12px 16px', marginBottom: '20px' }}>
+          <div style={{ background: 'var(--color-blue-50)', border: '1px solid var(--color-border)', borderRadius: '10px', padding: '12px 16px', marginBottom: '20px' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
-              <MapPin size={16} color="#29B6F6" />
-              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--brand-cyan)', textTransform: 'uppercase' }}>
+              <MapPin size={16} color="var(--color-blue-500)" />
+              <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-blue-600)', textTransform: 'uppercase' }}>
                 Auto-Captured GPS Location & Timestamp
               </span>
             </div>
-            <div style={{ fontSize: '0.85rem', color: '#fff' }}>
+            <div style={{ fontSize: '0.85rem', color: 'var(--color-navy)', fontWeight: 600 }}>
               {locationName} • {userCoordinates[0].toFixed(4)}°N, {userCoordinates[1].toFixed(4)}°E
             </div>
-            <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginTop: '2px' }}>
+            <div style={{ fontSize: '0.74rem', color: 'var(--color-text-muted)', marginTop: '2px' }}>
               Recorded: {new Date().toLocaleTimeString()} (Standard Time)
             </div>
           </div>

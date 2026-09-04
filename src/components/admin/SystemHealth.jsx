@@ -21,12 +21,12 @@ const SystemHealth = () => {
           </div>
         </div>
 
-        <div className="kpi-card" style={{ borderColor: offlineSensorsCount > 0 ? 'var(--risk-critical)' : 'var(--border-subtle)' }}>
-          <div className="kpi-icon" style={{ background: 'rgba(211, 47, 47, 0.15)', color: '#FF5252' }}>
+        <div className="kpi-card" style={{ borderColor: offlineSensorsCount > 0 ? 'var(--color-risk-critical)' : 'var(--color-border)' }}>
+          <div className="kpi-icon" style={{ background: 'var(--color-risk-critical-bg)', color: 'var(--color-risk-critical)' }}>
             <AlertTriangle size={24} />
           </div>
           <div>
-            <div className="kpi-value" style={{ color: offlineSensorsCount > 0 ? '#FF5252' : '#fff' }}>
+            <div className="kpi-value" style={{ color: offlineSensorsCount > 0 ? 'var(--color-risk-critical)' : 'var(--color-navy)' }}>
               {offlineSensorsCount}
             </div>
             <div className="kpi-label">Sensors Requiring Service</div>
@@ -34,7 +34,7 @@ const SystemHealth = () => {
         </div>
 
         <div className="kpi-card">
-          <div className="kpi-icon" style={{ background: 'rgba(0, 230, 118, 0.15)', color: '#00E676' }}>
+          <div className="kpi-icon" style={{ background: 'var(--color-risk-low-bg)', color: 'var(--color-risk-low)' }}>
             <CheckCircle2 size={24} />
           </div>
           <div>
@@ -44,7 +44,7 @@ const SystemHealth = () => {
         </div>
 
         <div className="kpi-card">
-          <div className="kpi-icon" style={{ background: 'rgba(255, 167, 38, 0.15)', color: '#FFA726' }}>
+          <div className="kpi-icon" style={{ background: 'var(--color-risk-high-bg)', color: 'var(--color-risk-high)' }}>
             <Activity size={24} />
           </div>
           <div>
@@ -56,8 +56,8 @@ const SystemHealth = () => {
 
       {/* Infrastructure Telemetry Table */}
       <div className="data-table-container">
-        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <h3 style={{ fontSize: '1.05rem', color: '#fff' }}>Core Infrastructure Health Telemetry</h3>
+        <div style={{ padding: '16px 20px', borderBottom: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700 }}>Core Infrastructure Health Telemetry</h3>
           <span className="badge badge-low">All Core Daemons Online</span>
         </div>
 
