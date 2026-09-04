@@ -1,0 +1,148 @@
+/* ==========================================================================
+   FIELD OFFICER PORTAL STYLES: WORKFLOW STEPPER, TELEMETRY, AI VISION
+   ========================================================================== */
+
+.officer-layout {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100vh - var(--header-height));
+  padding: 16px;
+  max-width: 1000px;
+  margin: 0 auto;
+  width: 100%;
+  gap: 16px;
+}
+
+/* Workflow Progress Stepper */
+.workflow-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  position: relative;
+  overflow-x: auto;
+  gap: 12px;
+}
+
+.step-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 2;
+  min-width: 80px;
+}
+
+.step-icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid var(--border-subtle);
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  transition: all var(--transition-normal);
+}
+
+.step-node.completed .step-icon-circle {
+  background: var(--brand-blue);
+  border-color: var(--brand-cyan);
+  color: #fff;
+  box-shadow: 0 0 10px var(--brand-cyan-glow);
+}
+
+.step-node.current .step-icon-circle {
+  background: var(--brand-cyan);
+  border-color: #fff;
+  color: var(--text-inverse);
+  box-shadow: 0 0 16px var(--brand-cyan-glow);
+  transform: scale(1.1);
+}
+
+.step-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.step-node.current .step-label {
+  color: var(--brand-cyan);
+}
+
+/* Task Inspection Card */
+.task-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-md);
+  margin-bottom: 16px;
+}
+
+.task-card.priority-critical {
+  border-left: 4px solid var(--risk-critical);
+}
+
+.task-card.priority-high {
+  border-left: 4px solid var(--risk-high);
+}
+
+/* Field Telemetry Form Grid */
+.telemetry-form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.telemetry-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.telemetry-input-group label {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+/* Simulated AI Image Analysis Box */
+.ai-analysis-box {
+  background: rgba(41, 182, 246, 0.06);
+  border: 1px dashed var(--brand-cyan);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.ai-confidence-meter {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.confidence-bar {
+  flex: 1;
+  height: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.confidence-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #29B6F6, #00E676);
+  border-radius: var(--radius-full);
+}
