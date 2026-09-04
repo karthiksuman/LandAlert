@@ -1,10 +1,12 @@
 $git = "C:\Users\ACER\AppData\Local\GitHubDesktop\app-3.6.4\resources\app\git\cmd\git.exe"
-$env:GIT_INDEX_FILE = "temp_index"
-& $git --work-tree=dist add --all
-$tree = (& $git write-tree).Trim()
-$commit = (& $git commit-tree $tree -p gh-pages -m "Deploy offline report saving and auto-sync to gh-pages").Trim()
-& $git update-ref refs/heads/gh-pages $commit
-& $git push origin gh-pages
-Remove-Item Env:GIT_INDEX_FILE
-if (Test-Path temp_index) { Remove-Item temp_index }
-Write-Output "Successfully deployed to gh-pages with commit $commit"
+Push-Location dist
+if (Test-Path .git) { Remove-Item -Recurse -Force .git }
+& $git init
+& $git remote add origin https://github.com/bharathsirasapalli63-gif/SIH.git
+& $git checkout -B gh-pages
+& $git add -A
+& $git commit -m "Deploy LandAlert to GitHub Pages"
+& $git push -f origin gh-pages
+Remove-Item -Recurse -Force .git
+Pop-Location
+Write-Output "Successfully deployed real files to gh-pages!"
