@@ -294,10 +294,22 @@
   border-radius: var(--radius-lg);
   padding: 10px 14px;
   width: 240px;
-  max-height: 230px;
+  max-height: 240px;
   overflow-y: auto;
   box-shadow: var(--shadow-lg);
   animation: dropdown-pop 150ms ease-out;
+}
+
+.map-floating-layers-panel::-webkit-scrollbar {
+  width: 4px;
+}
+.map-floating-layers-panel::-webkit-scrollbar-track {
+  background: var(--color-blue-50);
+  border-radius: 4px;
+}
+.map-floating-layers-panel::-webkit-scrollbar-thumb {
+  background: var(--color-blue-300);
+  border-radius: 4px;
 }
 
 .layers-header {
@@ -343,6 +355,9 @@
   pointer-events: none !important;
   width: auto !important;
   max-width: fit-content !important;
+  min-width: unset !important;
+  height: auto !important;
+  min-height: unset !important;
 }
 
 .map-tooltip-content {

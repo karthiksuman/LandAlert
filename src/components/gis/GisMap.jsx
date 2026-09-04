@@ -274,7 +274,13 @@ const GisMap = ({ mode = 'hero' }) => {
       });
 
       const userMarker = L.marker(userCoordinates, { icon: userGpsIcon });
-      userMarker.bindTooltip("<strong>Your Current GPS Location</strong><br/>North Sikkim Slope Sector", { sticky: true });
+      userMarker.bindTooltip(`
+        <div class="map-tooltip-content">
+          <span class="map-tooltip-title">Your GPS Location</span>
+          <span class="map-tooltip-sep">•</span>
+          <span class="map-tooltip-muted">North Sikkim Slope Sector</span>
+        </div>
+      `, { sticky: true, className: 'leaflet-minimal-tooltip', direction: 'top', offset: [0, -10] });
       userMarker.addTo(layerGroup);
     }
   }, [locations, selectedZoneId, sensors, roads, userCoordinates, mapLayers]);
