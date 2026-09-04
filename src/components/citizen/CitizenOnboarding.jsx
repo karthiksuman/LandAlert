@@ -14,10 +14,11 @@ const CitizenOnboarding = () => {
     setLocationGranted,
     notificationsGranted,
     setNotificationsGranted,
-    completeOnboarding
+    completeOnboarding,
+    setUserCoordinates
   } = useApp();
 
-  const [step, setStep] = useState(1); // 1: Language, 2: Terms, 3: Permissions
+  const [step, setStep] = useState(1); // 1: Terms, 2: Language, 3: Location Login
 
   const languages = [
     { code: 'en', native: 'English', en: 'English' },
@@ -36,7 +37,12 @@ const CitizenOnboarding = () => {
   const handleAllowLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        () => setLocationGranted(true),
+        (pos) => {
+          setLocationGranted(true);
+          if (setUserCoordinates) {
+            setUserCoordinates([pos.coords.latitude, pos.coords.longitude]);
+          }
+        },
         () => setLocationGranted(true) // Graceful fallback
       );
     } else {
@@ -46,6 +52,28 @@ const CitizenOnboarding = () => {
 
   const handleAllowNotifications = () => {
     setNotificationsGranted(true);
+  };
+
+  const handleLoginViaLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          setLocationGranted(true);
+          if (setUserCoordinates) {
+            setUserCoordinates([pos.coords.latitude, pos.coords.longitude]);
+          }
+          completeOnboarding();
+        },
+        () => {
+          setLocationGranted(true);
+          completeOnboarding();
+        },
+        { timeout: 6000 }
+      );
+    } else {
+      setLocationGranted(true);
+      completeOnboarding();
+    }
   };
 
   return (
@@ -137,15 +165,15 @@ const CitizenOnboarding = () => {
           </div>
         )}
 
-        {/* STEP 3: CITIZEN ACCESS & PERMISSIONS */}
+        {/* STEP 3: LOG IN VIA LOCATION & PERMISSIONS */}
         {step === 3 && (
           <div>
             <div className="onboarding-header">
               <div style={{ width: '48px', height: '48px', margin: '0 auto 12px', borderRadius: '12px', background: 'var(--color-blue-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <Mountain size={26} color="var(--color-blue-500)" />
+                <MapPin size={26} color="var(--color-blue-500)" />
               </div>
-              <h2>{t.onboarding?.step3Title || "Permissions for Safety"}</h2>
-              <p>{t.onboarding?.step3Desc || "Allow location and notifications for life-saving warnings"}</p>
+              <h2>{t.onboarding?.step3Title || "Step 3: Log In via Location"}</h2>
+              <p>{t.onboarding?.step3Desc || "Verify your real-time position to calculate localized slope risk and emergency evacuation routes"}</p>
             </div>
 
             {/* Location Permission Card */}
@@ -155,9 +183,11 @@ const CitizenOnboarding = () => {
                   <MapPin size={22} />
                 </div>
                 <div>
-                  <h4 style={{ color: 'var(--color-navy)', fontSize: '0.92rem', fontWeight: 700 }}>{t.onboarding?.locationTitle || "Current Location Access"}</h4>
+                  <h4 style={{ color: 'var(--color-navy)', fontSize: '0.92rem', fontWeight: 700 }}>
+                    {t.onboarding?.locationTitle || "Current Location Verification"}
+                  </h4>
                   <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
-                    {t.onboarding?.locationDesc || "Pinpoints your position against real-time geological risk zones"}
+                    {t.onboarding?.locationDesc || "Pinpoints your GPS position against active landslide hazard zones"}
                   </p>
                 </div>
               </div>
@@ -168,7 +198,7 @@ const CitizenOnboarding = () => {
                 onClick={handleAllowLocation}
               >
                 {locationGranted ? <Check size={14} color="var(--color-risk-low)" /> : null}
-                {locationGranted ? (t.onboarding?.granted || "Allowed") : (t.onboarding?.allowLocation || "Allow")}
+                {locationGranted ? (t.onboarding?.granted || "Allowed") : (t.onboarding?.allowLocation || "Allow GPS")}
               </button>
             </div>
 
@@ -179,9 +209,11 @@ const CitizenOnboarding = () => {
                   <Bell size={22} />
                 </div>
                 <div>
-                  <h4 style={{ color: 'var(--color-navy)', fontSize: '0.92rem', fontWeight: 700 }}>{t.onboarding?.notifyTitle || "Emergency Notifications"}</h4>
+                  <h4 style={{ color: 'var(--color-navy)', fontSize: '0.92rem', fontWeight: 700 }}>
+                    {t.onboarding?.notifyTitle || "Emergency Siren Notifications"}
+                  </h4>
                   <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)' }}>
-                    {t.onboarding?.notifyDesc || "Sends urgent high-priority disaster warnings and siren alerts"}
+                    {t.onboarding?.notifyDesc || "Sends urgent high-priority disaster warnings and acoustic sirens"}
                   </p>
                 </div>
               </div>
@@ -199,22 +231,21 @@ const CitizenOnboarding = () => {
             <div style={{ marginTop: '20px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
               <button
                 className="btn-primary"
-                style={{ width: '100%', padding: '12px', fontSize: '1.0rem' }}
-                onClick={completeOnboarding}
+                style={{ width: '100%', padding: '12px', fontSize: '1.0rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
+                onClick={handleLoginViaLocation}
               >
-                Enter Resident Safety Portal
+                <MapPin size={18} />
+                <span>Log In via Location & Enter Portal</span>
                 <ArrowRight size={16} />
               </button>
 
-              {!locationGranted && (
-                <button
-                  className="btn-secondary"
-                  style={{ width: '100%', fontSize: '0.85rem' }}
-                  onClick={completeOnboarding}
-                >
-                  {t.onboarding?.continueWithoutLocation || "Continue with Regional Map"}
-                </button>
-              )}
+              <button
+                className="btn-secondary"
+                style={{ width: '100%', fontSize: '0.85rem' }}
+                onClick={completeOnboarding}
+              >
+                {t.onboarding?.continueWithoutLocation || "Log In with Regional Mountain Coordinates"}
+              </button>
             </div>
           </div>
         )}

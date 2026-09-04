@@ -24,10 +24,8 @@ export const AppProvider = ({ children }) => {
     token: null
   });
 
-  // 2. Citizen Onboarding & Localization
-  const [onboardingCompleted, setOnboardingCompleted] = useState(() => {
-    return localStorage.getItem('terra_onboarding_completed') === 'true';
-  });
+  // 2. Citizen Onboarding & Localization (Always require login & onboarding on entry)
+  const [onboardingCompleted, setOnboardingCompleted] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState(() => {
     return localStorage.getItem('terra_lang') || 'en';
   });
@@ -35,6 +33,11 @@ export const AppProvider = ({ children }) => {
   const [locationGranted, setLocationGranted] = useState(false);
   const [notificationsGranted, setNotificationsGranted] = useState(false);
   const [userCoordinates, setUserCoordinates] = useState([27.514, 88.533]); // Default around Mangan/Sikkim
+
+  // Clear any past cached flag so user is always asked on every entry
+  useEffect(() => {
+    localStorage.removeItem('terra_onboarding_completed');
+  }, []);
 
   // 3. GIS Map & Risk Zones
   const [locations, setLocations] = useState(initialLocations);
@@ -200,11 +203,10 @@ export const AppProvider = ({ children }) => {
     localStorage.setItem('terra_lang', langCode);
   };
 
-  // Onboarding completion
+  // Onboarding completion (kept in session memory so future entries prompt again)
   const completeOnboarding = () => {
     setOnboardingCompleted(true);
-    localStorage.setItem('terra_onboarding_completed', 'true');
-    addToast("Onboarding Completed", "Personalized geological risk map is now active.", "success");
+    addToast("Logged In Successfully", "Personalized geological risk map is now active.", "success");
   };
 
   // Layer toggle
