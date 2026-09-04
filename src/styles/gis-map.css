@@ -1,31 +1,31 @@
 /* ==========================================================================
-   GIS MAP STYLES: LEAFLET INTEGRATION, RISK ZONES, CONTROLS, FULLSCREEN
+   GIS MAP & 3D TERRAIN HERO STYLES — SPATIAL COMMAND CENTER
    ========================================================================== */
 
 .gis-map-container {
   position: relative;
   width: 100%;
-  background: #06111C;
-  border-radius: var(--radius-lg);
+  background: #030B14;
+  border-radius: var(--radius-xl);
   overflow: hidden;
-  border: 1px solid var(--border-subtle);
-  box-shadow: var(--shadow-md);
+  border: 1px solid var(--border-highlight);
+  box-shadow: var(--shadow-lg), 0 0 35px rgba(25, 199, 255, 0.15);
   transition: all var(--transition-smooth);
 }
 
-/* 50% screen height default in Citizen Home */
-.gis-map-half {
-  height: 50vh;
-  min-height: 340px;
+/* 65-70% Viewport Height in Citizen Home Hero View */
+.gis-map-hero {
+  height: 68vh;
+  min-height: 480px;
 }
 
-/* 70% screen height in Authority Dashboard */
+/* 75% Screen Height in Authority Command Center */
 .gis-map-authority {
-  height: calc(100vh - 120px);
-  min-height: 520px;
+  height: calc(100vh - 110px);
+  min-height: 580px;
 }
 
-/* Full-Screen Mode (100vw, 100vh taking over entire screen) */
+/* Full-Screen Mode (100vw, 100vh) */
 .gis-map-fullscreen {
   position: fixed !important;
   top: 0 !important;
@@ -43,37 +43,56 @@
   z-index: 1;
 }
 
-/* Leaflet Dark Theme Overrides */
-.leaflet-container {
-  background-color: #06111C !important;
-  font-family: var(--font-main) !important;
+/* 3D WebGL Canvas Layer */
+.terrain-3d-canvas-wrapper {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  cursor: grab;
 }
 
-.leaflet-bar {
-  border: 1px solid var(--border-subtle) !important;
-  border-radius: var(--radius-md) !important;
-  overflow: hidden;
-  box-shadow: var(--shadow-md) !important;
+.terrain-3d-canvas-wrapper:active {
+  cursor: grabbing;
 }
 
-.leaflet-bar a {
-  background-color: var(--bg-secondary) !important;
-  color: var(--text-primary) !important;
-  border-bottom: 1px solid var(--border-subtle) !important;
-  transition: background var(--transition-fast) !important;
+/* Floating View Mode Switcher Pill (3D Spatial vs 2D GIS) */
+.map-view-switcher {
+  background: rgba(4, 14, 23, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-highlight);
+  border-radius: var(--radius-pill);
+  padding: 4px;
+  display: inline-flex;
+  gap: 4px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.6), 0 0 14px var(--cyan-glow);
+  pointer-events: auto;
 }
 
-.leaflet-bar a:hover {
-  background-color: var(--brand-blue) !important;
-  color: #FFFFFF !important;
+.map-view-pill-btn {
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-secondary);
+  background: transparent;
+  transition: all var(--transition-fast);
+  letter-spacing: 0.4px;
+}
+
+.map-view-pill-btn.active {
+  background: linear-gradient(135deg, #1687FF 0%, #19C7FF 100%);
+  color: #fff;
+  box-shadow: 0 0 12px var(--cyan-glow);
 }
 
 /* Floating Top Controls over Map */
 .map-floating-top-controls {
   position: absolute;
-  top: 14px;
-  left: 14px;
-  right: 14px;
+  top: 16px;
+  left: 16px;
+  right: 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -83,53 +102,55 @@
 
 .map-control-btn {
   pointer-events: auto;
-  background: rgba(13, 34, 53, 0.88);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--border-subtle);
+  background: rgba(8, 28, 43, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
   color: #FFFFFF;
   padding: 8px 14px;
-  border-radius: var(--radius-md);
-  font-size: 0.85rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.82rem;
   font-weight: 600;
   box-shadow: var(--shadow-md);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
+  transition: all var(--transition-fast);
 }
 
 .map-control-btn:hover {
-  border-color: var(--brand-cyan);
-  box-shadow: 0 0 14px var(--brand-cyan-glow);
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px var(--cyan-glow);
   transform: translateY(-2px);
 }
 
 .map-control-btn-critical {
-  background: rgba(211, 47, 47, 0.9);
-  border-color: rgba(255, 255, 255, 0.3);
+  background: rgba(255, 59, 59, 0.9);
+  border-color: rgba(255, 255, 255, 0.35);
+  box-shadow: 0 0 16px rgba(255, 59, 59, 0.6);
 }
 
-/* Floating Map Legend */
+/* Floating HUD Risk Legend */
 .map-floating-legend {
   position: absolute;
-  bottom: 14px;
-  left: 14px;
+  bottom: 16px;
+  left: 16px;
   z-index: 1000;
-  background: rgba(7, 21, 34, 0.88);
-  backdrop-filter: blur(14px);
-  border: 1px solid var(--border-subtle);
+  background: rgba(6, 19, 31, 0.85);
+  backdrop-filter: blur(16px);
+  border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   padding: 10px 14px;
   box-shadow: var(--shadow-md);
 }
 
 .legend-title {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
   margin-bottom: 6px;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
 }
 
 .legend-items {
@@ -142,233 +163,111 @@
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 600;
 }
 
 .legend-swatch {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 3px;
 }
 
-.legend-swatch.critical { background: var(--risk-critical); box-shadow: 0 0 6px var(--risk-critical); }
-.legend-swatch.high { background: var(--risk-high); box-shadow: 0 0 6px var(--risk-high); }
+.legend-swatch.critical { background: var(--risk-critical); box-shadow: 0 0 8px var(--risk-critical); }
+.legend-swatch.high { background: var(--risk-high); box-shadow: 0 0 8px var(--risk-high); }
 .legend-swatch.moderate { background: var(--risk-moderate); }
-.legend-swatch.low { background: var(--risk-low); }
+.legend-swatch.low { background: var(--risk-low); box-shadow: 0 0 8px var(--risk-low); }
 
-/* Floating Layer Controls Panel */
-.map-floating-layers-panel {
+/* Holographic Radar Scanner Overlay */
+.radar-scanner-overlay {
   position: absolute;
-  top: 60px;
-  right: 14px;
-  z-index: 1000;
-  background: rgba(13, 34, 53, 0.92);
-  backdrop-filter: blur(16px);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 14px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   width: 220px;
-  box-shadow: var(--shadow-lg);
-  animation: slideInRight 200ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-@keyframes slideInRight {
-  from { opacity: 0; transform: translateX(15px); }
-  to { opacity: 1; transform: translateX(0); }
-}
-
-.layers-header {
+  height: 220px;
+  border-radius: 50%;
+  border: 1px dashed rgba(25, 199, 255, 0.5);
+  box-shadow: 0 0 30px rgba(25, 199, 255, 0.25), inset 0 0 30px rgba(25, 199, 255, 0.15);
+  pointer-events: none;
+  z-index: 500;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 10px;
-  padding-bottom: 6px;
-  border-bottom: 1px solid var(--border-subtle);
-}
-
-.layer-toggle-row {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 6px 0;
-  font-size: 0.82rem;
-  color: var(--text-secondary);
-}
-
-.layer-toggle-row input[type="checkbox"] {
-  width: auto;
-  cursor: pointer;
-  accent-color: var(--brand-cyan);
-}
-
-/* Custom Marker Styling for Leaflet */
-.custom-sensor-icon {
-  display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  border-radius: 50%;
-  color: #fff;
-  font-weight: bold;
-  cursor: pointer;
-  transition: transform var(--transition-fast);
+  animation: radarRotate 4s linear infinite;
 }
 
-.custom-sensor-icon:hover {
-  transform: scale(1.3);
-}
-
-.sensor-marker-online {
-  background: rgba(46, 125, 50, 0.85);
-  border: 2px solid #66BB6A;
-  box-shadow: 0 0 10px #4CAF50;
-}
-
-.sensor-marker-warning {
-  background: rgba(245, 124, 0, 0.85);
-  border: 2px solid #FFA726;
-  box-shadow: 0 0 12px #FF9800;
-}
-
-.sensor-marker-critical {
-  background: rgba(211, 47, 47, 0.9);
-  border: 2px solid #FF5252;
-  box-shadow: 0 0 16px #FF1744;
-  animation: pulse-red 1.8s infinite;
-}
-
-.sensor-marker-offline {
-  background: rgba(80, 80, 80, 0.85);
-  border: 2px dashed #B0BEC5;
-  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
-}
-
-/* Current GPS Location Pulse Marker */
-.user-gps-marker {
-  position: relative;
-  width: 22px;
-  height: 22px;
-}
-
-.user-gps-center {
-  width: 14px;
-  height: 14px;
-  background: var(--brand-cyan);
-  border: 2px solid #FFFFFF;
-  border-radius: 50%;
+.radar-sweep-beam {
   position: absolute;
-  top: 4px;
-  left: 4px;
-  box-shadow: 0 0 10px var(--brand-cyan);
-}
-
-.user-gps-pulse {
-  position: absolute;
-  inset: -6px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   border-radius: 50%;
-  border: 2px solid var(--brand-cyan);
-  animation: gpsPulse 2s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+  background: conic-gradient(from 0deg, transparent 0deg, transparent 300deg, rgba(25, 199, 255, 0.45) 360deg);
 }
 
-@keyframes gpsPulse {
-  0% { transform: scale(0.6); opacity: 1; }
-  100% { transform: scale(2.2); opacity: 0; }
+.radar-status-text {
+  position: absolute;
+  bottom: -28px;
+  white-space: nowrap;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  color: var(--cyan);
+  background: rgba(4, 14, 23, 0.85);
+  padding: 4px 10px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-highlight);
+  box-shadow: 0 0 12px var(--cyan-glow);
 }
 
-/* Location Information Slide-In Panel */
+@keyframes radarRotate {
+  from { transform: translate(-50%, -50%) rotate(0deg); }
+  to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+/* Floating Location Intelligence Panel (Desktop) */
 .location-info-panel {
   position: absolute;
   bottom: 20px;
   right: 20px;
-  width: 360px;
+  width: 380px;
   max-width: calc(100% - 40px);
-  background: rgba(13, 34, 53, 0.95);
-  backdrop-filter: blur(20px);
+  background: rgba(8, 28, 43, 0.94);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-highlight);
-  border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg), 0 0 25px rgba(0, 0, 0, 0.8);
-  padding: 18px;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-lg), 0 0 30px rgba(0, 0, 0, 0.8);
+  padding: 20px;
   z-index: 1020;
   animation: slideUp 250ms cubic-bezier(0.16, 1, 0.3, 1);
-  max-height: 80vh;
+  max-height: 82vh;
   overflow-y: auto;
 }
 
-.location-info-header {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  margin-bottom: 12px;
-  border-bottom: 1px solid var(--border-subtle);
-  padding-bottom: 8px;
-}
-
-.zone-title {
-  font-size: 1.15rem;
-  font-weight: 800;
-  color: #fff;
-}
-
-.zone-subtitle {
-  font-size: 0.8rem;
-  color: var(--text-muted);
-}
-
-.risk-score-display {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: rgba(7, 21, 34, 0.7);
-  padding: 12px;
-  border-radius: var(--radius-md);
-  margin-bottom: 14px;
-}
-
-.risk-pct-large {
-  font-size: 2.2rem;
-  font-weight: 800;
-  font-family: var(--font-heading);
-  line-height: 1;
-}
-
-.factor-bar-row {
-  margin-bottom: 8px;
-}
-
-.factor-bar-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 0.8rem;
-  color: var(--text-secondary);
-  margin-bottom: 3px;
-}
-
-.factor-progress-bg {
-  height: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-full);
-  overflow: hidden;
-}
-
-.factor-progress-fill {
-  height: 100%;
-  border-radius: var(--radius-full);
-  transition: width 600ms cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.ai-reasoning-box {
-  background: rgba(41, 182, 246, 0.08);
-  border: 1px solid rgba(41, 182, 246, 0.25);
-  border-radius: var(--radius-md);
-  padding: 10px;
-  font-size: 0.82rem;
-  color: #B0BEC5;
-  margin: 12px 0;
-  line-height: 1.4;
-}
-
-.ai-reasoning-box strong {
-  color: var(--brand-cyan);
-  display: block;
-  margin-bottom: 4px;
+/* Mobile Draggable Bottom Sheet Override */
+@media (max-width: 768px) {
+  .location-info-panel {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    border-radius: 24px 24px 0 0 !important;
+    max-height: 75vh !important;
+    z-index: 10050 !important;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.9) !important;
+  }
+  
+  .bottom-sheet-drag-handle {
+    width: 44px;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 2px;
+    margin: -8px auto 14px auto;
+  }
 }

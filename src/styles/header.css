@@ -1,9 +1,12 @@
-/* Header & Top Navigation Styling */
+/* ==========================================================================
+   FLOATING COMMAND HEADER — 3D DISASTER COMMAND CENTER
+   ========================================================================== */
+
 .app-header {
-  height: var(--header-height);
-  background: rgba(7, 21, 34, 0.9);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
+  height: 68px;
+  background: rgba(6, 19, 31, 0.75);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-subtle);
   position: sticky;
   top: 0;
@@ -13,26 +16,34 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 16px;
-  gap: 12px;
+  padding: 0 20px;
+  gap: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), inset 0 -1px 0 rgba(25, 199, 255, 0.15);
 }
 
 .header-left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
 }
 
+/* 3D Glowing TerraAlert Emblem */
 .header-logo-icon {
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--brand-blue) 0%, var(--brand-cyan) 100%);
+  background: linear-gradient(135deg, #1687FF 0%, #19C7FF 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   color: #fff;
-  box-shadow: 0 0 14px rgba(41, 182, 246, 0.4);
+  box-shadow: 0 0 20px var(--cyan-glow);
+  position: relative;
+  transition: transform 250ms ease;
+}
+
+.header-logo-icon:hover {
+  transform: translateY(-2px) scale(1.05);
 }
 
 .header-brand {
@@ -41,10 +52,10 @@
 }
 
 .header-title {
-  font-size: 1.05rem;
+  font-size: 1.15rem;
   font-weight: 800;
   color: #FFFFFF;
-  letter-spacing: -0.2px;
+  letter-spacing: -0.3px;
   line-height: 1.1;
   display: flex;
   align-items: center;
@@ -52,20 +63,42 @@
 }
 
 .header-tag {
-  background: rgba(41, 182, 246, 0.15);
-  color: var(--brand-cyan);
-  font-size: 0.65rem;
+  background: var(--cyan-soft);
+  color: var(--cyan);
+  font-size: 0.68rem;
   font-weight: 800;
-  padding: 2px 6px;
+  padding: 2px 7px;
   border-radius: 4px;
-  border: 1px solid rgba(41, 182, 246, 0.3);
-  text-transform: uppercase;
+  border: 1px solid rgba(25, 199, 255, 0.35);
+  letter-spacing: 0.8px;
 }
 
 .header-subtitle {
-  font-size: 0.72rem;
+  font-size: 0.75rem;
   color: var(--text-muted);
   font-weight: 500;
+}
+
+/* Center: Live System Operational Status Beacon */
+.header-center-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(25, 212, 123, 0.08);
+  border: 1px solid rgba(25, 212, 123, 0.25);
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #A5FFD4;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+@media (max-width: 900px) {
+  .header-center-status {
+    display: none;
+  }
 }
 
 .header-right {
@@ -74,26 +107,26 @@
   gap: 12px;
 }
 
-/* SOS Emergency Header Trigger */
+/* SOS Emergency Glowing Button */
 .sos-header-btn {
-  background: linear-gradient(135deg, #D32F2F 0%, #B71C1C 100%);
+  background: linear-gradient(135deg, #FF3B3B 0%, #B71C1C 100%);
   color: #FFFFFF;
   border: 1px solid rgba(255, 255, 255, 0.3);
-  padding: 6px 14px;
-  border-radius: var(--radius-full);
+  padding: 7px 16px;
+  border-radius: var(--radius-pill);
   font-weight: 800;
   font-size: 0.85rem;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.6px;
   display: flex;
   align-items: center;
   gap: 6px;
-  box-shadow: 0 0 16px rgba(211, 47, 47, 0.5);
+  box-shadow: 0 0 20px rgba(255, 59, 59, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.3);
   animation: pulse-red 2.2s infinite;
 }
 
 .sos-header-btn:hover {
   transform: translateY(-2px);
-  box-shadow: 0 0 22px rgba(211, 47, 47, 0.8);
+  box-shadow: 0 0 28px rgba(255, 59, 59, 0.85);
 }
 
 /* Portal Switcher Dropdown (Top-Right) */
@@ -102,8 +135,9 @@
 }
 
 .portal-switcher-btn {
-  background: rgba(18, 43, 67, 0.85);
-  border: 1px solid var(--border-subtle);
+  background: rgba(11, 38, 56, 0.75);
+  backdrop-filter: blur(14px);
+  border: 1px solid var(--border-glass);
   border-radius: var(--radius-md);
   padding: 8px 14px;
   color: var(--text-primary);
@@ -112,13 +146,14 @@
   display: flex;
   align-items: center;
   gap: 8px;
+  box-shadow: var(--shadow-sm);
   transition: all var(--transition-normal);
 }
 
 .portal-switcher-btn:hover {
-  background: rgba(23, 54, 84, 0.95);
-  border-color: var(--brand-cyan);
-  box-shadow: 0 0 12px var(--brand-cyan-glow);
+  background: rgba(16, 50, 74, 0.95);
+  border-color: var(--cyan);
+  box-shadow: 0 0 16px var(--cyan-glow);
   transform: translateY(-2px);
 }
 
@@ -127,35 +162,30 @@
   top: calc(100% + 8px);
   right: 0;
   width: 260px;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border-subtle);
+  background: rgba(8, 28, 43, 0.94);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--border-highlight);
   border-radius: var(--radius-lg);
-  box-shadow: var(--shadow-lg);
+  box-shadow: var(--shadow-lg), 0 0 25px rgba(0, 0, 0, 0.8);
   overflow: hidden;
   z-index: 1050;
   animation: dropdownAnim 200ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @keyframes dropdownAnim {
-  from {
-    opacity: 0;
-    transform: translateY(-8px) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
+  from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
 .portal-dropdown-header {
   padding: 10px 14px;
-  background: rgba(7, 21, 34, 0.6);
-  font-size: 0.75rem;
+  background: rgba(4, 14, 23, 0.7);
+  font-size: 0.72rem;
   font-weight: 700;
   color: var(--text-muted);
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  border-bottom: 1px solid var(--border-subtle);
+  letter-spacing: 0.8px;
+  border-bottom: 1px solid var(--border-glass);
 }
 
 .portal-option-item {
@@ -167,23 +197,22 @@
   background: transparent;
   color: var(--text-primary);
   border-radius: 0;
-  text-align: left;
-  font-size: 0.9rem;
+  font-size: 0.88rem;
   font-weight: 500;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   transition: background var(--transition-fast);
 }
 
 .portal-option-item:hover {
-  background: rgba(41, 182, 246, 0.12);
-  color: #FFFFFF;
+  background: rgba(25, 199, 255, 0.12);
+  color: #fff;
 }
 
 .portal-option-item.active {
-  background: rgba(21, 101, 192, 0.25);
-  color: var(--brand-cyan);
+  background: rgba(22, 135, 255, 0.25);
+  color: var(--cyan);
   font-weight: 700;
-  border-left: 3px solid var(--brand-cyan);
+  border-left: 3px solid var(--cyan);
 }
 
 .portal-option-item .option-icon-label {
@@ -192,50 +221,9 @@
   gap: 10px;
 }
 
-.auth-lock-badge {
-  font-size: 0.7rem;
-  padding: 2px 6px;
-  border-radius: 4px;
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--text-muted);
-  font-weight: 600;
-}
-
-/* User Profile & Logout */
-.user-profile-badge {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  background: rgba(255, 255, 255, 0.06);
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  border: 1px solid var(--border-subtle);
-  font-size: 0.8rem;
-}
-
-.logout-icon-btn {
-  padding: 4px 8px;
-  color: var(--text-muted);
-  border-radius: var(--radius-sm);
-}
-
-.logout-icon-btn:hover {
-  color: #FF8A80;
-  background: rgba(211, 47, 47, 0.15);
-}
-
-/* Responsive adjustments */
 @media (max-width: 640px) {
-  .header-subtitle {
-    display: none;
-  }
-  .header-title {
-    font-size: 0.92rem;
-  }
-  .sos-header-btn span {
-    display: none;
-  }
-  .portal-switcher-btn span.portal-text {
-    display: none;
-  }
+  .header-subtitle { display: none; }
+  .header-title { font-size: 0.95rem; }
+  .sos-header-btn span { display: none; }
+  .portal-switcher-btn span.portal-text { display: none; }
 }
