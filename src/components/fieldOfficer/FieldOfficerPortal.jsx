@@ -18,6 +18,7 @@ const FieldOfficerPortal = () => {
     t
   } = useApp();
 
+  const [officerTab, setOfficerTab] = useState('tasks'); // 'tasks' | 'form'
   const currentTask = fieldTasks.find(t => t.id === activeFieldTaskId) || fieldTasks[0];
 
   const steps = [
@@ -41,9 +42,9 @@ const FieldOfficerPortal = () => {
   };
 
   return (
-    <div className="officer-layout">
+    <div className="officer-layout" style={{ paddingBottom: 'calc(var(--bottom-nav-height) + 24px)' }}>
       {/* Officer Status Top Banner */}
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px', marginBottom: '16px' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
           <div style={{ width: '42px', height: '42px', borderRadius: '12px', background: 'var(--color-blue-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
             <HardHat size={24} color="var(--color-risk-high)" />
@@ -66,95 +67,163 @@ const FieldOfficerPortal = () => {
         </div>
       </div>
 
-      {/* Task Stepper for Selected Task */}
-      {currentTask && (
-        <div className="glass-panel" style={{ padding: '18px 20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px' }}>
+      {/* VIEW 1: ACTIVE TASKS & WORKFLOW PROGRESSION */}
+      {officerTab === 'tasks' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Task Stepper for Selected Task */}
+          {currentTask && (
+            <div className="glass-panel" style={{ padding: '18px 20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '14px', flexWrap: 'wrap', gap: '10px' }}>
+                <div>
+                  <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                    Active Workflow Progression: {currentTask.id}
+                  </span>
+                  <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', margin: '2px 0 0' }}>{currentTask.title}</h3>
+                </div>
+
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  {currentStepIndex < steps.length - 1 && (
+                    <button 
+                      className="btn-primary" 
+                      onClick={handleAdvanceStep}
+                      style={{ fontSize: '0.82rem', padding: '6px 14px' }}
+                    >
+                      Advance: {steps[currentStepIndex + 1]?.label}
+                      <ArrowRight size={14} />
+                    </button>
+                  )}
+
+                  <button 
+                    className="btn-outline-cyan"
+                    onClick={() => setOfficerTab('form')}
+                    style={{ fontSize: '0.82rem', padding: '6px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    <ClipboardCheck size={14} />
+                    Open Inspection Form
+                  </button>
+                </div>
+              </div>
+
+              <div className="workflow-stepper">
+                {steps.map((step, idx) => {
+                  const StepIcon = step.icon;
+                  const isCompleted = idx < currentStepIndex;
+                  const isCurrent = idx === currentStepIndex;
+
+                  return (
+                    <div 
+                      key={step.key} 
+                      className={`step-node ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`}
+                    >
+                      <div className="step-icon-circle">
+                        <StepIcon size={16} />
+                      </div>
+                      <span className="step-label">{step.label}</span>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* Grid: Task Queue on Left, Live Navigation Route on Right */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))', gap: '16px' }}>
             <div>
-              <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                Active Workflow Progression: {currentTask.id}
-              </span>
-              <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)' }}>{currentTask.title}</h3>
+              <TaskQueue 
+                selectedTaskId={activeFieldTaskId} 
+                onSelectTask={setActiveFieldTaskId} 
+              />
             </div>
 
-            {currentStepIndex < steps.length - 1 && (
-              <button 
-                className="btn-primary" 
-                onClick={handleAdvanceStep}
-                style={{ fontSize: '0.82rem', padding: '6px 14px' }}
-              >
-                Advance: {steps[currentStepIndex + 1]?.label}
-                <ArrowRight size={14} />
-              </button>
-            )}
-          </div>
+            {currentTask && (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <LiveNavigation 
+                  task={currentTask} 
+                  onArrived={() => updateFieldTaskStatus(currentTask.id, 'ON_SITE')} 
+                />
 
-          <div className="workflow-stepper">
-            {steps.map((step, idx) => {
-              const StepIcon = step.icon;
-              const isCompleted = idx < currentStepIndex;
-              const isCurrent = idx === currentStepIndex;
-
-              return (
-                <div 
-                  key={step.key} 
-                  className={`step-node ${isCompleted ? 'completed' : ''} ${isCurrent ? 'current' : ''}`}
-                >
-                  <div className="step-icon-circle">
-                    <StepIcon size={16} />
+                <div className="glass-panel" style={{ padding: '18px 20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+                  <div>
+                    <h4 style={{ fontSize: '0.98rem', color: 'var(--color-navy)', margin: '0 0 4px' }}>
+                      Ready to log field crack & tilt kinematics?
+                    </h4>
+                    <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', margin: 0 }}>
+                      Complete the official on-site geotechnical form and transmit to SDMA EOC.
+                    </p>
                   </div>
-                  <span className="step-label">{step.label}</span>
+                  <button
+                    className="btn-primary"
+                    onClick={() => setOfficerTab('form')}
+                    style={{ fontSize: '0.85rem', padding: '8px 18px', display: 'flex', alignItems: 'center', gap: '6px' }}
+                  >
+                    <ClipboardCheck size={16} />
+                    <span>Open Inspection Form</span>
+                    <ArrowRight size={14} />
+                  </button>
                 </div>
-              );
-            })}
+              </div>
+            )}
           </div>
         </div>
       )}
 
-      {/* Grid: Task Queue on Left, Active Action on Right */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))', gap: '16px', paddingBottom: 'calc(var(--bottom-nav-height) + 16px)' }}>
-        {/* Task List */}
-        <div>
-          <TaskQueue 
-            selectedTaskId={activeFieldTaskId} 
-            onSelectTask={setActiveFieldTaskId} 
-          />
-        </div>
+      {/* VIEW 2: DEDICATED SEPARATE INSPECTION FORM */}
+      {officerTab === 'form' && (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {/* Top Bar for Dedicated Form with Task Switcher & Back Button */}
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '10px' }}>
+            <button
+              className="btn-secondary"
+              onClick={() => setOfficerTab('tasks')}
+              style={{ fontSize: '0.82rem', padding: '6px 14px', display: 'flex', alignItems: 'center', gap: '6px' }}
+            >
+              <span>← Back to Active Tasks</span>
+            </button>
 
-        {/* Tactical Actions for Selected Task */}
-        {currentTask && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-            {/* Live Navigation Route */}
-            <LiveNavigation 
-              task={currentTask} 
-              onArrived={() => updateFieldTaskStatus(currentTask.id, 'ON_SITE')} 
-            />
+            {/* Task selector to switch task being inspected */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>
+                Selected Task:
+              </span>
+              <select
+                value={activeFieldTaskId}
+                onChange={e => setActiveFieldTaskId(e.target.value)}
+                style={{ fontSize: '0.85rem', fontWeight: 600, padding: '6px 12px', borderRadius: '8px', border: '1px solid var(--color-border)', background: '#FFFFFF' }}
+              >
+                {fieldTasks.map(t => (
+                  <option key={t.id} value={t.id}>
+                    {t.id}: {t.locationName}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
 
-            {/* Inspection Form */}
+          {/* Full-width Inspection Form */}
+          {currentTask && (
             <InspectionForm 
               task={currentTask} 
-              onSubmitted={() => updateFieldTaskStatus(currentTask.id, 'REPORT_SUBMITTED')} 
+              onSubmitted={() => {
+                updateFieldTaskStatus(currentTask.id, 'REPORT_SUBMITTED');
+              }} 
             />
-          </div>
-        )}
-      </div>
+          )}
+        </div>
+      )}
 
-      {/* Fixed Bottom Dashboard Navigation Bar with Equal Spacing (Live GPS Nav removed) */}
+      {/* Fixed Bottom Dashboard Navigation Bar with Equal Spacing */}
       <nav className="citizen-bottom-nav">
         <button
-          className="bottom-nav-item active"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          className={`bottom-nav-item ${officerTab === 'tasks' ? 'active' : ''}`}
+          onClick={() => setOfficerTab('tasks')}
         >
           <Clock size={19} />
           <span>{t.fieldOfficer?.activeTasks || "Active Tasks"}</span>
         </button>
 
         <button
-          className="bottom-nav-item"
-          onClick={() => {
-            const el = document.querySelector('.inspection-form-container') || document.querySelector('form');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}
+          className={`bottom-nav-item ${officerTab === 'form' ? 'active' : ''}`}
+          onClick={() => setOfficerTab('form')}
         >
           <ClipboardCheck size={19} />
           <span>{t.fieldOfficer?.inspectionForm || "Inspection Form"}</span>

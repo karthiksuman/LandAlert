@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import { useApp } from '../../context/AppContext';
-import { AlertTriangle, Waves, AlertOctagon, Navigation, ShieldCheck, MapPin } from 'lucide-react';
+import AlertInlineMap from './AlertInlineMap';
+import { AlertTriangle, Waves, AlertOctagon, Navigation, ShieldCheck, MapPin, Maximize2 } from 'lucide-react';
 
 const CitizenAlerts = () => {
-  const { alerts, setIsFullScreenMap, t } = useApp();
+  const { alerts, locations, setSelectedZoneId, setCitizenActiveTab, viewBothRoutesOnMap, setIsFullScreenMap, t } = useApp();
   const [filter, setFilter] = useState('ALL');
+  const [expandedMapAlertId, setExpandedMapAlertId] = useState(null);
 
   const filteredAlerts = alerts.filter(a => {
     if (filter === 'LANDSLIDE') return a.type === 'CRITICAL_LANDSLIDE';
@@ -12,6 +14,23 @@ const CitizenAlerts = () => {
     if (filter === 'ROAD') return a.type === 'ROAD_BLOCKAGE';
     return true;
   });
+
+  const handleGoToFullMap = (alert) => {
+    const matched = locations.find(l => 
+      l.district?.toLowerCase() === alert.district?.toLowerCase() ||
+      alert.title?.toLowerCase().includes(l.name?.toLowerCase()) ||
+      alert.message?.toLowerCase().includes(l.name?.toLowerCase())
+    ) || locations[0];
+
+    if (matched) setSelectedZoneId(matched.id);
+
+    if (alert.type === 'ROAD_BLOCKAGE' || alert.title.includes('NH-10')) {
+      viewBothRoutesOnMap();
+    } else {
+      setCitizenActiveTab('home');
+      setIsFullScreenMap(true);
+    }
+  };
 
   return (
     <div className="citizen-feed-container">
@@ -62,6 +81,7 @@ const CitizenAlerts = () => {
           const isFlood = alert.type === 'FLASH_FLOOD';
           const isBlockage = alert.type === 'ROAD_BLOCKAGE';
           const accentColor = isFlood ? 'var(--color-blue-500)' : isBlockage ? 'var(--color-risk-high)' : 'var(--color-risk-critical)';
+          const isMapOpen = expandedMapAlertId === alert.id;
 
           return (
             <div 
@@ -120,16 +140,38 @@ const CitizenAlerts = () => {
                 </div>
               </div>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+              {/* INLINE EXPANDABLE GIS MAP IN ALERTS */}
+              {isMapOpen && (
+                <AlertInlineMap 
+                  alert={alert} 
+                  onClose={() => setExpandedMapAlertId(null)} 
+                  onGoToFullMap={() => handleGoToFullMap(alert)} 
+                />
+              )}
+
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.75rem', color: 'var(--text-muted)', flexWrap: 'wrap', gap: '8px' }}>
                 <span>Issued by: {alert.issuedBy}</span>
-                <button 
-                  className="btn-outline-cyan" 
-                  style={{ padding: '6px 12px', fontSize: '0.78rem' }}
-                  onClick={() => setIsFullScreenMap(true)}
-                >
-                  <Navigation size={12} />
-                  Locate on Map
-                </button>
+
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <button 
+                    className="btn-outline-cyan" 
+                    style={{ padding: '6px 12px', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '6px' }}
+                    onClick={() => setExpandedMapAlertId(prev => prev === alert.id ? null : alert.id)}
+                  >
+                    <Navigation size={13} />
+                    <span>{isMapOpen ? "Hide Map" : "Locate on Map"}</span>
+                  </button>
+
+                  <button 
+                    className="btn-primary" 
+                    style={{ padding: '6px 12px', fontSize: '0.78rem', display: 'flex', alignItems: 'center', gap: '5px' }}
+                    onClick={() => handleGoToFullMap(alert)}
+                    title="Open in Full GIS Command Map"
+                  >
+                    <Maximize2 size={12} />
+                    <span>Open GIS Map</span>
+                  </button>
+                </div>
               </div>
             </div>
           );

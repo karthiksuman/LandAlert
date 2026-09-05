@@ -3,13 +3,18 @@ import { useApp } from '../../context/AppContext';
 import { 
   BellRing, Radio, AlertTriangle, Send, ShieldAlert, 
   MapPin, CheckCircle2, XCircle, Volume2, Smartphone, 
-  Waves, AlertOctagon, Eye, Sparkles, Navigation, RotateCcw
+  Waves, AlertOctagon, Eye, Sparkles, Navigation, RotateCcw,
+  Search, Plus, X, Edit3
 } from 'lucide-react';
 
 const SendAlertsManager = () => {
   const { locations, alerts, broadcastNewAlert, revokeAlert, setAuthorityActiveTab, t } = useApp();
 
   const [targetDistrict, setTargetDistrict] = useState(locations[0]?.district || "North Sikkim");
+  const [isCustomLocation, setIsCustomLocation] = useState(false);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [customCoords, setCustomCoords] = useState({ lat: 27.512, lng: 88.534 });
+
   const [hazardType, setHazardType] = useState("CRITICAL_LANDSLIDE");
   const [severityLevel, setSeverityLevel] = useState("CRITICAL");
   const [probability, setProbability] = useState(88);
@@ -27,6 +32,30 @@ const SendAlertsManager = () => {
     sms: true
   });
   const [isBroadcasting, setIsBroadcasting] = useState(false);
+
+  const handleLocationChange = (val) => {
+    setTargetDistrict(val);
+    setShowSuggestions(true);
+    const matched = locations.find(l => 
+      l.district.toLowerCase() === val.toLowerCase() || 
+      l.name.toLowerCase() === val.toLowerCase()
+    );
+    if (matched) {
+      setCustomCoords({ lat: matched.coordinates[0], lng: matched.coordinates[1] });
+      setIsCustomLocation(false);
+    } else {
+      setIsCustomLocation(true);
+    }
+  };
+
+  const selectLocationPreset = (districtName, coordinates) => {
+    setTargetDistrict(districtName);
+    if (coordinates) {
+      setCustomCoords({ lat: coordinates[0], lng: coordinates[1] });
+    }
+    setIsCustomLocation(false);
+    setShowSuggestions(false);
+  };
 
   // One-Click Emergency Presets
   const presets = [
@@ -77,6 +106,11 @@ const SendAlertsManager = () => {
     setSeverityLevel(preset.level);
     setProbability(preset.probability);
     setTargetDistrict(preset.district);
+    const matched = locations.find(l => l.district === preset.district);
+    if (matched) {
+      setCustomCoords({ lat: matched.coordinates[0], lng: matched.coordinates[1] });
+      setIsCustomLocation(false);
+    }
     setTitle(preset.title);
     setMessage(preset.message);
     setAction(preset.action);
@@ -88,7 +122,15 @@ const SendAlertsManager = () => {
 
     setIsBroadcasting(true);
 
-    const targetLoc = locations.find(l => l.district === targetDistrict) || locations[0];
+    const targetLoc = locations.find(l => 
+      l.district?.toLowerCase() === targetDistrict?.toLowerCase() ||
+      l.name?.toLowerCase() === targetDistrict?.toLowerCase()
+    );
+
+    const coordinates = targetLoc?.coordinates || [
+      parseFloat(customCoords.lat) || 27.512, 
+      parseFloat(customCoords.lng) || 88.534
+    ];
 
     setTimeout(() => {
       broadcastNewAlert({
@@ -96,7 +138,7 @@ const SendAlertsManager = () => {
         level: severityLevel,
         title,
         district: targetDistrict,
-        coordinates: targetLoc?.coordinates || [27.512, 88.534],
+        coordinates,
         probability: Number(probability),
         message,
         action,
@@ -210,23 +252,203 @@ const SendAlertsManager = () => {
             <span>Configure Emergency Public Alert</span>
           </h3>
 
-          {/* District & Location */}
-          <div style={{ marginBottom: '16px' }}>
-            <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-navy)', marginBottom: '6px' }}>
-              Target District / Region
-            </label>
-            <select
-              value={targetDistrict}
-              onChange={e => setTargetDistrict(e.target.value)}
-              style={{ fontSize: '0.88rem' }}
-            >
-              {locations.map(loc => (
-                <option key={loc.id} value={loc.district}>
-                  📍 {loc.district} ({loc.name}, {loc.state})
-                </option>
+          {/* District & Location Search / Manual Typing Box */}
+          <div style={{ marginBottom: '16px', position: 'relative' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
+              <label style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-navy)' }}>
+                Target District / Location <span style={{ color: 'var(--color-risk-critical)' }}>*</span>
+              </label>
+              {isCustomLocation && (
+                <span style={{ fontSize: '0.72rem', color: 'var(--color-blue-600)', background: 'var(--color-blue-50)', padding: '2px 8px', borderRadius: 'var(--radius-pill)', fontWeight: 600 }}>
+                  ✏️ Custom Unlisted Location
+                </span>
+              )}
+            </div>
+
+            {/* Interactive Search / Manual Input Field */}
+            <div style={{ position: 'relative' }}>
+              <div style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)', display: 'flex', alignItems: 'center' }}>
+                <Search size={16} />
+              </div>
+
+              <input
+                type="text"
+                value={targetDistrict}
+                onChange={e => handleLocationChange(e.target.value)}
+                onFocus={() => setShowSuggestions(true)}
+                placeholder="Search district or manually type any village, pass, or highway..."
+                required
+                style={{
+                  width: '100%',
+                  padding: '9px 36px 9px 36px',
+                  fontSize: '0.9rem',
+                  fontWeight: 600,
+                  borderRadius: '10px',
+                  border: isCustomLocation ? '1.5px solid var(--color-blue-500)' : '1px solid var(--color-border)',
+                  background: '#FFFFFF'
+                }}
+              />
+
+              {targetDistrict && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setTargetDistrict('');
+                    setIsCustomLocation(true);
+                  }}
+                  style={{
+                    position: 'absolute',
+                    right: '10px',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    background: 'none',
+                    border: 'none',
+                    color: 'var(--color-text-muted)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center'
+                  }}
+                  title="Clear Location"
+                >
+                  <X size={15} />
+                </button>
+              )}
+            </div>
+
+            {/* Autocomplete / Suggestions Dropdown */}
+            {showSuggestions && targetDistrict && (
+              <div 
+                style={{
+                  position: 'absolute',
+                  top: '100%',
+                  left: 0,
+                  right: 0,
+                  zIndex: 40,
+                  background: '#FFFFFF',
+                  borderRadius: '10px',
+                  boxShadow: '0 8px 24px rgba(11,31,51,0.18)',
+                  border: '1px solid var(--color-border)',
+                  marginTop: '4px',
+                  maxHeight: '180px',
+                  overflowY: 'auto'
+                }}
+              >
+                {/* Manual typed entry item */}
+                <div
+                  onClick={() => {
+                    setShowSuggestions(false);
+                  }}
+                  style={{
+                    padding: '8px 14px',
+                    fontSize: '0.8rem',
+                    fontWeight: 700,
+                    color: 'var(--color-blue-600)',
+                    background: 'var(--color-blue-50)',
+                    borderBottom: '1px solid var(--color-border)',
+                    cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px'
+                  }}
+                >
+                  <Plus size={14} />
+                  <span>Use custom manually typed location: "<strong>{targetDistrict}</strong>"</span>
+                </div>
+
+                {/* Filtered Monitored Locations */}
+                {locations
+                  .filter(l => 
+                    l.district.toLowerCase().includes(targetDistrict.toLowerCase()) || 
+                    l.name.toLowerCase().includes(targetDistrict.toLowerCase()) ||
+                    l.state.toLowerCase().includes(targetDistrict.toLowerCase())
+                  )
+                  .map(loc => (
+                    <div
+                      key={loc.id}
+                      onClick={() => selectLocationPreset(loc.district, loc.coordinates)}
+                      style={{
+                        padding: '8px 14px',
+                        fontSize: '0.82rem',
+                        color: 'var(--color-navy)',
+                        cursor: 'pointer',
+                        borderBottom: '1px solid var(--color-border-subtle)',
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignItems: 'center'
+                      }}
+                      onMouseEnter={e => e.currentTarget.style.background = 'var(--color-bg-tertiary)'}
+                      onMouseLeave={e => e.currentTarget.style.background = '#FFFFFF'}
+                    >
+                      <span>📍 <strong>{loc.district}</strong> — {loc.name}</span>
+                      <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>{loc.state}</span>
+                    </div>
+                  ))}
+              </div>
+            )}
+
+            {/* Quick Suggestion Chips */}
+            <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', marginTop: '8px' }}>
+              <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', alignSelf: 'center', fontWeight: 600 }}>Quick:</span>
+              {['North Sikkim', 'East Khasi Hills', 'Kamrup Metropolitan', 'Dima Hasao', 'All North-East Sectors'].map((chip, idx) => (
+                <button
+                  key={idx}
+                  type="button"
+                  onClick={() => {
+                    setTargetDistrict(chip);
+                    const matched = locations.find(l => l.district === chip);
+                    if (matched) {
+                      setCustomCoords({ lat: matched.coordinates[0], lng: matched.coordinates[1] });
+                      setIsCustomLocation(false);
+                    } else {
+                      setIsCustomLocation(true);
+                    }
+                    setShowSuggestions(false);
+                  }}
+                  style={{
+                    fontSize: '0.72rem',
+                    padding: '3px 8px',
+                    borderRadius: 'var(--radius-pill)',
+                    border: '1px solid var(--color-border)',
+                    background: targetDistrict === chip ? 'var(--color-blue-500)' : 'var(--color-bg-tertiary)',
+                    color: targetDistrict === chip ? '#FFFFFF' : 'var(--color-navy)',
+                    fontWeight: 600,
+                    cursor: 'pointer'
+                  }}
+                >
+                  {chip}
+                </button>
               ))}
-              <option value="All North-East Corridor">🌐 All North-East Mountain Sectors</option>
-            </select>
+            </div>
+
+            {/* Optional Custom Coordinates Toggle if location is manually typed */}
+            {isCustomLocation && (
+              <div style={{ marginTop: '10px', background: 'var(--color-blue-50)', padding: '10px 12px', borderRadius: '8px', border: '1px solid var(--color-border)', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px' }}>
+                <div>
+                  <label style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-navy)', display: 'block', marginBottom: '2px' }}>
+                    Custom Latitude (°N)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.001"
+                    value={customCoords.lat}
+                    onChange={e => setCustomCoords(prev => ({ ...prev, lat: parseFloat(e.target.value) || 27.512 }))}
+                    style={{ fontSize: '0.8rem', padding: '5px 8px', background: '#FFFFFF' }}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-navy)', display: 'block', marginBottom: '2px' }}>
+                    Custom Longitude (°E)
+                  </label>
+                  <input
+                    type="number"
+                    step="0.001"
+                    value={customCoords.lng}
+                    onChange={e => setCustomCoords(prev => ({ ...prev, lng: parseFloat(e.target.value) || 88.534 }))}
+                    style={{ fontSize: '0.8rem', padding: '5px 8px', background: '#FFFFFF' }}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Severity & Hazard Type Grid */}
