@@ -1,7 +1,6 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import GisMap from '../gis/GisMap';
-import RouteSafetyCard from './RouteSafetyCard';
 import { ShieldAlert, CloudRain, Wind, Droplets, Thermometer, AlertTriangle, ArrowUpRight } from 'lucide-react';
 
 const CitizenHome = () => {
@@ -120,10 +119,7 @@ const CitizenHome = () => {
           </button>
         </div>
 
-        {/* Route Safety Warning & Safe Detour */}
-        <div>
-          <RouteSafetyCard />
-        </div>
+
 
         {/* Local Micro-Climate Weather & Telemetry Card */}
         {currentZone.weather && (

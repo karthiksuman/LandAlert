@@ -476,10 +476,10 @@ const GisMap = ({ mode = 'hero' }) => {
             <button 
               className={`map-view-pill-btn ${baseMapType === 'osm' ? 'active' : ''}`}
               onClick={() => setBaseMapType('osm')}
-              title="OpenStreetMap Standard Basemap (Zero API Key)"
+              title="GIS Map Basemap"
             >
               <Map size={13} style={{ display: 'inline', marginRight: '4px' }} />
-              OpenStreetMap
+              GIS Map
             </button>
             <button 
               className={`map-view-pill-btn ${baseMapType === 'topo' ? 'active' : ''}`}
