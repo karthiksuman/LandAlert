@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Mountain, Activity, Wifi, ShieldAlert } from 'lucide-react';
+import { Activity, Wifi, ShieldAlert } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 const IntroAnimation = () => {
   const [show, setShow] = useState(() => {
@@ -45,8 +46,8 @@ const IntroAnimation = () => {
 
       {/* Center Branding Reveal */}
       <div className="intro-branding">
-        <div className="intro-emblem">
-          <Mountain size={38} strokeWidth={2.2} />
+        <div className="intro-emblem" style={{ overflow: 'hidden', padding: '6px' }}>
+          <img src={logoImg} alt="LandAlert Emblem" style={{ width: '100%', height: '100%', objectFit: 'contain' }} />
         </div>
         <h1 className="intro-title">
           <span className="brand-logo-large-l">L</span>andAlert India

@@ -3,7 +3,8 @@ import { useApp } from '../../context/AppContext';
 import PortalSwitcher from './PortalSwitcher';
 import LanguageSwitcher from './LanguageSwitcher';
 import VoiceAssistant from './VoiceAssistant';
-import { Mountain, AlertTriangle, PhoneCall, ShieldCheck } from 'lucide-react';
+import { AlertTriangle, PhoneCall, ShieldCheck } from 'lucide-react';
+import logoImg from '../../assets/logo.png';
 
 const Header = () => {
   const { t, activePortal, currentUser, logout, setIsSosOpen } = useApp();
@@ -12,7 +13,7 @@ const Header = () => {
     <header className="app-header">
       <div className="header-left">
         <div className="header-logo-icon">
-          <Mountain size={22} strokeWidth={2.4} />
+          <img src={logoImg} alt="LandAlert Logo" className="header-logo-img" />
         </div>
         <div className="header-brand">
           <div className="header-title">
