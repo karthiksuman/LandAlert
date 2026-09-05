@@ -490,18 +490,24 @@ export const AppProvider = ({ children }) => {
       id: newId,
       type: alertData.type || "CRITICAL_LANDSLIDE",
       level: alertData.level || "CRITICAL",
-      title: alertData.title,
-      district: alertData.district || "Regional",
+      title: alertData.title || "Emergency Landslide Hazard Warning",
+      district: alertData.district || "North Sikkim",
       coordinates: alertData.coordinates || [27.512, 88.534],
-      probability: alertData.probability || 85,
+      probability: Number(alertData.probability) || 85,
       message: alertData.message,
       action: alertData.action,
       issuedAt: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-      issuedBy: alertData.issuedBy || "State Disaster Management Authority"
+      issuedBy: alertData.issuedBy || "State Disaster Management Authority (SDMA)"
     };
 
     setAlerts(prev => [newAlert, ...prev]);
     addToast(`🚨 ${newAlert.title}`, newAlert.message, 'critical');
+    return newId;
+  };
+
+  const revokeAlert = (alertId) => {
+    setAlerts(prev => prev.filter(a => a.id !== alertId));
+    addToast("Alert Revoked", `Emergency alert [${alertId}] withdrawn from resident portals.`, "info");
   };
 
   // Update AI weights
@@ -595,6 +601,7 @@ export const AppProvider = ({ children }) => {
         // Alerts & Helplines
         alerts,
         broadcastNewAlert,
+        revokeAlert,
         helplines,
         setHelplines,
 

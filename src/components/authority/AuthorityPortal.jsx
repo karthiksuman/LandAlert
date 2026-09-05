@@ -3,10 +3,11 @@ import { useApp } from '../../context/AppContext';
 import AuthorityDashboard from './AuthorityDashboard';
 import CitizenReportsQueue from './CitizenReportsQueue';
 import RoadBlockageManager from './RoadBlockageManager';
+import SendAlertsManager from './SendAlertsManager';
 import PopulationRiskPanel from './PopulationRiskPanel';
 import RiskMonitoring from '../common/RiskMonitoring';
 import { 
-  LayoutDashboard, FileText, AlertOctagon, Users, Activity 
+  LayoutDashboard, FileText, AlertOctagon, Users, Activity, BellRing 
 } from 'lucide-react';
 
 const AuthorityPortal = () => {
@@ -21,6 +22,7 @@ const AuthorityPortal = () => {
         {activeTab === 'monitoring' && <RiskMonitoring />}
         {activeTab === 'reports' && <CitizenReportsQueue />}
         {activeTab === 'roads' && <RoadBlockageManager />}
+        {activeTab === 'sendAlerts' && <SendAlertsManager />}
         {activeTab === 'population' && <PopulationRiskPanel />}
       </main>
 
@@ -56,6 +58,14 @@ const AuthorityPortal = () => {
         >
           <AlertOctagon size={19} />
           <span>{t.nav?.roadBlockages || "Road Blockages"}</span>
+        </button>
+
+        <button
+          className={`bottom-nav-item ${activeTab === 'sendAlerts' ? 'active' : ''}`}
+          onClick={() => setAuthorityActiveTab('sendAlerts')}
+        >
+          <BellRing size={19} />
+          <span>{t.nav?.sendAlerts || "Send Alerts"}</span>
         </button>
 
         <button
