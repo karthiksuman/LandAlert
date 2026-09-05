@@ -14,7 +14,8 @@ const FieldOfficerPortal = () => {
     activeFieldTaskId, 
     setActiveFieldTaskId, 
     updateFieldTaskStatus,
-    setIsSosOpen 
+    setIsSosOpen,
+    t
   } = useApp();
 
   const currentTask = fieldTasks.find(t => t.id === activeFieldTaskId) || fieldTasks[0];
@@ -138,36 +139,25 @@ const FieldOfficerPortal = () => {
         )}
       </div>
 
-      {/* Fixed Bottom Dashboard Navigation Bar with Equal Spacing */}
+      {/* Fixed Bottom Dashboard Navigation Bar with Equal Spacing (Live GPS Nav removed) */}
       <nav className="citizen-bottom-nav">
         <button
           className="bottom-nav-item active"
           onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         >
           <Clock size={19} />
-          <span>Active Tasks</span>
+          <span>{t.fieldOfficer?.activeTasks || "Active Tasks"}</span>
         </button>
 
         <button
           className="bottom-nav-item"
           onClick={() => {
-            const el = document.querySelector('.live-nav-panel');
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-          }}
-        >
-          <Car size={19} />
-          <span>Live GPS Nav</span>
-        </button>
-
-        <button
-          className="bottom-nav-item"
-          onClick={() => {
-            const el = document.querySelector('.inspection-form-container');
+            const el = document.querySelector('.inspection-form-container') || document.querySelector('form');
             if (el) el.scrollIntoView({ behavior: 'smooth' });
           }}
         >
           <ClipboardCheck size={19} />
-          <span>Inspection Form</span>
+          <span>{t.fieldOfficer?.inspectionForm || "Inspection Form"}</span>
         </button>
 
         <button
@@ -176,7 +166,7 @@ const FieldOfficerPortal = () => {
           style={{ color: '#D32F2F' }}
         >
           <ShieldAlert size={19} />
-          <span>Distress SOS</span>
+          <span>{t.fieldOfficer?.distressSos || "Distress SOS"}</span>
         </button>
       </nav>
     </div>

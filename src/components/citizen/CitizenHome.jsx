@@ -4,7 +4,7 @@ import GisMap from '../gis/GisMap';
 import { ShieldAlert, CloudRain, Wind, Droplets, Thermometer, AlertTriangle, ArrowUpRight } from 'lucide-react';
 
 const CitizenHome = () => {
-  const { locations, selectedZoneId, setCitizenActiveTab, setIsFullScreenMap } = useApp();
+  const { locations, selectedZoneId, setCitizenActiveTab, setIsFullScreenMap, t } = useApp();
 
   const currentZone = locations.find(l => l.id === selectedZoneId) || locations[0];
 
@@ -12,28 +12,28 @@ const CitizenHome = () => {
     switch (level) {
       case 'CRITICAL':
         return {
-          title: "CRITICAL DANGER: HIGH LANDSLIDE HAZARD",
+          title: t?.criticalStatus || "CRITICAL DANGER: HIGH LANDSLIDE HAZARD",
           desc: "Slope saturation and active seismic ground vibration exceed safety thresholds. Immediate caution advised.",
           badgeClass: "badge-critical",
           cardClass: "critical"
         };
       case 'HIGH':
         return {
-          title: "WARNING: ELEVATED LANDSLIDE RISK",
+          title: t?.unsafeStatus || "WARNING: ELEVATED LANDSLIDE RISK",
           desc: "Continuous rainfall is weakening hillside colluvium. Avoid non-essential mountain transit.",
           badgeClass: "badge-high",
           cardClass: "high"
         };
       case 'MODERATE':
         return {
-          title: "CAUTION: MODERATE GEOLOGICAL RISK",
+          title: t?.risk?.moderate ? `CAUTION: ${t.risk.moderate.toUpperCase()}` : "CAUTION: MODERATE GEOLOGICAL RISK",
           desc: "Slope monitoring active. Low risk of deep failure, but watch for cliff-edge rockfall.",
           badgeClass: "badge-moderate",
           cardClass: ""
         };
       default:
         return {
-          title: "SAFE: NORMAL SLOPE CONDITIONS",
+          title: t?.safeStatus || "SAFE: NORMAL SLOPE CONDITIONS",
           desc: "Environmental indicators and ground stability parameters are currently within normal baseline limits.",
           badgeClass: "badge-low",
           cardClass: ""
@@ -58,7 +58,7 @@ const CitizenHome = () => {
             onClick={() => setIsFullScreenMap(true)}
             style={{ fontSize: '0.78rem', fontWeight: 600, color: 'var(--color-blue-600)', background: 'var(--color-blue-50)', border: '1px solid var(--color-border)', padding: '5px 12px', borderRadius: 'var(--radius-pill)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '6px' }}
           >
-            <span>Expand Fullscreen</span>
+            <span>{t.nav?.fullScreen || "Expand Fullscreen"}</span>
             <ArrowUpRight size={14} />
           </button>
         </div>
@@ -115,7 +115,7 @@ const CitizenHome = () => {
             onClick={() => setCitizenActiveTab('alerts')}
             style={{ padding: '8px 18px', fontSize: '0.85rem', fontWeight: 600, borderRadius: '10px', whiteSpace: 'nowrap' }}
           >
-            View Official Warnings
+            {t.nav?.alerts ? `${t.nav.alerts}` : "View Official Warnings"}
           </button>
         </div>
 
@@ -130,7 +130,7 @@ const CitizenHome = () => {
                   <CloudRain size={20} color="var(--color-blue-500)" />
                 </div>
                 <div>
-                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--color-navy)', margin: 0 }}>Himalayan Atmospheric & Saturation Telemetry</h3>
+                  <h3 style={{ fontSize: '1.05rem', fontWeight: 700, color: 'var(--color-navy)', margin: 0 }}>{t.map?.liveFactors || "Himalayan Atmospheric & Saturation Telemetry"}</h3>
                   <div style={{ fontSize: '0.74rem', color: 'var(--color-text-muted)' }}>Automated Weather Station (AWS) Mesh</div>
                 </div>
               </div>
@@ -149,7 +149,7 @@ const CitizenHome = () => {
               </div>
 
               <div style={{ background: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', padding: '14px 12px', borderRadius: '10px', textAlign: 'center' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>24h Precipitation</div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>{t.monitoring?.precipRate || "24h Precipitation"}</div>
                 <div style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-blue-600)', margin: '4px 0' }}>
                   {currentZone.weather.rainfall} mm
                 </div>
@@ -157,11 +157,11 @@ const CitizenHome = () => {
               </div>
 
               <div style={{ background: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', padding: '14px 12px', borderRadius: '10px', textAlign: 'center' }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>Soil Saturation</div>
+                <div style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)', textTransform: 'uppercase', fontWeight: 700 }}>{t.monitoring?.soilSaturation || "Soil Saturation"}</div>
                 <div style={{ fontSize: '1.35rem', fontWeight: 700, color: 'var(--color-risk-low)', margin: '4px 0' }}>
                   {currentZone.weather.humidity}%
                 </div>
-                <div style={{ fontSize: '0.74rem', color: 'var(--color-risk-low)', fontWeight: 600 }}>Near Saturation</div>
+                <div style={{ fontSize: '0.74rem', color: 'var(--color-risk-low)', fontWeight: 600 }}>{t.monitoring?.nearSaturated || "Near Saturation"}</div>
               </div>
 
               <div style={{ background: 'var(--color-bg-tertiary)', border: '1px solid var(--color-border)', padding: '14px 12px', borderRadius: '10px', textAlign: 'center' }}>

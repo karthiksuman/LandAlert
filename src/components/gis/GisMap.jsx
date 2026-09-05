@@ -170,6 +170,39 @@ const GisMap = ({ mode = 'hero' }) => {
 
         circle.addTo(layerGroup);
 
+        // Clickable Location Badge Pin Marker (Click to display all factors)
+        const pinIcon = L.divIcon({
+          html: `
+            <div class="location-map-pin" style="
+              background: ${color};
+              color: #FFFFFF;
+              font-size: 11px;
+              font-weight: 700;
+              padding: 4px 8px;
+              border-radius: 12px;
+              border: 2px solid #FFFFFF;
+              box-shadow: 0 2px 8px rgba(11,31,51,0.25);
+              white-space: nowrap;
+              display: flex;
+              align-items: center;
+              gap: 5px;
+              cursor: pointer;
+            ">
+              <span style="width: 7px; height: 7px; border-radius: 50%; background: #FFFFFF; display: inline-block;"></span>
+              <span>${loc.name.split(' - ')[0]}</span>
+              <span style="background: rgba(255,255,255,0.25); padding: 1px 4px; border-radius: 4px; font-size: 10px;">${loc.riskPercentage}%</span>
+            </div>
+          `,
+          className: 'leaflet-location-pin-icon',
+          iconAnchor: [45, 14]
+        });
+        const locMarker = L.marker(loc.coordinates, { icon: pinIcon });
+        locMarker.on('click', () => {
+          setSelectedZoneId(loc.id);
+          map.flyTo(loc.coordinates, 9, { duration: 1.2 });
+        });
+        locMarker.addTo(layerGroup);
+
         // Circular Expanding Radar Scan Marker when zone is selected
         if (isSelected) {
           const scanIcon = L.divIcon({
@@ -231,17 +264,17 @@ const GisMap = ({ mode = 'hero' }) => {
         if (isBlocked) {
           // Outer Hazard Glow Aura
           const halo = L.polyline(road.coordinates, {
-            color: 'rgba(211, 47, 47, 0.35)',
-            weight: isAdvisoryTarget ? 16 : 12,
+            color: 'rgba(211, 47, 47, 0.45)',
+            weight: 20,
             lineCap: 'round',
             lineJoin: 'round'
           });
           halo.addTo(layerGroup);
 
-          // Main Thick Red Polyline
+          // Main Thick Red Polyline (Danger Corridor)
           const roadLine = L.polyline(road.coordinates, {
             color: '#D32F2F',
-            weight: isAdvisoryTarget ? 9 : 7,
+            weight: 10,
             opacity: 1,
             lineCap: 'round',
             lineJoin: 'round'
@@ -254,6 +287,10 @@ const GisMap = ({ mode = 'hero' }) => {
               <span style="font-weight: 700; color: #D32F2F;">${road.riskPercentage}% Hazard (BLOCKED)</span>
             </div>
           `, { sticky: true, className: 'leaflet-minimal-tooltip' });
+
+          roadLine.on('click', () => {
+            map.fitBounds(road.coordinates, { padding: [40, 40] });
+          });
 
           roadLine.addTo(layerGroup);
 
@@ -276,7 +313,7 @@ const GisMap = ({ mode = 'hero' }) => {
           // Normal Open Highway
           const roadLine = L.polyline(road.coordinates, {
             color: '#1565C0',
-            weight: 4,
+            weight: 5,
             opacity: 0.85
           });
 
@@ -295,17 +332,17 @@ const GisMap = ({ mode = 'hero' }) => {
         if (isBlocked && road.alternativeRoute && mapLayers.blockages) {
           // Outer Safe Glow Aura
           const altHalo = L.polyline(road.alternativeRoute.coordinates, {
-            color: 'rgba(46, 125, 50, 0.35)',
-            weight: isAdvisoryTarget ? 16 : 12,
+            color: 'rgba(46, 125, 50, 0.45)',
+            weight: 20,
             lineCap: 'round',
             lineJoin: 'round'
           });
           altHalo.addTo(layerGroup);
 
-          // Main Thick Green Polyline
+          // Main Thick Green Polyline (Safe Bypass Corridor)
           const altLine = L.polyline(road.alternativeRoute.coordinates, {
             color: '#2E7D32',
-            weight: isAdvisoryTarget ? 9 : 7,
+            weight: 10,
             opacity: 1,
             lineCap: 'round',
             lineJoin: 'round'
@@ -320,6 +357,10 @@ const GisMap = ({ mode = 'hero' }) => {
               <span style="color: #2E7D32; font-weight: 700;">${road.alternativeRoute.riskPercentage}% Risk (SAFE & CLEAR)</span>
             </div>
           `, { sticky: true, className: 'leaflet-minimal-tooltip' });
+
+          altLine.on('click', () => {
+            map.fitBounds(road.alternativeRoute.coordinates, { padding: [40, 40] });
+          });
 
           altLine.addTo(layerGroup);
 
@@ -338,6 +379,18 @@ const GisMap = ({ mode = 'hero' }) => {
           safeMarker.addTo(layerGroup);
         }
       });
+
+      // Auto-fit bounds if route advisory is active
+      if (routeAdvisoryActive) {
+        const activeRoad = roads.find(r => r.status === 'BLOCKED' || r.status === 'UNSAFE') || roads[0];
+        if (activeRoad) {
+          const points = [
+            ...activeRoad.coordinates,
+            ...(activeRoad.alternativeRoute ? activeRoad.alternativeRoute.coordinates : [])
+          ];
+          map.fitBounds(points, { padding: [60, 60], maxZoom: 11 });
+        }
+      }
     }
 
     // E. USER CURRENT GPS LOCATION MARKER

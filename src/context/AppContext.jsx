@@ -79,12 +79,17 @@ export const AppProvider = ({ children }) => {
   // 6. Roads & Detours
   const [roads, setRoads] = useState(initialRoads);
   const [routeAdvisoryActive, setRouteAdvisoryActive] = useState(false);
+  const [authorityActiveTab, setAuthorityActiveTab] = useState('dashboard');
 
   const viewBothRoutesOnMap = () => {
     setRouteAdvisoryActive(true);
     setMapLayers(prev => ({ ...prev, roads: true, blockages: true }));
     setSelectedZoneId('loc-mangan');
-    setCitizenActiveTab('home');
+    if (activePortal === 'authority') {
+      setAuthorityActiveTab('dashboard');
+    } else {
+      setCitizenActiveTab('home');
+    }
   };
 
   // 7. Active Alerts & Helplines
@@ -100,8 +105,25 @@ export const AppProvider = ({ children }) => {
   const [isSosOpen, setIsSosOpen] = useState(false);
   const [citizenActiveTab, setCitizenActiveTab] = useState('home'); // home, alerts, report, more
 
-  // Translation helper
-  const t = translations[selectedLanguage] || translations.en;
+  // Translation helper with deep fallback to English
+  const selectedDict = translations[selectedLanguage] || translations.en;
+  const t = {
+    ...translations.en,
+    ...selectedDict,
+    header: { ...translations.en.header, ...(selectedDict.header || {}) },
+    portals: { ...translations.en.portals, ...(selectedDict.portals || {}) },
+    nav: { ...translations.en.nav, ...(selectedDict.nav || {}) },
+    map: { ...translations.en.map, ...(selectedDict.map || {}) },
+    monitoring: { ...translations.en.monitoring, ...(selectedDict.monitoring || {}) },
+    routes: { ...translations.en.routes, ...(selectedDict.routes || {}) },
+    report: { ...translations.en.report, ...(selectedDict.report || {}) },
+    fieldOfficer: { ...translations.en.fieldOfficer, ...(selectedDict.fieldOfficer || {}) },
+    authority: { ...translations.en.authority, ...(selectedDict.authority || {}) },
+    risk: { ...translations.en.risk, ...(selectedDict.risk || {}) },
+    moreSection: { ...translations.en.moreSection, ...(selectedDict.moreSection || {}) },
+    onboarding: { ...translations.en.onboarding, ...(selectedDict.onboarding || {}) },
+    guide: { ...translations.en.guide, ...(selectedDict.guide || {}) }
+  };
 
   // Sound generator using Web Audio API
   const playEmergencyTone = (type = 'warning') => {
@@ -331,7 +353,56 @@ export const AppProvider = ({ children }) => {
       })
     );
 
-    if (newStatus === 'RESOLVED') {
+    if (newStatus === 'REPORT_SUBMITTED') {
+      const task = fieldTasks.find(t => t.id === taskId);
+      const officer = task?.assignedTo || "Field Officer T. Dorjee (FO-402)";
+      const location = task?.locationName || "Corridor Inspection Site";
+
+      if (task && task.sourceReportId) {
+        setCitizenReports(prev =>
+          prev.map(r => r.id === task.sourceReportId ? {
+            ...r,
+            status: "INSPECTION_SUBMITTED",
+            fieldInspection: inspectionData,
+            assignedOfficer: officer
+          } : r)
+        );
+      } else {
+        // Create official authority triage incident entry
+        const officialReportId = "INSP-" + Math.floor(8000 + Math.random() * 2000);
+        const newReport = {
+          id: officialReportId,
+          hazardType: task ? task.title : "Geotechnical Field Inspection",
+          description: inspectionData?.notes || "Ground crack measurement and slope inspection conducted by Field Unit.",
+          locationName: location,
+          coordinates: task ? task.coordinates : [27.514, 88.533],
+          timestamp: new Date().toLocaleDateString() + " " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+          status: "INSPECTION_SUBMITTED",
+          assignedOfficer: officer,
+          reporterName: `Officer Inspection: ${officer}`,
+          photoUrl: "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=600&q=80",
+          fieldInspection: inspectionData
+        };
+        setCitizenReports(prev => [newReport, ...prev]);
+      }
+
+      // Add Authority Alert
+      const newAlert = {
+        id: "ALT-INSP-" + Date.now(),
+        level: "CRITICAL",
+        title: `Field Inspection Received: ${location}`,
+        description: `Officer ${officer} submitted geotechnical telemetry: Crack ${inspectionData?.crackWidthMm || 18}mm, Slope ${inspectionData?.slopeTiltDeg || 42}°. Evacuation directives required.`,
+        timestamp: "Just Now",
+        source: "Field Officer Terminal"
+      };
+      setAlerts(prev => [newAlert, ...prev]);
+
+      addToast(
+        "Report Transmitted to Authority",
+        `Inspection report for ${location} submitted directly to State Emergency Operations Center (SEOC).`,
+        "success"
+      );
+    } else if (newStatus === 'RESOLVED') {
       // Find linked report and resolve
       const task = fieldTasks.find(t => t.id === taskId);
       if (task && task.sourceReportId) {
@@ -541,7 +612,9 @@ export const AppProvider = ({ children }) => {
         isSosOpen,
         setIsSosOpen,
         citizenActiveTab,
-        setCitizenActiveTab
+        setCitizenActiveTab,
+        authorityActiveTab,
+        setAuthorityActiveTab
       }}
     >
       {children}

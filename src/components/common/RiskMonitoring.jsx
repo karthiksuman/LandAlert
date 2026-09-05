@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useApp } from '../../context/AppContext';
 import { 
   TrendingUp, TrendingDown, Activity, CloudRain, 
@@ -7,45 +7,79 @@ import {
 } from 'lucide-react';
 
 const RiskMonitoring = () => {
-  const { locations, selectedZoneId, setSelectedZoneId } = useApp();
+  const { locations, selectedZoneId, setSelectedZoneId, t } = useApp();
   const [selectedTimeframe, setSelectedTimeframe] = useState('24h'); // '24h' | '7d'
-  const [activeZoneKey, setActiveZoneKey] = useState(selectedZoneId || 'mangan');
+  const [activeZoneKey, setActiveZoneKey] = useState(selectedZoneId || locations[0]?.id || 'loc-mangan');
+
+  useEffect(() => {
+    if (selectedZoneId) {
+      setActiveZoneKey(selectedZoneId);
+    }
+  }, [selectedZoneId]);
 
   const activeZone = locations.find(l => l.id === activeZoneKey) || locations[0];
 
-  // 24-Hour Time Series Data for Rainfall, Earth Displacement, Soil Saturation, and Pore Pressure
-  const timeSeries24h = [
-    { time: '00:00', rainfall: 14, displacement: 0.8, moisture: 68, porePressure: 18 },
-    { time: '02:00', rainfall: 18, displacement: 1.0, moisture: 72, porePressure: 22 },
-    { time: '04:00', rainfall: 25, displacement: 1.2, moisture: 75, porePressure: 26 },
-    { time: '06:00', rainfall: 38, displacement: 1.6, moisture: 80, porePressure: 32 },
-    { time: '08:00', rainfall: 52, displacement: 2.3, moisture: 84, porePressure: 38 },
-    { time: '10:00', rainfall: 78, displacement: 3.4, moisture: 88, porePressure: 45 },
-    { time: '12:00', rainfall: 96, displacement: 4.6, moisture: 90, porePressure: 52 },
-    { time: '14:00', rainfall: 112, displacement: 5.8, moisture: 91, porePressure: 58 },
-    { time: '16:00', rainfall: 85, displacement: 5.1, moisture: 89, porePressure: 55 },
-    { time: '18:00', rainfall: 64, displacement: 4.2, moisture: 87, porePressure: 49 },
-    { time: '20:00', rainfall: 46, displacement: 3.5, moisture: 85, porePressure: 42 },
-    { time: '22:00', rainfall: 32, displacement: 2.8, moisture: 82, porePressure: 36 }
+  // Base 24-Hour and 7-Day Templates
+  const baseSeries24h = [
+    { time: '00:00', rainNorm: 0.12, dispNorm: 0.14, moistNorm: 0.74, poreNorm: 0.31 },
+    { time: '02:00', rainNorm: 0.16, dispNorm: 0.17, moistNorm: 0.79, poreNorm: 0.37 },
+    { time: '04:00', rainNorm: 0.22, dispNorm: 0.21, moistNorm: 0.82, poreNorm: 0.44 },
+    { time: '06:00', rainNorm: 0.34, dispNorm: 0.28, moistNorm: 0.88, poreNorm: 0.55 },
+    { time: '08:00', rainNorm: 0.46, dispNorm: 0.40, moistNorm: 0.92, poreNorm: 0.65 },
+    { time: '10:00', rainNorm: 0.70, dispNorm: 0.58, moistNorm: 0.96, poreNorm: 0.77 },
+    { time: '12:00', rainNorm: 0.85, dispNorm: 0.79, moistNorm: 0.99, poreNorm: 0.89 },
+    { time: '14:00', rainNorm: 1.00, dispNorm: 1.00, moistNorm: 1.00, poreNorm: 1.00 },
+    { time: '16:00', rainNorm: 0.76, dispNorm: 0.88, moistNorm: 0.97, poreNorm: 0.94 },
+    { time: '18:00', rainNorm: 0.57, dispNorm: 0.72, moistNorm: 0.95, poreNorm: 0.84 },
+    { time: '20:00', rainNorm: 0.41, dispNorm: 0.60, moistNorm: 0.93, poreNorm: 0.72 },
+    { time: '22:00', rainNorm: 0.28, dispNorm: 0.48, moistNorm: 0.90, poreNorm: 0.62 }
   ];
 
-  // 7-Day Time Series Data
-  const timeSeries7d = [
-    { time: 'Day 1', rainfall: 32, displacement: 1.2, moisture: 65, porePressure: 22 },
-    { time: 'Day 2', rainfall: 48, displacement: 1.8, moisture: 72, porePressure: 28 },
-    { time: 'Day 3', rainfall: 62, displacement: 2.5, moisture: 78, porePressure: 34 },
-    { time: 'Day 4', rainfall: 95, displacement: 3.9, moisture: 85, porePressure: 46 },
-    { time: 'Day 5', rainfall: 124, displacement: 5.4, moisture: 91, porePressure: 56 },
-    { time: 'Day 6', rainfall: 112, displacement: 5.8, moisture: 91, porePressure: 58 },
-    { time: 'Day 7', rainfall: 78, displacement: 4.6, moisture: 88, porePressure: 50 }
+  const baseSeries7d = [
+    { time: 'Day 1', rainNorm: 0.28, dispNorm: 0.20, moistNorm: 0.71, poreNorm: 0.37 },
+    { time: 'Day 2', rainNorm: 0.42, dispNorm: 0.31, moistNorm: 0.79, poreNorm: 0.48 },
+    { time: 'Day 3', rainNorm: 0.55, dispNorm: 0.43, moistNorm: 0.85, poreNorm: 0.58 },
+    { time: 'Day 4', rainNorm: 0.84, dispNorm: 0.67, moistNorm: 0.93, poreNorm: 0.79 },
+    { time: 'Day 5', rainNorm: 1.10, dispNorm: 0.93, moistNorm: 1.00, poreNorm: 0.96 },
+    { time: 'Day 6', rainNorm: 1.00, dispNorm: 1.00, moistNorm: 1.00, poreNorm: 1.00 },
+    { time: 'Day 7', rainNorm: 0.69, dispNorm: 0.79, moistNorm: 0.96, poreNorm: 0.86 }
   ];
 
-  const currentData = selectedTimeframe === '24h' ? timeSeries24h : timeSeries7d;
+  // Dynamically derive current data from active location factors
+  const peakRain = activeZone.factors?.rainfall?.value || 112;
+  const peakDisp = activeZone.factors?.groundMovement?.value || 5.8;
+  const peakMoist = activeZone.factors?.soilMoisture?.value || 91;
+  const peakPore = Math.round(peakMoist * 0.64);
 
-  // Maximum scale bounds for charts
-  const maxRain = 130; // mm
-  const maxDisplacement = 7.0; // mm/h
-  const maxMoisture = 100; // %
+  const rawData = selectedTimeframe === '24h' ? baseSeries24h : baseSeries7d;
+  const currentData = rawData.map(d => ({
+    time: d.time,
+    rainfall: Math.round(d.rainNorm * peakRain),
+    displacement: Number((d.dispNorm * peakDisp).toFixed(1)),
+    moisture: Math.min(100, Math.round(d.moistNorm * peakMoist)),
+    porePressure: Math.round(d.poreNorm * peakPore)
+  }));
+
+  // Dynamic Scale bounds for charts
+  const maxRain = Math.max(140, peakRain * 1.25);
+  const maxDisplacement = Math.max(7.0, peakDisp * 1.2);
+  const maxMoisture = 100;
+
+  // Dynamic Stability Factor (FS)
+  const stabilityFactor = activeZone.riskLevel === 'CRITICAL'
+    ? (1.00 + (100 - activeZone.riskPercentage) * 0.005).toFixed(2)
+    : activeZone.riskLevel === 'HIGH'
+    ? (1.20 + (80 - activeZone.riskPercentage) * 0.01).toFixed(2)
+    : activeZone.riskLevel === 'MODERATE'
+    ? (1.45 + (50 - activeZone.riskPercentage) * 0.015).toFixed(2)
+    : (1.85 + (30 - activeZone.riskPercentage) * 0.02).toFixed(2);
+
+  // Rainfall Trend
+  const isRainIncrement = peakRain >= 70;
+  const rainPct = Math.abs(Math.round(((peakRain - 70) / 70) * 100));
+
+  // Earth movement status
+  const isEarthCritical = peakDisp >= 3.0;
 
   return (
     <div className="citizen-feed-container" style={{ paddingBottom: '32px' }}>
@@ -54,10 +88,10 @@ const RiskMonitoring = () => {
         <div>
           <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '2px', display: 'flex', alignItems: 'center', gap: '8px' }}>
             <Activity size={22} color="var(--color-blue-500)" />
-            <span>Risk Monitoring & Factor Dynamics</span>
+            <span>{t.monitoring?.title || "Risk Monitoring & Factor Dynamics"}</span>
           </h2>
           <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)' }}>
-            Real-time multi-factor geotechnical curves showing temporal increment and decrement
+            {t.monitoring?.subtitle || "Real-time multi-factor geotechnical curves showing temporal increment and decrement"}
           </p>
         </div>
 
@@ -102,7 +136,7 @@ const RiskMonitoring = () => {
                 transition: 'all 0.15s ease'
               }}
             >
-              Past 24 Hours
+              {t.monitoring?.past24h || "Past 24 Hours"}
             </button>
             <button
               onClick={() => setSelectedTimeframe('7d')}
@@ -118,111 +152,120 @@ const RiskMonitoring = () => {
                 transition: 'all 0.15s ease'
               }}
             >
-              Past 7 Days
+              {t.monitoring?.past7d || "Past 7 Days"}
             </button>
           </div>
         </div>
       </div>
 
-      {/* Real-time Trend Summary Cards */}
+      {/* Real-time Trend Summary Cards (DYNAMICALLY DERIVED FROM activeZone) */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '14px', marginBottom: '20px' }}>
-        {/* Rainfall Influx Metric */}
+        {/* 1. Rainfall Influx Metric */}
         <div className="card" style={{ padding: '16px', borderLeft: '4px solid #1565C0' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>
-              Precipitation Rate
+              {t.monitoring?.precipRate || "Precipitation Rate"}
             </span>
             <CloudRain size={16} color="#1565C0" />
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
             <span style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-navy)', fontFamily: 'var(--font-heading)' }}>
-              112 mm
+              {peakRain} mm
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.74rem', fontWeight: 700, color: '#D32F2F' }}>
-              <ArrowUpRight size={14} /> +24% (Increment)
+            <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.74rem', fontWeight: 700, color: isRainIncrement ? '#D32F2F' : '#2E7D32' }}>
+              {isRainIncrement ? <ArrowUpRight size={14} /> : <ArrowDownRight size={14} />} 
+              {isRainIncrement ? `+${rainPct}% (${t.monitoring?.increment || 'Increment'})` : `-${rainPct}% (Normal)`}
             </span>
           </div>
           <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-            Threshold limit: 80 mm / 24h
+            {t.monitoring?.thresholdLimit || "Threshold limit"}: 80 mm / 24h
           </span>
         </div>
 
-        {/* Earth Displacement Metric */}
-        <div className="card" style={{ padding: '16px', borderLeft: '4px solid #D32F2F' }}>
+        {/* 2. Earth Displacement Metric */}
+        <div className="card" style={{ padding: '16px', borderLeft: isEarthCritical ? '4px solid #D32F2F' : '4px solid #2E7D32' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>
-              Earth Movement Velocity
+              {t.monitoring?.earthMovement || "Earth Movement Velocity"}
             </span>
-            <TrendingUp size={16} color="#D32F2F" />
+            <TrendingUp size={16} color={isEarthCritical ? '#D32F2F' : '#2E7D32'} />
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span style={{ fontSize: '1.6rem', fontWeight: 800, color: '#D32F2F', fontFamily: 'var(--font-heading)' }}>
-              5.8 mm/h
+            <span style={{ fontSize: '1.6rem', fontWeight: 800, color: isEarthCritical ? '#D32F2F' : '#10202E', fontFamily: 'var(--font-heading)' }}>
+              {peakDisp} mm/h
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.74rem', fontWeight: 700, color: '#D32F2F' }}>
-              <ArrowUpRight size={14} /> +1.2 mm/h (Accelerating)
+            <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.74rem', fontWeight: 700, color: isEarthCritical ? '#D32F2F' : '#2E7D32' }}>
+              {isEarthCritical ? (
+                <><ArrowUpRight size={14} /> +{(peakDisp - 3.0).toFixed(1)} mm/h ({t.monitoring?.accelerating || 'Accelerating'})</>
+              ) : (
+                <><ArrowDownRight size={14} /> Stable (&lt; 3.0 mm/h)</>
+              )}
             </span>
           </div>
           <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-            Critical threshold: &gt; 3.0 mm/h
+            {t.monitoring?.criticalThreshold || "Critical threshold"}: &gt; 3.0 mm/h
           </span>
         </div>
 
-        {/* Soil Moisture Metric */}
-        <div className="card" style={{ padding: '16px', borderLeft: '4px solid #2E7D32' }}>
+        {/* 3. Soil Moisture Metric */}
+        <div className="card" style={{ padding: '16px', borderLeft: peakMoist > 80 ? '4px solid #F57C00' : '4px solid #2E7D32' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>
-              Soil Saturation
+              {t.monitoring?.soilSaturation || "Soil Saturation"}
             </span>
-            <Layers size={16} color="#2E7D32" />
+            <Layers size={16} color={peakMoist > 80 ? '#F57C00' : '#2E7D32'} />
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
             <span style={{ fontSize: '1.6rem', fontWeight: 800, color: 'var(--color-navy)', fontFamily: 'var(--font-heading)' }}>
-              91%
+              {peakMoist}%
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.74rem', fontWeight: 700, color: '#F57C00' }}>
-              <ArrowUpRight size={14} /> Near Saturated
+            <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.74rem', fontWeight: 700, color: peakMoist > 80 ? '#F57C00' : '#2E7D32' }}>
+              {peakMoist > 85 ? (t.monitoring?.nearSaturated || "Near Saturated") : peakMoist > 70 ? "High Moisture" : "Stable Moisture"}
             </span>
           </div>
           <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-            Pore water pressure: 58 kPa
+            {t.monitoring?.porePressure || "Pore water pressure"}: {peakPore} kPa
           </span>
         </div>
 
-        {/* Factor of Safety Metric */}
-        <div className="card" style={{ padding: '16px', borderLeft: '4px solid #F57C00' }}>
+        {/* 4. Factor of Safety Metric */}
+        <div className="card" style={{ padding: '16px', borderLeft: Number(stabilityFactor) < 1.2 ? '4px solid #D32F2F' : Number(stabilityFactor) < 1.4 ? '4px solid #F57C00' : '4px solid #2E7D32' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '6px' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-text-secondary)', textTransform: 'uppercase' }}>
-              Stability Factor (FS)
+              {t.monitoring?.stabilityFactor || "Stability Factor (FS)"}
             </span>
-            <Gauge size={16} color="#F57C00" />
+            <Gauge size={16} color={Number(stabilityFactor) < 1.2 ? '#D32F2F' : '#2E7D32'} />
           </div>
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-            <span style={{ fontSize: '1.6rem', fontWeight: 800, color: '#D32F2F', fontFamily: 'var(--font-heading)' }}>
-              1.04
+            <span style={{ fontSize: '1.6rem', fontWeight: 800, color: Number(stabilityFactor) < 1.2 ? '#D32F2F' : 'var(--color-navy)', fontFamily: 'var(--font-heading)' }}>
+              {stabilityFactor}
             </span>
-            <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.74rem', fontWeight: 700, color: '#D32F2F' }}>
-              <ArrowDownRight size={14} /> -0.32 (Decrementing)
+            <span style={{ display: 'inline-flex', alignItems: 'center', fontSize: '0.74rem', fontWeight: 700, color: Number(stabilityFactor) < 1.2 ? '#D32F2F' : '#2E7D32' }}>
+              {Number(stabilityFactor) < 1.2 ? (
+                <><ArrowDownRight size={14} /> -0.32 ({t.monitoring?.decrement || 'Decrementing'})</>
+              ) : Number(stabilityFactor) < 1.4 ? (
+                <><ArrowDownRight size={14} /> -0.12 (Marginal)</>
+              ) : (
+                <><ArrowUpRight size={14} /> +0.18 (Stable)</>
+              )}
             </span>
           </div>
           <span style={{ fontSize: '0.72rem', color: 'var(--color-text-muted)' }}>
-            Failure limit: &lt; 1.00 (Imminent)
+            {t.monitoring?.failureLimit || "Failure limit"}: &lt; 1.00 ({Number(stabilityFactor) < 1.2 ? 'Critical' : 'Safe'})
           </span>
         </div>
       </div>
 
-      {/* =======================================================
-          GRAPH 1: RAINFALL INFILTRATION OVER TIME (X vs Y Axis)
-          ======================================================= */}
+      {/* GRAPH 1: RAINFALL INFILTRATION OVER TIME */}
       <div className="card" style={{ padding: '22px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
           <div>
             <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span>Graph 1: Rainfall Infiltration Volume vs Time</span>
+              <span>{t.monitoring?.graph1Title || "Graph 1: Rainfall Infiltration Volume vs Time"}</span>
               <span className="badge badge-info" style={{ fontSize: '0.68rem' }}>Y: Rainfall (mm) • X: Time</span>
             </h3>
             <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)', margin: '2px 0 0' }}>
-              Shows temporal increment during afternoon cloudburst peak (14:00) and gradual night runoff decrement
+              Observation for {activeZone.name} ({activeZone.district}, {activeZone.state})
             </p>
           </div>
 
@@ -243,7 +286,7 @@ const RiskMonitoring = () => {
           <div style={{ minWidth: '550px', height: '180px', position: 'relative', display: 'flex' }}>
             {/* Y-Axis Column */}
             <div style={{ width: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '8px', fontSize: '0.68rem', color: 'var(--color-text-muted)', fontWeight: 600, borderRight: '1px solid var(--color-border)' }}>
-              <span>120 mm</span>
+              <span>{Math.round(maxRain)} mm</span>
               <span>80 mm</span>
               <span>40 mm</span>
               <span>0 mm</span>
@@ -252,13 +295,13 @@ const RiskMonitoring = () => {
             {/* X-Axis and Bars Area */}
             <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'flex-end', justifyContent: 'space-around', paddingLeft: '10px', paddingBottom: '24px', borderBottom: '1px solid var(--color-border)' }}>
               {/* Critical 80mm Threshold Guideline */}
-              <div style={{ position: 'absolute', left: 0, right: 0, bottom: `${(80 / maxRain) * 156}px`, borderTop: '1px dashed #D32F2F', zIndex: 1, opacity: 0.6 }} />
+              <div style={{ position: 'absolute', left: 0, right: 0, bottom: `${Math.min(150, (80 / maxRain) * 156)}px`, borderTop: '1px dashed #D32F2F', zIndex: 1, opacity: 0.6 }} />
               {/* Warning 40mm Threshold Guideline */}
-              <div style={{ position: 'absolute', left: 0, right: 0, bottom: `${(40 / maxRain) * 156}px`, borderTop: '1px dashed #F57C00', zIndex: 1, opacity: 0.6 }} />
+              <div style={{ position: 'absolute', left: 0, right: 0, bottom: `${Math.min(150, (40 / maxRain) * 156)}px`, borderTop: '1px dashed #F57C00', zIndex: 1, opacity: 0.6 }} />
 
               {/* Render Bar Chart Elements */}
               {currentData.map((d, idx) => {
-                const barHeight = (d.rainfall / maxRain) * 140;
+                const barHeight = Math.max(4, Math.min(150, (d.rainfall / maxRain) * 140));
                 const isCritical = d.rainfall >= 80;
                 const isWarning = d.rainfall >= 40 && d.rainfall < 80;
                 const color = isCritical ? '#D32F2F' : isWarning ? '#F57C00' : '#1565C0';
@@ -294,105 +337,93 @@ const RiskMonitoring = () => {
         </div>
       </div>
 
-      {/* ===================================================================
-          GRAPH 2: EARTH DISPLACEMENT / GROUND VIBRATION (X vs Y Line Graph)
-          =================================================================== */}
+      {/* GRAPH 2: EARTH DISPLACEMENT VELOCITY */}
       <div className="card" style={{ padding: '22px', marginBottom: '20px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
           <div>
             <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span>Graph 2: Earth Displacement Velocity & Slope Creep Rate</span>
-              <span className="badge badge-critical" style={{ fontSize: '0.68rem' }}>Y: Movement (mm/h) • X: Time</span>
+              <span>{t.monitoring?.graph2Title || "Graph 2: Earth Displacement Velocity & Slope Creep Rate"}</span>
+              <span className={`badge ${isEarthCritical ? 'badge-critical' : 'badge-low'}`} style={{ fontSize: '0.68rem' }}>
+                Y: Movement (mm/h) • X: Time
+              </span>
             </h3>
             <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)', margin: '2px 0 0' }}>
-              Monitored via in-place borehole inclinometers. Steep increment indicates slip surface activation.
+              Monitored via inclinometers. Sensor reading: {peakDisp} mm/h ({activeZone.name})
             </p>
           </div>
 
-          <span style={{ fontSize: '0.72rem', color: '#D32F2F', fontWeight: 700 }}>
-            Active Velocity: 5.8 mm/h (Accelerated Slip)
+          <span style={{ fontSize: '0.72rem', color: isEarthCritical ? '#D32F2F' : '#2E7D32', fontWeight: 700 }}>
+            Active Velocity: {peakDisp} mm/h {isEarthCritical ? '(Accelerated Slip)' : '(Stable Baseline)'}
           </span>
         </div>
 
         {/* SVG Line Graph Container */}
         <div style={{ width: '100%', overflowX: 'auto' }}>
           <div style={{ minWidth: '550px', height: '190px', position: 'relative', display: 'flex' }}>
-            {/* Y-Axis Column */}
-            <div style={{ width: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '8px', paddingBottom: '26px', fontSize: '0.68rem', color: 'var(--color-text-muted)', fontWeight: 600, borderRight: '1px solid var(--color-border)' }}>
-              <span>6.0 mm/h</span>
-              <span>4.0 mm/h</span>
-              <span>2.0 mm/h</span>
-              <span>0.0 mm/h</span>
+            <div style={{ width: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '8px', paddingBottom: '24px', fontSize: '0.68rem', color: 'var(--color-text-muted)', fontWeight: 600, borderRight: '1px solid var(--color-border)' }}>
+              <span>{maxDisplacement.toFixed(1)}</span>
+              <span>{(maxDisplacement * 0.66).toFixed(1)}</span>
+              <span>{(maxDisplacement * 0.33).toFixed(1)}</span>
+              <span>0.0</span>
             </div>
 
-            {/* Line Plot Area */}
             <div style={{ flex: 1, position: 'relative', display: 'flex', flexDirection: 'column' }}>
               <div style={{ flex: 1, position: 'relative', borderBottom: '1px solid var(--color-border)' }}>
+                {/* 3.0 mm/h Critical Threshold */}
+                <div style={{ position: 'absolute', left: 0, right: 0, bottom: `${Math.min(130, (3.0 / maxDisplacement) * 140)}px`, borderTop: '1px dashed #D32F2F', zIndex: 1, opacity: 0.6 }} />
+
                 <svg viewBox="0 0 1000 140" preserveAspectRatio="none" style={{ width: '100%', height: '100%', overflow: 'visible' }}>
                   <defs>
-                    <linearGradient id="displacementGrad" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="0%" stopColor="#D32F2F" stopOpacity="0.28" />
-                      <stop offset="100%" stopColor="#D32F2F" stopOpacity="0.02" />
+                    <linearGradient id="dispGrad" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor={isEarthCritical ? "#D32F2F" : "#1565C0"} stopOpacity="0.25" />
+                      <stop offset="100%" stopColor={isEarthCritical ? "#D32F2F" : "#1565C0"} stopOpacity="0.02" />
                     </linearGradient>
                   </defs>
 
-                  {/* Critical Alert Dashed Guideline at 3.0 mm/h */}
-                  <line x1="20" y1={130 - (3.0 / 6.0) * 115} x2="980" y2={130 - (3.0 / 6.0) * 115} stroke="#D32F2F" strokeWidth="1.5" strokeDasharray="6,6" opacity="0.65" />
-
-                  {/* Shaded Area Under Curve */}
                   <polygon
                     points={`20,130 ${currentData.map((d, i) => {
                       const x = 20 + (i / (currentData.length - 1)) * 960;
-                      const y = 130 - (d.displacement / maxDisplacement) * 115;
+                      const y = Math.max(10, 130 - (d.displacement / maxDisplacement) * 115);
                       return `${x},${y}`;
                     }).join(' ')} 980,130`}
-                    fill="url(#displacementGrad)"
+                    fill="url(#dispGrad)"
                   />
 
-                  {/* Solid Connected Line Connecting All Dots */}
                   <polyline
                     fill="none"
-                    stroke="#D32F2F"
-                    strokeWidth="3.5"
+                    stroke={isEarthCritical ? "#D32F2F" : "#1565C0"}
+                    strokeWidth="3"
                     strokeLinecap="round"
                     strokeLinejoin="round"
                     points={currentData.map((d, i) => {
                       const x = 20 + (i / (currentData.length - 1)) * 960;
-                      const y = 130 - (d.displacement / maxDisplacement) * 115;
+                      const y = Math.max(10, 130 - (d.displacement / maxDisplacement) * 115);
                       return `${x},${y}`;
                     }).join(' ')}
                   />
 
-                  {/* Data Point Dots Connected On The Line */}
                   {currentData.map((d, i) => {
                     const x = 20 + (i / (currentData.length - 1)) * 960;
-                    const y = 130 - (d.displacement / maxDisplacement) * 115;
-                    const isHigh = d.displacement >= 3.0;
+                    const y = Math.max(10, 130 - (d.displacement / maxDisplacement) * 115);
 
                     return (
-                      <g key={i}>
-                        {isHigh && (
-                          <circle cx={x} cy={y} r="10" fill="#D32F2F" opacity="0.25" />
-                        )}
-                        <circle
-                          cx={x}
-                          cy={y}
-                          r={isHigh ? 6 : 5}
-                          fill={isHigh ? '#D32F2F' : '#F57C00'}
-                          stroke="#FFFFFF"
-                          strokeWidth="2"
-                          style={{ cursor: 'pointer' }}
-                        >
-                          <title>{`${d.time}: ${d.displacement} mm/h (Displacement Rate)`}</title>
-                        </circle>
-                      </g>
+                      <circle
+                        key={i}
+                        cx={x}
+                        cy={y}
+                        r="4"
+                        fill={isEarthCritical ? "#D32F2F" : "#1565C0"}
+                        stroke="#FFFFFF"
+                        strokeWidth="2"
+                      >
+                        <title>{`${d.time}: ${d.displacement} mm/h`}</title>
+                      </circle>
                     );
                   })}
                 </svg>
               </div>
 
-              {/* X-Axis Time Labels Directly Below Dots */}
-              <div style={{ height: '26px', display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px', alignItems: 'center' }}>
+              <div style={{ height: '24px', display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px', alignItems: 'center' }}>
                 {currentData.map((d, i) => (
                   <span key={i} style={{ fontSize: '0.68rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
                     {d.time}
@@ -402,39 +433,36 @@ const RiskMonitoring = () => {
             </div>
           </div>
           <div style={{ textAlign: 'center', marginTop: '6px', fontSize: '0.72rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
-            X-Axis: Time Sequence • Red line shows exponential ground displacement acceleration
+            X-Axis: Time Sequence • Kinematic slope telemetry
           </div>
         </div>
       </div>
 
-      {/* =====================================================================
-          GRAPH 3: SOIL MOISTURE SATURATION & PORE PRESSURE (Dual-Axis Curve)
-          ===================================================================== */}
+      {/* GRAPH 3: SOIL MOISTURE SATURATION */}
       <div className="card" style={{ padding: '22px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px', flexWrap: 'wrap', gap: '8px' }}>
           <div>
             <h3 style={{ fontSize: '1.05rem', color: 'var(--color-navy)', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span>Graph 3: Soil Moisture Saturation (%) & Pore Pressure (kPa)</span>
+              <span>{t.monitoring?.graph3Title || "Graph 3: Soil Moisture Saturation (%) & Pore Pressure (kPa)"}</span>
               <span className="badge badge-low" style={{ fontSize: '0.68rem' }}>Y: Saturation % • X: Time</span>
             </h3>
             <p style={{ fontSize: '0.78rem', color: 'var(--color-text-secondary)', margin: '2px 0 0' }}>
-              Continuous TDR sensor readings illustrating hydraulic gradient buildup prior to mass movement
+              Readings for {activeZone.name}
             </p>
           </div>
 
           <div style={{ display: 'flex', gap: '12px', fontSize: '0.72rem' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
               <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#2E7D32' }} />
-              Soil Saturation (91%)
+              Soil Saturation ({peakMoist}%)
             </span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: '4px' }}>
               <span style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#0288D1' }} />
-              Pore Pressure (58 kPa)
+              Pore Pressure ({peakPore} kPa)
             </span>
           </div>
         </div>
 
-        {/* SVG Area Curve */}
         <div style={{ width: '100%', overflowX: 'auto' }}>
           <div style={{ minWidth: '550px', height: '190px', position: 'relative', display: 'flex' }}>
             <div style={{ width: '50px', display: 'flex', flexDirection: 'column', justifyContent: 'space-between', alignItems: 'flex-end', paddingRight: '8px', paddingBottom: '26px', fontSize: '0.68rem', color: 'var(--color-text-muted)', fontWeight: 600, borderRight: '1px solid var(--color-border)' }}>
@@ -454,10 +482,8 @@ const RiskMonitoring = () => {
                     </linearGradient>
                   </defs>
 
-                  {/* Critical Saturation Level 85% Dashed Line */}
                   <line x1="20" y1={130 - (85 / 100) * 115} x2="980" y2={130 - (85 / 100) * 115} stroke="#2E7D32" strokeWidth="1.5" strokeDasharray="6,6" opacity="0.65" />
 
-                  {/* Shaded Area Under Soil Saturation Curve */}
                   <polygon
                     points={`20,130 ${currentData.map((d, i) => {
                       const x = 20 + (i / (currentData.length - 1)) * 960;
@@ -467,7 +493,6 @@ const RiskMonitoring = () => {
                     fill="url(#moistureGrad)"
                   />
 
-                  {/* 1. Connected Line For Soil Moisture Saturation (Green) */}
                   <polyline
                     fill="none"
                     stroke="#2E7D32"
@@ -481,7 +506,6 @@ const RiskMonitoring = () => {
                     }).join(' ')}
                   />
 
-                  {/* 2. Connected Line For Pore Pressure (Blue) */}
                   <polyline
                     fill="none"
                     stroke="#0288D1"
@@ -491,56 +515,31 @@ const RiskMonitoring = () => {
                     strokeLinejoin="round"
                     points={currentData.map((d, i) => {
                       const x = 20 + (i / (currentData.length - 1)) * 960;
-                      const y = 130 - (d.porePressure / 70) * 115;
+                      const y = 130 - (d.porePressure / Math.max(70, peakPore * 1.1)) * 115;
                       return `${x},${y}`;
                     }).join(' ')}
                   />
 
-                  {/* Green Dots for Soil Saturation */}
                   {currentData.map((d, i) => {
                     const x = 20 + (i / (currentData.length - 1)) * 960;
                     const y = 130 - (d.moisture / maxMoisture) * 115;
-
                     return (
                       <circle
                         key={`m-${i}`}
                         cx={x}
                         cy={y}
-                        r="5"
+                        r="4"
                         fill="#2E7D32"
                         stroke="#FFFFFF"
-                        strokeWidth="2"
-                        style={{ cursor: 'pointer' }}
+                        strokeWidth="1.5"
                       >
                         <title>{`${d.time}: Soil Saturation ${d.moisture}%`}</title>
-                      </circle>
-                    );
-                  })}
-
-                  {/* Blue Dots for Pore Pressure */}
-                  {currentData.map((d, i) => {
-                    const x = 20 + (i / (currentData.length - 1)) * 960;
-                    const y = 130 - (d.porePressure / 70) * 115;
-
-                    return (
-                      <circle
-                        key={`p-${i}`}
-                        cx={x}
-                        cy={y}
-                        r="4"
-                        fill="#0288D1"
-                        stroke="#FFFFFF"
-                        strokeWidth="1.5"
-                        style={{ cursor: 'pointer' }}
-                      >
-                        <title>{`${d.time}: Pore Water Pressure ${d.porePressure} kPa`}</title>
                       </circle>
                     );
                   })}
                 </svg>
               </div>
 
-              {/* X-Axis Time Labels */}
               <div style={{ height: '26px', display: 'flex', justifyContent: 'space-between', paddingLeft: '12px', paddingRight: '12px', alignItems: 'center' }}>
                 {currentData.map((d, i) => (
                   <span key={i} style={{ fontSize: '0.68rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
@@ -551,7 +550,7 @@ const RiskMonitoring = () => {
             </div>
           </div>
           <div style={{ textAlign: 'center', marginTop: '6px', fontSize: '0.72rem', color: 'var(--color-text-muted)', fontWeight: 600 }}>
-            X-Axis: Time Progression • Saturation exceeds 85% liquefaction limit at 09:00
+            X-Axis: Time Progression • Saturation readings
           </div>
         </div>
       </div>

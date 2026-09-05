@@ -3,7 +3,7 @@ import { useApp } from '../../context/AppContext';
 import { AlertTriangle, Waves, AlertOctagon, Navigation, ShieldCheck, MapPin } from 'lucide-react';
 
 const CitizenAlerts = () => {
-  const { alerts, setIsFullScreenMap } = useApp();
+  const { alerts, setIsFullScreenMap, t } = useApp();
   const [filter, setFilter] = useState('ALL');
 
   const filteredAlerts = alerts.filter(a => {
@@ -17,7 +17,7 @@ const CitizenAlerts = () => {
     <div className="citizen-feed-container">
       <div style={{ marginBottom: '16px' }}>
         <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
-          Official Emergency Alerts & Warnings
+          {t.nav?.alerts ? `${t.nav.alerts} & Warnings` : "Official Emergency Alerts & Warnings"}
         </h2>
         <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
           Real-time disaster advisories broadcasted by District & State Operations Centers
@@ -52,7 +52,7 @@ const CitizenAlerts = () => {
           style={{ fontSize: '0.82rem', padding: '6px 14px' }}
           onClick={() => setFilter('ROAD')}
         >
-          Road Blockages
+          {t.nav?.roadBlockages || "Road Blockages"}
         </button>
       </div>
 

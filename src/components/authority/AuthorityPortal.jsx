@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useApp } from '../../context/AppContext';
 import AuthorityDashboard from './AuthorityDashboard';
 import CitizenReportsQueue from './CitizenReportsQueue';
 import RoadBlockageManager from './RoadBlockageManager';
@@ -9,7 +10,8 @@ import {
 } from 'lucide-react';
 
 const AuthorityPortal = () => {
-  const [activeTab, setActiveTab] = useState('dashboard'); // dashboard, monitoring, reports, roads, population
+  const { authorityActiveTab, setAuthorityActiveTab, t } = useApp();
+  const activeTab = authorityActiveTab || 'dashboard';
 
   return (
     <div className="authority-layout" style={{ paddingBottom: 'calc(var(--bottom-nav-height) + 14px)', width: '100%' }}>
@@ -26,42 +28,42 @@ const AuthorityPortal = () => {
       <nav className="citizen-bottom-nav">
         <button
           className={`bottom-nav-item ${activeTab === 'dashboard' ? 'active' : ''}`}
-          onClick={() => setActiveTab('dashboard')}
+          onClick={() => setAuthorityActiveTab('dashboard')}
         >
           <LayoutDashboard size={19} />
-          <span>Command Map</span>
+          <span>{t.nav?.commandMap || "Command Map"}</span>
         </button>
 
         <button
           className={`bottom-nav-item ${activeTab === 'monitoring' ? 'active' : ''}`}
-          onClick={() => setActiveTab('monitoring')}
+          onClick={() => setAuthorityActiveTab('monitoring')}
         >
           <Activity size={19} />
-          <span>Risk Monitoring</span>
+          <span>{t.nav?.monitoring || "Risk Monitoring"}</span>
         </button>
 
         <button
           className={`bottom-nav-item ${activeTab === 'reports' ? 'active' : ''}`}
-          onClick={() => setActiveTab('reports')}
+          onClick={() => setAuthorityActiveTab('reports')}
         >
           <FileText size={19} />
-          <span>Resident Reports</span>
+          <span>{t.nav?.residentReports || "Resident Reports"}</span>
         </button>
 
         <button
           className={`bottom-nav-item ${activeTab === 'roads' ? 'active' : ''}`}
-          onClick={() => setActiveTab('roads')}
+          onClick={() => setAuthorityActiveTab('roads')}
         >
           <AlertOctagon size={19} />
-          <span>Road Blockages</span>
+          <span>{t.nav?.roadBlockages || "Road Blockages"}</span>
         </button>
 
         <button
           className={`bottom-nav-item ${activeTab === 'population' ? 'active' : ''}`}
-          onClick={() => setActiveTab('population')}
+          onClick={() => setAuthorityActiveTab('population')}
         >
           <Users size={19} />
-          <span>Population at Risk</span>
+          <span>{t.nav?.populationAtRisk || "Population at Risk"}</span>
         </button>
       </nav>
     </div>

@@ -7,7 +7,7 @@ import {
 } from 'lucide-react';
 
 const SafetyInsights = () => {
-  const { locations, setSelectedZoneId, setCitizenActiveTab, viewBothRoutesOnMap } = useApp();
+  const { locations, setSelectedZoneId, setCitizenActiveTab, viewBothRoutesOnMap, t } = useApp();
   const [activeSubTab, setActiveSubTab] = useState('detour'); // detour, history, weather
 
   // Historical Major Landslide Disasters in North-East India
@@ -82,7 +82,7 @@ const SafetyInsights = () => {
       {/* Header Banner */}
       <div style={{ marginBottom: '16px' }}>
         <h2 style={{ fontSize: '1.4rem', color: 'var(--color-navy)', fontWeight: 700, marginBottom: '4px' }}>
-          Safety & Tactical Insights
+          {t.nav?.safetyInsights || "Safety & Tactical Insights"}
         </h2>
         <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>
           Real-time route detours, historical landslide archives, and meteorological saturation outlook
@@ -97,7 +97,7 @@ const SafetyInsights = () => {
           onClick={() => setActiveSubTab('detour')}
         >
           <Navigation size={15} />
-          Route Safety & Detour
+          {t.routes?.title || "Route Safety & Detour"}
         </button>
 
         <button
@@ -129,10 +129,10 @@ const SafetyInsights = () => {
               </div>
               <div>
                 <h3 style={{ fontSize: '1.15rem', color: 'var(--color-navy)', fontWeight: 700, margin: 0 }}>
-                  Route Safety & Detour Advisory
+                  {t.routes?.title || "Route Safety & Detour Advisory"}
                 </h3>
                 <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', margin: '2px 0 0' }}>
-                  AI slope hazard models and ground displacement telemetry predict hazardous travel on primary mountain highways.
+                  {t.routes?.subtitle || "AI slope hazard models and ground displacement telemetry predict hazardous travel on primary mountain highways."}
                 </p>
               </div>
             </div>
@@ -159,7 +159,7 @@ const SafetyInsights = () => {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#D32F2F', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                  HIGH RISK / NOT RECOMMENDED
+                  {t.routes?.highRiskNotRec || "HIGH RISK / NOT RECOMMENDED"}
                 </span>
                 <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#D32F2F' }}>
                   Risk: 92%
@@ -188,7 +188,7 @@ const SafetyInsights = () => {
             >
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <span style={{ fontSize: '0.74rem', fontWeight: 800, color: '#2E7D32', letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-                  RECOMMENDED SAFE DETOUR
+                  {t.routes?.recSafeDetour || "RECOMMENDED SAFE DETOUR"}
                 </span>
                 <span style={{ fontSize: '0.82rem', fontWeight: 700, color: '#2E7D32' }}>
                   Risk: 24% (Safe)
@@ -211,7 +211,7 @@ const SafetyInsights = () => {
               style={{ fontSize: '0.85rem', padding: '9px 18px', display: 'inline-flex', alignItems: 'center', gap: '8px' }}
             >
               <Compass size={16} />
-              <span>View Both Routes on GIS Map ➔</span>
+              <span>{t.routes?.viewBothRoutes ? `${t.routes.viewBothRoutes} ➔` : "View Both Routes on GIS Map ➔"}</span>
             </button>
           </div>
         </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 import { useApp } from '../../context/AppContext';
 import PortalSwitcher from './PortalSwitcher';
+import LanguageSwitcher from './LanguageSwitcher';
 import VoiceAssistant from './VoiceAssistant';
 import { Mountain, AlertTriangle, PhoneCall, ShieldCheck } from 'lucide-react';
 
@@ -21,7 +22,7 @@ const Header = () => {
             <span className="header-tag">NE-INDIA</span>
           </div>
           <div className="header-subtitle">
-            {t.systemTitle || "Landslide Early Warning & Disaster Management"}
+            {t.systemTitle || "Landslide Early Warning & Disaster Management System"}
           </div>
         </div>
       </div>
@@ -29,10 +30,13 @@ const Header = () => {
       {/* Center Live Operational Beacon */}
       <div className="header-status-beacon">
         <span className="header-status-dot" />
-        <span>SYSTEM OPERATIONAL • 99.96% IoT TELEMETRY</span>
+        <span>{t.header?.systemOperational || "SYSTEM OPERATIONAL • 99.96% IoT TELEMETRY"}</span>
       </div>
 
-      <div className="header-right">
+      <div className="header-right" style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        {/* Universal Language Switcher */}
+        <LanguageSwitcher />
+
         {/* Voice Assistant Readout Button */}
         <VoiceAssistant />
 
@@ -43,7 +47,7 @@ const Header = () => {
           title="Emergency Help & SOS Contacts"
         >
           <PhoneCall size={16} />
-          <span>SOS EMERGENCY</span>
+          <span>{t.header?.sosEmergency || "SOS EMERGENCY"}</span>
         </button>
 
         {/* Portal Switcher Dropdown */}
@@ -56,7 +60,7 @@ const Header = () => {
             <span style={{ maxWidth: '140px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
               {currentUser.name}
             </span>
-            <button className="logout-icon-btn" onClick={logout} title="Sign Out">
+            <button className="logout-icon-btn" onClick={logout} title={t.header?.signOut || "Sign Out"}>
               ✕
             </button>
           </div>

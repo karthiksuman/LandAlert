@@ -3,22 +3,26 @@ import { useApp } from '../../context/AppContext';
 import { AlertOctagon, CheckCircle2, ShieldCheck, Navigation, ArrowRight } from 'lucide-react';
 
 const RoadBlockageManager = () => {
-  const { roads, toggleRoadBlockage, setIsFullScreenMap } = useApp();
+  const { roads, toggleRoadBlockage, viewBothRoutesOnMap, t } = useApp();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
         <div>
           <h2 style={{ fontSize: '1.3rem', color: 'var(--color-navy)', marginBottom: '4px' }}>
-            Highway Blockage & Safe Detour Management
+            {t.routes?.highwayBlockageManager || "Highway Blockage & Safe Detour Management"}
           </h2>
           <p style={{ fontSize: '0.85rem', color: 'var(--text-secondary)' }}>
-            Control road clearance statuses and dynamically broadcast green detour corridors
+            {t.routes?.highwayBlockageSub || "Control road clearance statuses and dynamically broadcast green detour corridors"}
           </p>
         </div>
-        <button className="btn-secondary" onClick={() => setIsFullScreenMap(true)}>
-          <Navigation size={15} />
-          View All Routes on GIS Map
+        <button 
+          className="btn-secondary" 
+          onClick={viewBothRoutesOnMap}
+          style={{ display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer' }}
+        >
+          <Navigation size={15} color="var(--color-blue-500)" />
+          {t.routes?.viewRoutesGis || "View All Routes on GIS Map"}
         </button>
       </div>
 
@@ -29,7 +33,7 @@ const RoadBlockageManager = () => {
 
           return (
             <div key={road.id} className="glass-panel" style={{ padding: '20px' }}>
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px', flexWrap: 'wrap', gap: '10px' }}>
                 <div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '4px' }}>
                     <h3 style={{ fontSize: '1.1rem', color: 'var(--color-navy)' }}>{road.name}</h3>
@@ -47,7 +51,7 @@ const RoadBlockageManager = () => {
                   style={{ fontSize: '0.82rem', padding: '8px 16px' }}
                   onClick={() => toggleRoadBlockage(road.id)}
                 >
-                  {isBlocked ? "Mark Road Cleared & OPEN" : "Mark Road BLOCKED"}
+                  {isBlocked ? (t.routes?.markCleared || "Mark Road Cleared & OPEN") : (t.routes?.markBlocked || "Mark Road BLOCKED")}
                 </button>
               </div>
 
@@ -68,7 +72,7 @@ const RoadBlockageManager = () => {
                 >
                   <div>
                     <div style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--color-risk-low)', textTransform: 'uppercase', marginBottom: '2px' }}>
-                      Active Alternative Safe Bypass Detour
+                      {t.routes?.bypassDetour || "Active Alternative Safe Bypass Detour"}
                     </div>
                     <div style={{ fontSize: '0.92rem', fontWeight: 600, color: 'var(--color-navy)' }}>
                       {alt.name}
@@ -79,7 +83,7 @@ const RoadBlockageManager = () => {
                   </div>
 
                   <span className="badge badge-low" style={{ fontSize: '0.75rem' }}>
-                    ✓ Recommended to Citizens
+                    ✓ {t.routes?.recommendedCitizens || "Recommended to Citizens"}
                   </span>
                 </div>
               )}

@@ -3,15 +3,15 @@ import { useApp } from '../../context/AppContext';
 import { ChevronDown, Check, User, ShieldAlert, HardHat, Settings, Lock } from 'lucide-react';
 
 const PortalSwitcher = () => {
-  const { activePortal, switchPortal, currentUser } = useApp();
+  const { activePortal, switchPortal, currentUser, t } = useApp();
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef(null);
 
   const portals = [
-    { id: 'citizen', label: 'Resident', icon: User, requiresAuth: false },
-    { id: 'authority', label: 'Authorities', icon: ShieldAlert, requiresAuth: true },
-    { id: 'fieldOfficer', label: 'Field Officer', icon: HardHat, requiresAuth: true },
-    { id: 'admin', label: 'Admin', icon: Settings, requiresAuth: true }
+    { id: 'citizen', label: t.portals?.citizen || 'Resident', icon: User, requiresAuth: false },
+    { id: 'authority', label: t.portals?.authority || 'Authorities', icon: ShieldAlert, requiresAuth: true },
+    { id: 'fieldOfficer', label: t.portals?.fieldOfficer || 'Field Officer', icon: HardHat, requiresAuth: true },
+    { id: 'admin', label: t.portals?.admin || 'Admin', icon: Settings, requiresAuth: true }
   ];
 
   const currentPortalConfig = portals.find(p => p.id === activePortal) || portals[0];
@@ -49,7 +49,7 @@ const PortalSwitcher = () => {
       {isOpen && (
         <div className="portal-dropdown-menu">
           <div className="portal-dropdown-header">
-            Select System Portal
+            {t.header?.selectPortal || "Select System Portal"}
           </div>
           {portals.map((portal) => {
             const IconComponent = portal.icon;
